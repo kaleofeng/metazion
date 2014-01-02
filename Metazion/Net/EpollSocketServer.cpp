@@ -9,140 +9,6 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 
 static NS_SHARE::Random g_random;
 
-EpollIoThread::EpollIoThread()
-    : m_socketServer(nullptr)
-    , m_index(0)
-    , m_lastTime(0)
-    , m_interval(0)
-    , m_startIndex(0)
-    , m_socketCount(0)
-    , m_epollfd(0)
-    , m_epollEvents(nullptr)
-    , m_stopDesired(false) {}
-
-EpollIoThread::~EpollIoThread() {}
-
-void EpollIoThread::Initialize(EpollSocketServer* socketServer, int index) {
-    m_socketServer = socketServer;
-    m_index = index;
-    m_lastTime = 0;
-    m_interval = 0;
-    m_startIndex = m_socketServer->GetStartIndex(m_index);
-    m_socketCount = m_socketServer->GetSocketCount(m_index);
-    m_epollfd = m_socketServer->GetEpollfd(m_index);
-    m_epollEvents = &m_socketServer->GetEpollEvent(m_startIndex);
-    m_stopDesired = false;
-}
-
-void EpollIoThread::Finalize() {
-    Stop();
-}
-
-void EpollIoThread::Stop() {
-    m_stopDesired = true;
-    Wait();
-}
-
-void EpollIoThread::Execute() {
-    m_lastTime = NS_SHARE::GetTickMillisecond();
-    while (!m_stopDesired) {
-        ProcessSockets();
-        ProcessEvents();
-    }
-}
-
-void EpollIoThread::ProcessSockets() {
-    const int32_t curTime = NS_SHARE::GetTickMillisecond();
-    m_interval = curTime - m_lastTime;
-    if (m_interval < 10) {
-        return;
-    }
-
-    m_lastTime = curTime;
-
-    for (int index = 0; index < m_socketCount; ++index) {
-        const int realIndex = m_startIndex + index;
-        EpollSocketServer::SocketCtrl& socketCtrl = m_socketServer->GetSocketCtrl(realIndex);
-        if (IsNull(socketCtrl.m_socket)) {
-            continue;
-        }
-
-        if (socketCtrl.m_active) {
-            ProcessActiveSocket(socketCtrl.m_socket, realIndex);
-        }
-        else {
-            ProcessClosedSocket(socketCtrl.m_socket, realIndex);
-        }
-    }
-}
-
-void EpollIoThread::ProcessEvents() {
-    const int count = ::epoll_wait(m_epollfd, m_epollEvents, m_socketCount, 10);
-    if (0 == count) {
-        return;
-    }
-    else if (count < 0) {
-        const int error = GetLastError();
-        if (EINTR != error) {
-            ::printf("Socket Warning: epoll wait, error[%d]. [%s:%d]\n", error, __FILE__, __LINE__);
-        }
-        return;
-    }
-
-    for (int index = 0; index < count; ++index)  {
-        struct epoll_event& event = m_epollEvents[index];
-        EpollSocket* epollSocket = static_cast<EpollSocket*>(event.data.ptr);
-
-        if (event.events & EPOLLRDHUP) {
-            ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-            epollSocket->Close();
-            continue;
-        }
-
-        if (event.events & EPOLLIN) {
-            epollSocket->Input();
-        }
-
-        if (event.events & EPOLLOUT) {
-            epollSocket->SetCanOutput(true);
-        }
-    }
-}
-
-void EpollIoThread::ProcessActiveSocket(EpollSocket* epollSocket, int index) {
-    if (epollSocket->IsClosed()) {
-        m_socketServer->MarkSocketClosed(index);
-        return;
-    }
-
-    epollSocket->Tick(m_interval);
-
-    epollSocket->Output();
-}
-
-void EpollIoThread::ProcessClosedSocket(EpollSocket* epollSocket, int index) {
-    if (epollSocket->IsActive()) {
-        m_socketServer->MarkSocketActive(index);
-        return;
-    }
-
-    epollSocket->Tick(m_interval);
-
-    if (!epollSocket->IsClosing()) {
-        m_socketServer->Lock();
-        if (epollSocket->IsClosing()) {
-            m_socketServer->Unlock();
-            return;
-        }
-
-        m_socketServer->RemoveSocketCtrl(index);
-        m_socketServer->Unlock();
-
-        epollSocket->OnDetached();
-        epollSocket->Destory();
-    }
-}
-
 EpollSocketServer::EpollSocketServer()
     : m_epollfdList(nullptr)
     , m_epollEventList(nullptr)
@@ -150,7 +16,8 @@ EpollSocketServer::EpollSocketServer()
     , m_socketCount(0)
     , m_socketCtrlList(nullptr)
     , m_ioThreadNumber(0)
-    , m_ioThreadList(nullptr) {}
+    , m_ioThreadList(nullptr)
+    , m_maintenanceThread(nullptr) {}
 
 EpollSocketServer::~EpollSocketServer() {}
 
@@ -180,10 +47,17 @@ bool EpollSocketServer::Initialize(int socketCapacity, int ioThreadNumber) {
         ioThread->Initialize(this, index);
         ioThread->Run();
     }
+
+    m_maintenanceThread = new EpollMaintenanceThread();
+    m_maintenanceThread->Init(this);
+    m_maintenanceThread->Run();
     return true;
 }
 
 void EpollSocketServer::Finalize() {
+    m_maintenanceThread->Finalize();
+    SafeDelete(m_maintenanceThread);
+
     for (int index = 0; index < m_ioThreadNumber; ++index) {
         EpollIoThread*& ioThread = m_ioThreadList[index];
         ioThread->Finalize();
@@ -341,6 +215,184 @@ int EpollSocketServer::GetSocketCount(int threadIndex) const {
     const int startIndex = eachCount * threadIndex;
     const int restCount = m_socketCapacity - startIndex;
     return restCount < eachCount ? restCount : eachCount;
+}
+
+EpollIoThread::EpollIoThread()
+    : m_socketServer(nullptr)
+    , m_index(0)
+    , m_epollfd(0)
+    , m_eventList(nullptr)
+    , m_socketCount(0)
+    , m_socketCtrlList(nullptr)
+    , m_stopDesired(false) {}
+
+EpollIoThread::~EpollIoThread() {}
+
+void EpollIoThread::Initialize(EpollSocketServer* socketServer, int index) {
+    m_socketServer = socketServer;
+    m_index = index;
+    const int startIndex = m_socketServer->GetStartIndex(m_index);
+    m_epollfd = m_socketServer->GetEpollfd(m_index);
+    m_eventList = &m_socketServer->GetEpollEvent(startIndex);
+    m_socketCount = m_socketServer->GetSocketCount(m_index);
+    m_socketCtrlList = &m_socketServer->GetSocketCtrl(startIndex);
+    m_stopDesired = false;
+}
+
+void EpollIoThread::Finalize() {
+    Stop();
+}
+
+void EpollIoThread::Stop() {
+    m_stopDesired = true;
+    Wait();
+}
+
+void EpollIoThread::Execute() {
+    while (!m_stopDesired) {
+        ProcessSockets();
+        ProcessEvents();
+    }
+}
+
+void EpollIoThread::ProcessSockets() {
+    for (int index = 0; index < m_socketCount; ++index) {
+        EpollSocketServer::SocketCtrl& socketCtrl = m_socketCtrlList[index];
+        if (IsNull(socketCtrl.m_socket)) {
+            continue;
+        }
+
+        if (socketCtrl.m_active) {
+            continue;
+        }
+
+        socketCtrl.m_socket->Output();
+    }
+}
+
+void EpollIoThread::ProcessEvents() {
+    const int count = ::epoll_wait(m_epollfd, m_eventList, m_socketCount, 10);
+    if (0 == count) {
+        return;
+    }
+    else if (count < 0) {
+        const int error = GetLastError();
+        if (EINTR != error) {
+            ::printf("Socket Warning: epoll wait, error[%d]. [%s:%d]\n", error, __FILE__, __LINE__);
+        }
+        return;
+    }
+
+    for (int index = 0; index < count; ++index)  {
+        struct epoll_event& event = m_eventList[index];
+        EpollSocket* epollSocket = static_cast<EpollSocket*>(event.data.ptr);
+
+        if (event.events & EPOLLRDHUP) {
+            ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
+            epollSocket->Close();
+            continue;
+        }
+
+        if (event.events & EPOLLIN) {
+            epollSocket->Input();
+        }
+
+        if (event.events & EPOLLOUT) {
+            epollSocket->SetCanOutput(true);
+        }
+    }
+}
+
+EpollMaintenanceThread::EpollMaintenanceThread()
+    : m_socketServer(nullptr)
+    , m_interval(0)
+    , m_stopDesired(false) {}
+
+EpollMaintenanceThread::~EpollMaintenanceThread() {}
+
+void EpollMaintenanceThread::Init(EpollSocketServer* socketServer) {
+    ASSERT_TRUE(!IsNull(socketServer));
+
+    m_socketServer = socketServer;
+    m_interval = 0;
+    m_stopDesired = false;
+}
+
+void EpollMaintenanceThread::Finalize() {
+    Stop();
+}
+
+void EpollMaintenanceThread::Stop() {
+    m_stopDesired = true;
+    Wait();
+}
+
+void EpollMaintenanceThread::Execute() {
+    int32_t lastTime = NS_SHARE::GetTickMillisecond();
+    int32_t lastTickTime = lastTime;
+    while (!m_stopDesired) {
+        const int32_t curTime = NS_SHARE::GetTickMillisecond();
+        if (curTime - lastTime < 10) {
+            MilliSleep(1);
+            continue;
+        }
+
+        m_interval = curTime - lastTickTime;
+        lastTickTime = curTime;
+
+        ProcessSockets();
+
+        lastTime = curTime;
+    }
+}
+
+void EpollMaintenanceThread::ProcessSockets() {
+    const int socketCapacity = m_socketServer->GetSocketCapacity();
+    for (int index = 0; index < socketCapacity; ++index) {
+        EpollSocketServer::SocketCtrl& socketCtrl = m_socketServer->GetSocketCtrl(index);
+        if (IsNull(socketCtrl.m_socket)) {
+            continue;
+        }
+
+        if (socketCtrl.m_active) {
+            ProcessActiveSocket(socketCtrl.m_socket, index);
+        }
+        else {
+            ProcessClosedSocket(socketCtrl.m_socket, index);
+        }
+    }
+}
+
+void EpollMaintenanceThread::ProcessActiveSocket(EpollSocket* epollSocket, int index) {
+    if (epollSocket->IsClosed()) {
+        m_socketServer->MarkSocketClosed(index);
+        return;
+    }
+
+    epollSocket->Tick(m_interval);
+}
+
+void EpollMaintenanceThread::ProcessClosedSocket(EpollSocket* epollSocket, int index) {
+    if (epollSocket->IsActive()) {
+        m_socketServer->MarkSocketActive(index);
+        return;
+    }
+
+    epollSocket->Tick(m_interval);
+
+    if (!epollSocket->IsClosing()) {
+        m_socketServer->Lock();
+        if (epollSocket->IsClosing()) {
+            m_socketServer->Unlock();
+            return;
+        }
+
+        m_socketServer->RemoveSocketCtrl(index);
+        m_socketServer->Unlock();
+
+        epollSocket->OnDetached();
+        epollSocket->Destory();
+    }
 }
 
 DECL_NAMESPACE_MZ_NET_END

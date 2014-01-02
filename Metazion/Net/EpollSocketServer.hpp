@@ -13,51 +13,14 @@
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class EpollSocketServer;
-
-class EpollIoThread : public NS_SHARE::Thread {
-    DISALLOW_COPY_AND_ASSIGN(EpollIoThread)
-
-public:
-    EpollIoThread();
-
-    ~EpollIoThread();
-
-public:
-    void Initialize(EpollSocketServer* socketServer, int index);
-
-    void Finalize();
-
-protected:
-    void Stop();
-
-    void Execute();
-
-private:
-    void ProcessSockets();
-
-    void ProcessEvents();
-
-    void ProcessActiveSocket(EpollSocket* epollSocket, int index);
-
-    void ProcessClosedSocket(EpollSocket* epollSocket, int index);
-
-private:
-    EpollSocketServer* m_socketServer;
-    int m_index;
-    int32_t m_lastTime;
-    int32_t m_interval;
-    int m_startIndex;
-    int m_socketCount;
-    int m_epollfd;
-    struct epoll_event* m_epollEvents;
-    volatile bool m_stopDesired;
-};
+class EpollIoThread;
+class EpollMaintenanceThread;
 
 class EpollSocketServer : public SocketServer {
     DISALLOW_COPY_AND_ASSIGN(EpollSocketServer)
 
     friend class EpollIoThread;
+    friend class EpollMaintenanceThread;
     friend class EpollSocket;
 
 public:
@@ -143,6 +106,71 @@ private:
     SocketCtrl* m_socketCtrlList;
     int m_ioThreadNumber;
     EpollIoThread** m_ioThreadList;
+    EpollMaintenanceThread* m_maintenanceThread;
+};
+
+class EpollIoThread : public NS_SHARE::Thread {
+    DISALLOW_COPY_AND_ASSIGN(EpollIoThread)
+
+public:
+    EpollIoThread();
+
+    ~EpollIoThread();
+
+public:
+    void Initialize(EpollSocketServer* socketServer, int index);
+
+    void Finalize();
+
+protected:
+    void Stop();
+
+    void Execute();
+
+private:
+    void ProcessSockets();
+
+    void ProcessEvents();
+
+private:
+    EpollSocketServer* m_socketServer;
+    int m_index;
+    int m_epollfd;
+    struct epoll_event* m_eventList;
+    int m_socketCount;
+    EpollSocketServer::SocketCtrl* m_socketCtrlList;
+    volatile bool m_stopDesired;
+};
+
+class EpollMaintenanceThread : public NS_SHARE::Thread {
+    DISALLOW_COPY_AND_ASSIGN(EpollMaintenanceThread)
+
+public:
+    EpollMaintenanceThread();
+
+    ~EpollMaintenanceThread();
+
+public:
+    void Init(EpollSocketServer* socketServer);
+
+    void Finalize();
+
+protected:
+    void Stop();
+
+    void Execute();
+
+private:
+    void ProcessSockets();
+
+    void ProcessActiveSocket(EpollSocket* iocpSocket, int index);
+
+    void ProcessClosedSocket(EpollSocket* iocpSocket, int index);
+
+private:
+    EpollSocketServer* m_socketServer;
+    int m_interval;
+    volatile bool m_stopDesired;
 };
 
 DECL_NAMESPACE_MZ_NET_END
