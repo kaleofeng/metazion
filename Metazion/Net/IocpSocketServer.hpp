@@ -13,75 +13,8 @@
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class IocpSocketServer;
-
-class IocpIoThread : public NS_SHARE::Thread {
-    DISALLOW_COPY_AND_ASSIGN(IocpIoThread)
-
-    enum Result {
-        RESULT_SUCCESS = 1,
-        RESULT_FAILURE,
-        RESULT_CLOSE,
-        RESULT_TIMEOUT,
-        RESULT_ERROR,
-    };
-
-public:
-    IocpIoThread();
-
-    ~IocpIoThread();
-
-public:
-    void Initialize(IocpSocketServer* socketServer);
-
-    void Finalize();
-
-protected:
-    void Stop();
-
-    void Execute();
-
-private:
-    int AnalyseStatusResult(BOOL ret
-        , OVERLAPPED* overlapped
-        , DWORD numberOfBytes
-        , DWORD error);
-
-private:
-    IocpSocketServer* m_socketServer;
-    volatile bool m_stopDesired;
-};
-
-class IocpMaintenanceThread : public NS_SHARE::Thread {
-    DISALLOW_COPY_AND_ASSIGN(IocpMaintenanceThread)
-
-public:
-    IocpMaintenanceThread();
-
-    ~IocpMaintenanceThread();
-
-public:
-    void Init(IocpSocketServer* socketServer);
-
-    void Finalize();
-
-protected:
-    void Stop();
-
-    void Execute();
-
-private:
-    void ProcessSockets();
-
-    void ProcessActiveSocket(IocpSocket* iocpSocket, int index);
-
-    void ProcessClosedSocket(IocpSocket* iocpSocket, int index);
-
-private:
-    IocpSocketServer* m_socketServer;
-    int m_interval;
-    volatile bool m_stopDesired;
-};
+class IocpIoThread;
+class IocpMaintenanceThread;
 
 class IocpSocketServer : public SocketServer {
     DISALLOW_COPY_AND_ASSIGN(IocpSocketServer)
@@ -167,6 +100,74 @@ private:
     int m_ioThreadNumber;
     IocpIoThread** m_ioThreadList;
     IocpMaintenanceThread* m_maintenanceThread;
+};
+
+class IocpIoThread : public NS_SHARE::Thread {
+    DISALLOW_COPY_AND_ASSIGN(IocpIoThread)
+
+    enum Result {
+        RESULT_SUCCESS = 1,
+        RESULT_FAILURE,
+        RESULT_CLOSE,
+        RESULT_TIMEOUT,
+        RESULT_ERROR,
+    };
+
+public:
+    IocpIoThread();
+
+    ~IocpIoThread();
+
+public:
+    void Initialize(IocpSocketServer* socketServer);
+
+    void Finalize();
+
+protected:
+    void Stop();
+
+    void Execute();
+
+private:
+    int AnalyseStatusResult(BOOL ret
+        , OVERLAPPED* overlapped
+        , DWORD numberOfBytes
+        , DWORD error);
+
+private:
+    IocpSocketServer* m_socketServer;
+    volatile bool m_stopDesired;
+};
+
+class IocpMaintenanceThread : public NS_SHARE::Thread {
+    DISALLOW_COPY_AND_ASSIGN(IocpMaintenanceThread)
+
+public:
+    IocpMaintenanceThread();
+
+    ~IocpMaintenanceThread();
+
+public:
+    void Init(IocpSocketServer* socketServer);
+
+    void Finalize();
+
+protected:
+    void Stop();
+
+    void Execute();
+
+private:
+    void ProcessSockets();
+
+    void ProcessActiveSocket(IocpSocket* iocpSocket, int index);
+
+    void ProcessClosedSocket(IocpSocket* iocpSocket, int index);
+
+private:
+    IocpSocketServer* m_socketServer;
+    int m_interval;
+    volatile bool m_stopDesired;
 };
 
 DECL_NAMESPACE_MZ_NET_END
