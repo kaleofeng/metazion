@@ -262,7 +262,7 @@ void EpollIoThread::ProcessSockets() {
             continue;
         }
 
-        if (socketCtrl.m_active) {
+        if (!socketCtrl.m_active) {
             continue;
         }
 
