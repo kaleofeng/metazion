@@ -18,6 +18,8 @@ public:
 
     int GetLength() const;
 
+    void Seek(int position);
+
     bool WriteInt8(int8_t value);
     bool WriteUint8(uint8_t value);
     bool WriteInt16(int16_t value);

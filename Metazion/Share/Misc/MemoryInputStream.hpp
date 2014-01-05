@@ -20,6 +20,8 @@ public:
 
     void Detach();
 
+    void Seek(int position);
+
     bool ReadInt8(int8_t& arg);
     bool ReadUint8(uint8_t& arg);
     bool ReadInt16(int16_t& arg);

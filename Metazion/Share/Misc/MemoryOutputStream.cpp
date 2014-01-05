@@ -17,6 +17,10 @@ int MemoryOutputStream::GetLength() const {
     return m_position;
 }
 
+void MemoryOutputStream::Seek(int position) {
+    m_position = 0;
+}
+
 bool MemoryOutputStream::WriteInt8(int8_t value) {
     return Write(&value, sizeof(value));
 }

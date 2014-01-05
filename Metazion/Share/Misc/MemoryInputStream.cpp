@@ -18,6 +18,10 @@ MemoryInputStream::~MemoryInputStream() {
     Detach();
 }
 
+void MemoryInputStream::Seek(int position) {
+    m_position = position;
+}
+
 void MemoryInputStream::Attach(const void* buffer, int length) {
     m_buffer = static_cast<const char*>(buffer);
     m_length = length;
