@@ -30,7 +30,7 @@ public:
 
     virtual ~AppSocketServer();
 
-public: // @override
+public: // @Override
     bool Initialize(int socketCapacity, int ioThreadNumber);
 
     void Finalize();

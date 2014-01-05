@@ -19,7 +19,7 @@ public:
 
     virtual ~IocpListenSocket();
 
-public: // @override
+public: // @Override
     void Reset();
 
     void OnStarted();
@@ -29,7 +29,7 @@ public: // @override
 public:
     bool Listen(const char* ip, int port);
 
-private: // @override
+private: // @Override
     bool PostInputOperation();
 
     bool PostOutputOperation();

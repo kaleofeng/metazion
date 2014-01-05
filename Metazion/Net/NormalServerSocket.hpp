@@ -15,7 +15,7 @@ public:
 
     virtual ~NormalServerSocket();
 
-public: // @override
+public: // @Override
     int GetType() const;
 
     void OnAttached();

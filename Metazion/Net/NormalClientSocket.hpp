@@ -23,7 +23,7 @@ public:
 
     virtual ~NormalClientSocket();
 
-public: // @override
+public: // @Override
     int GetType() const;
 
     void Reset();

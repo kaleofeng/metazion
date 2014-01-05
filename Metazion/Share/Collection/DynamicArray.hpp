@@ -116,9 +116,9 @@ public:
         return index;
     }
 
-    int GetCapacity() { return m_capacity; }
+    int GetCapacity() const { return m_capacity; }
 
-    int GetSize() { return m_size; }
+    int GetSize() const { return m_size; }
 
 private:
     void Inflate(int capacity) {

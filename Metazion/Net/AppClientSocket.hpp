@@ -18,7 +18,7 @@ public:
 
     virtual ~AppClientSocket();
 
-public: // @override
+public: // @Override
     void Reset();
 
     void OnAttached();

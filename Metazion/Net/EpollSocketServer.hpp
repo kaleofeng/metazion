@@ -38,7 +38,7 @@ public:
 
     virtual ~EpollSocketServer();
 
-public: // @override
+public: // @Override
     bool Initialize(int socketCapacity, int ioThreadNumber);
 
     void Finalize();

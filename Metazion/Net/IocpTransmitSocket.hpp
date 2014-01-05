@@ -18,7 +18,7 @@ public:
 
     virtual ~IocpTransmitSocket();
 
-public: // @override
+public: // @Override
     void Reset();
 
     void OnStarted();
@@ -30,7 +30,7 @@ public:
 
     int SendNow(const void* data, int length);
 
-private: // @override
+private: // @Override
     bool PostInputOperation();
 
     bool PostOutputOperation();
