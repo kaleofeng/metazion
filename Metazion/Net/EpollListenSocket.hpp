@@ -27,7 +27,9 @@ public: // @Override
     bool IsClosing();
 
 public:
-    bool Listen(const char* ip, int port);
+    void SetLocalHost(const char* ip, int port);
+
+    bool Listen(int backlog);
 
 private: // @Override
     void Input();

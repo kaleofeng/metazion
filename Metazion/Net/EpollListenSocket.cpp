@@ -28,12 +28,13 @@ bool EpollListenSocket::IsClosing() {
     return false;
 }
 
-bool EpollListenSocket::Listen(const char* ip, int port) {
-    Host host;
-    host.SetFamily(AF_INET);
-    host.SetIp(ip);
-    host.SetPort(port);
+void EpollListenSocket::SetLocalHost(const char* ip, int port) {
+    m_localHost.SetFamily(AF_INET);
+    m_localHost.SetIp(ip);
+    m_localHost.SetPort(port);
+}
 
+bool EpollListenSocket::Listen(int backlog) {
     const SockId_t sockId = CreateSockId(TRANSPORT_TCP);
     if (INVALID_SOCKID == sockId) {
         return false;
@@ -47,22 +48,21 @@ bool EpollListenSocket::Listen(const char* ip, int port) {
         return false;
     }
 
-    SockAddr_t* sockAddr = host.SockAddr();
-    SockLen_t sockAddrLen = host.SockAddrLen();
+    SockAddr_t* sockAddr = m_localHost.SockAddr();
+    SockLen_t sockAddrLen = m_localHost.SockAddrLen();
     ret = ::bind(sockId, sockAddr, sockAddrLen);
     if (SOCKET_ERROR == ret) {
         DestroySockId(sockId);
         return false;
     }
 
-    ret = ::listen(sockId, 128);
+    ret = ::listen(sockId, backlog);
     if (SOCKET_ERROR == ret) {
         DestroySockId(sockId);
         return false;
     }
 
     OpenSockId(sockId);
-    m_localHost = host;
     return true;
 }
 

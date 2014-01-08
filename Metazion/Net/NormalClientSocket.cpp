@@ -80,17 +80,19 @@ void NormalClientSocket::OnConnected() {}
 
 void NormalClientSocket::OnDisconnected() {}
 
-bool NormalClientSocket::Connect(const char* ip, int port) {
+void NormalClientSocket::SetRemoteHost(const char* ip, int port) {
     m_remoteHost.SetFamily(AF_INET);
     m_remoteHost.SetIp(ip);
     m_remoteHost.SetPort(port);
-
-    SetStage(STAGE_WAITING);
-    return true;
 }
 
 void NormalClientSocket::SetReconnectInterval(int milliseconds) {
     m_reconnectInterval = milliseconds;
+}
+
+bool NormalClientSocket::Connect() {
+    SetStage(STAGE_WAITING);
+    return true;
 }
 
 bool NormalClientSocket::Reconnect() {

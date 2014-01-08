@@ -45,9 +45,11 @@ public: // @Override
     virtual void OnDisconnected();
 
 public:
-    bool Connect(const char* ip, int port);
+    void SetRemoteHost(const char* ip, int port);
 
     void SetReconnectInterval(int milliseconds);
+
+    bool Connect();
 
 private:
     bool Reconnect();
