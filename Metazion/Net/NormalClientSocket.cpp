@@ -101,7 +101,7 @@ bool NormalClientSocket::Reconnect() {
         return false;
     }
 
-    OpenSockId(sockId);
+    AttachSockId(sockId);
 
     SockAddr_t* sockAddr = m_remoteHost.SockAddr();
     SockLen_t sockAddrLen = m_remoteHost.SockAddrLen();
@@ -116,7 +116,7 @@ bool NormalClientSocket::Reconnect() {
         return true;
     }
 
-    CloseSockId();
+    DetachSockId();
     return false;
 }
 
@@ -164,7 +164,7 @@ void NormalClientSocket::ConnectStageConnecting() {
     
     if (ret < 0) {
         SetStage(STAGE_WAITING);
-        CloseSockId();
+        DetachSockId();
         ResetConnectTime();
         return;
     }

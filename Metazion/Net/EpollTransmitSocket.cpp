@@ -2,8 +2,6 @@
 
 #if defined(MZ_PLATFORM_LINUX)
 
-#include <Metazion/Share/Sync/AutoGuard.hpp>
-
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 EpollTransmitSocket::EpollTransmitSocket()

@@ -63,7 +63,7 @@ void IocpSocketServer::Finalize() {
             socketInfo.m_socket->Close();
         }
         else {
-            socketInfo.m_socket->CloseSockId();
+            socketInfo.m_socket->DetachSockId();
         }
         socketInfo.m_socket->Destory();
         socketInfo.m_socket = nullptr;
@@ -106,7 +106,7 @@ void IocpSocketServer::MarkSocketActive(int index) {
 
     IocpSocket* iocpSocket = m_socketCtrlList[index].m_socket;
     if (!AssociateWithIocp(iocpSocket)) {
-        iocpSocket->CloseSockId();
+        iocpSocket->DetachSockId();
         return;
     }
 

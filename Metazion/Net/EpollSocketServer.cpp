@@ -75,7 +75,7 @@ void EpollSocketServer::Finalize() {
             socketInfo.m_socket->Close();
         }
         else {
-            socketInfo.m_socket->CloseSockId();
+            socketInfo.m_socket->DetachSockId();
         }
         socketInfo.m_socket->Destory();
         socketInfo.m_socket = nullptr;
@@ -126,7 +126,7 @@ void EpollSocketServer::MarkSocketActive(int index) {
 
     EpollSocket* epollSocket = m_socketCtrlList[index].m_socket;
     if (!AssociateWithEpoll(epollSocket)) {
-        epollSocket->CloseSockId();
+        epollSocket->DetachSockId();
         return;
     }
 

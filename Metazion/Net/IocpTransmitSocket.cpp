@@ -2,8 +2,6 @@
 
 #if defined(MZ_PLATFORM_WINOWS)
 
-#include <Metazion/Share/Sync/AutoGuard.hpp>
-
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 IocpTransmitSocket::IocpTransmitSocket()
@@ -62,25 +60,6 @@ int IocpTransmitSocket::Send(const void* data, int length) {
     return pushLength;
 }
 
-int IocpTransmitSocket::SendNow(const void* data, int length) {
-    if (!IsIoAvailable()) {
-        return 0;
-    }
-
-    m_lock.Lock();
-    const int pushLength = m_socketBuffer.m_sendCache.Push(data, length);
-    m_lock.Unlock();
-
-    if (pushLength < length) {
-        ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-        Close();
-        return 0;
-    }
-
-    PostOutputOperation();
-    return pushLength;
-}
-
 bool IocpTransmitSocket::PostInputOperation() {
     if (!IsReady()) {
         return false;
@@ -90,15 +69,7 @@ bool IocpTransmitSocket::PostInputOperation() {
         return true;
     }
 
-    DECL_BLOCK_BEGIN
-    NS_SHARE::AutoGuard<NS_SHARE::MutexLock> autoGuard(m_lock);
-
-    if (m_recvOperation.IsBusy()) {
-        return true;
-    }
-
     m_recvOperation.SetBusy(true);
-    DECL_BLOCK_END
 
    return _PostInputOperation();
 }
@@ -116,15 +87,7 @@ bool IocpTransmitSocket::PostOutputOperation() {
         return true;
     }
 
-    DECL_BLOCK_BEGIN
-    NS_SHARE::AutoGuard<NS_SHARE::MutexLock> autoGuard(m_lock);
-
-    if (m_sendOperation.IsBusy()) {
-        return true;
-    }
-
     m_sendOperation.SetBusy(true);
-    DECL_BLOCK_END
 
     return _PostOutputOperation();
 }

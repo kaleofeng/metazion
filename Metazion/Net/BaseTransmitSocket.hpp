@@ -1,5 +1,5 @@
-#ifndef MZ_NET_BASETCPSOCKET_HPP
-#define MZ_NET_BASETCPSOCKET_HPP
+#ifndef MZ_NET_BASETRANSMITSOCKET_HPP
+#define MZ_NET_BASETRANSMITSOCKET_HPP
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -18,4 +18,4 @@ typedef EpollTransmitSocket BaseTransmitSocket;
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_BASETCPSOCKET_HPP
+#endif // MZ_NET_BASETRANSMITSOCKET_HPP

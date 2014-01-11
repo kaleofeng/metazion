@@ -2,8 +2,6 @@
 
 #if defined(MZ_PLATFORM_WINOWS)
 
-#include <Metazion/Share/Sync/AutoGuard.hpp>
-
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 IocpListenSocket::IocpListenSocket() {
@@ -73,7 +71,7 @@ bool IocpListenSocket::Listen(int backlog) {
         return false;
     }
 
-    OpenSockId(sockId);
+    AttachSockId(sockId);
     return true;
 }
 
@@ -86,15 +84,7 @@ bool IocpListenSocket::PostInputOperation() {
         return true;
     }
 
-    DECL_BLOCK_BEGIN
-    NS_SHARE::AutoGuard<NS_SHARE::MutexLock> autoGuard(m_lock);
-
-    if (m_acceptOperation.IsBusy()) {
-        return true;
-    }
-
     m_acceptOperation.SetBusy(true);
-    DECL_BLOCK_END
 
     return _PostAcceptOperation();
 }

@@ -13,6 +13,7 @@ class EpollSocket : public Socket {
     DISALLOW_COPY_AND_ASSIGN(EpollSocket)
 
     friend class EpollIoThread;
+    friend class EpollMaintenanceThread;
     friend class EpollSocketServer;
 
 public:

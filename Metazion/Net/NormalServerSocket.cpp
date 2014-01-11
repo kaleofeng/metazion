@@ -13,7 +13,7 @@ int NormalServerSocket::GetType() const {
 }
 
 void NormalServerSocket::Attach(const SockId_t& sockId) {
-    OpenSockId(sockId);
+    AttachSockId(sockId);
 }
 
 void NormalServerSocket::OnAttached() {

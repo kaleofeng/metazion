@@ -1,5 +1,5 @@
-#ifndef MZ_NET_IOCPTCPSOCKET_HPP
-#define MZ_NET_IOCPTCPSOCKET_HPP
+#ifndef MZ_NET_IOCPTRANSMITSOCKET_HPP
+#define MZ_NET_IOCPTRANSMITSOCKET_HPP
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -27,8 +27,6 @@ public: // @Override
 
 public:
     int Send(const void* data, int length);
-
-    int SendNow(const void* data, int length);
 
 private: // @Override
     bool PostInputOperation();
@@ -79,4 +77,4 @@ DECL_NAMESPACE_MZ_NET_END
 
 #endif // MZ_PLATFORM_WINOWS
 
-#endif // MZ_NET_IOCPTCPSOCKET_HPP
+#endif // MZ_NET_IOCPTRANSMITSOCKET_HPP

@@ -30,8 +30,6 @@ public: // @Override
 public:
     bool SendData(int command, const void* data, int length);
 
-    bool SendDataNow(int command, const void* data, int length);
-
     int PullPackets(void* buffer, int length, PacketArray_t& packetArray);
 
 private:

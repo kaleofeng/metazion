@@ -60,19 +60,25 @@ public:
 
     bool IsReady() const;
 
-    int GetRefCount() const;
+    int GetRefCount() const {
+        return m_refCount;
+    }
 
     void GrabRef();
 
     void ReleaseRef();
 
-    bool IsIoAvailable() const;
+    bool IsIoAvailable() const {
+        return m_ioAvailable;
+    }
 
-    const SockId_t& GetSockId() const;
+    const SockId_t& GetSockId() const {
+        return m_sockId;
+    }
 
-    void OpenSockId(const SockId_t& sockId);
+    void AttachSockId(const SockId_t& sockId);
 
-    void CloseSockId();
+    void DetachSockId();
 
     int GetIndex() const {
         return m_index;

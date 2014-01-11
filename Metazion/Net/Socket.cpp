@@ -83,16 +83,15 @@ void Socket::Close() {
         return;
     }
 
-    DECL_BLOCK_BEGIN
-    NS_SHARE::AutoGuard<NS_SHARE::MutexLock> autoGuard(m_lock);
-    
+    m_lock.Lock();
     if (INVALID_SOCKID == m_sockId) {
+        m_lock.Unlock();
         return;
     }
 
     m_ioAvailable = false;
-    CloseSockId();
-    DECL_BLOCK_END
+    DetachSockId();
+    m_lock.Unlock();
 
     OnClosed();
 }
@@ -103,10 +102,6 @@ bool Socket::IsValid() const {
 
 bool Socket::IsReady() const {
     return INVALID_SOCKID != m_sockId;
-}
-
-int Socket::GetRefCount() const {
-    return m_refCount;
 }
 
 void Socket::GrabRef() {
@@ -121,19 +116,11 @@ void Socket::ReleaseRef() {
     m_lock.Unlock();
 }
 
-bool Socket::IsIoAvailable() const {
-    return m_ioAvailable;
-}
-
-const SockId_t& Socket::GetSockId() const {
-    return m_sockId;
-}
-
-void Socket::OpenSockId(const SockId_t& sockId) {
+void Socket::AttachSockId(const SockId_t& sockId) {
     m_sockId = sockId;
 }
 
-void Socket::CloseSockId() {
+void Socket::DetachSockId() {
     if (INVALID_SOCKID != m_sockId) {
         DestroySockId(m_sockId);
         m_sockId = INVALID_SOCKID;
