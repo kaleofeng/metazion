@@ -1,35 +1,23 @@
-#include "Metazion/Net/IocpTransmitSocket.hpp"
+#include "Metazion/Net/IocpTransmitStrategy.hpp"
+
+#include "Metazion/Net/TransmitSocket.hpp"
 
 #if defined(MZ_PLATFORM_WINOWS)
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-IocpTransmitSocket::IocpTransmitSocket()
-    : m_socketBuffer(m_lock) {}
+IocpTransmitStrategy::IocpTransmitStrategy(TransmitSocket& transmitSocket)
+    : m_transmitSocket(transmitSocket) {}
 
-IocpTransmitSocket::~IocpTransmitSocket() {}
+IocpTransmitStrategy::~IocpTransmitStrategy() {}
 
-void IocpTransmitSocket::Reset() {
-    IocpSocket::Reset();
-    m_socketBuffer.Reset();
+void IocpTransmitStrategy::Reset() {
     m_sendOperation.Reset();
     m_recvOperation.Reset();
 }
 
-void IocpTransmitSocket::OnStarted() {
-    IocpSocket::OnStarted();
-    m_socketBuffer.Rework();
-    m_sendOperation.Reset();
-    m_recvOperation.Reset();
-}
-
-bool IocpTransmitSocket::IsClosing() {
-    bool ret = IocpSocket::IsClosing();
-    if (ret) {
-        return true;
-    }
-
-    ret = m_sendOperation.IsBusy();
+bool IocpTransmitStrategy::IsBusy() const {
+    bool ret = m_sendOperation.IsBusy();
     if (ret) {
         return true;
     }
@@ -42,26 +30,8 @@ bool IocpTransmitSocket::IsClosing() {
     return false;
 }
 
-int IocpTransmitSocket::Send(const void* data, int length) {
-    if (!IsIoAvailable()) {
-        return 0;
-    }
-
-    m_lock.Lock();
-    const int pushLength = m_socketBuffer.m_sendCache.Push(data, length);
-    m_lock.Unlock();
-
-    if (pushLength < length) {
-        ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-        Close();
-        return 0;
-    }
-
-    return pushLength;
-}
-
-bool IocpTransmitSocket::PostInputOperation() {
-    if (!IsReady()) {
+bool IocpTransmitStrategy::PostInputOperation() {
+    if (!m_transmitSocket.IsReady()) {
         return false;
     }
 
@@ -74,8 +44,8 @@ bool IocpTransmitSocket::PostInputOperation() {
    return _PostInputOperation();
 }
 
-bool IocpTransmitSocket::PostOutputOperation() {
-    if (!IsReady()) {
+bool IocpTransmitStrategy::PostOutputOperation() {
+    if (!m_transmitSocket.IsReady()) {
         return false;
     }
 
@@ -83,7 +53,7 @@ bool IocpTransmitSocket::PostOutputOperation() {
         return true;
     }
 
-    if (!m_socketBuffer.HasDataToSend()) {
+    if (!m_transmitSocket.GetSocketBuffer().HasDataToSend()) {
         return true;
     }
 
@@ -92,7 +62,7 @@ bool IocpTransmitSocket::PostOutputOperation() {
     return _PostOutputOperation();
 }
 
-bool IocpTransmitSocket::HandleSuccessOperation(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::HandleSuccessOperation(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     switch (iocpOperation->m_type) {
     case IocpOperation::TYPE_RECV:
@@ -103,7 +73,7 @@ bool IocpTransmitSocket::HandleSuccessOperation(const IocpOperation* iocpOperati
     }
 }
 
-bool IocpTransmitSocket::HandleFailureOperation(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::HandleFailureOperation(const IocpOperation* iocpOperation
     , DWORD byteNumber, int error) {
     switch (iocpOperation->m_type) {
     case IocpOperation::TYPE_RECV:
@@ -114,7 +84,7 @@ bool IocpTransmitSocket::HandleFailureOperation(const IocpOperation* iocpOperati
     }
 }
 
-bool IocpTransmitSocket::HandleCloseOperation(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::HandleCloseOperation(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     switch (iocpOperation->m_type) {
     case IocpOperation::TYPE_RECV:
@@ -125,16 +95,17 @@ bool IocpTransmitSocket::HandleCloseOperation(const IocpOperation* iocpOperation
     }
 }
 
-bool IocpTransmitSocket::_PostInputOperation() {
-    const int recvLength = m_socketBuffer.m_recvBuffer.GetPushLength();
-    char* recvBuffer = m_socketBuffer.m_recvBuffer.GetPushBuffer();
+bool IocpTransmitStrategy::_PostInputOperation() {
+    const int recvLength = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPushLength();
+    char* recvBuffer = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPushBuffer();
 
     m_recvOperation.m_wsaBuf.buf = recvBuffer;
     m_recvOperation.m_wsaBuf.len = recvLength;
 
     DWORD bytesRecvd = 0;
     DWORD flags = 0;
-    const int ret = ::WSARecv(m_sockId
+    const SockId_t& transmitSockId = m_transmitSocket.GetSockId();
+    const int ret = ::WSARecv(transmitSockId
         , &m_recvOperation.m_wsaBuf
         , 1
         , &bytesRecvd
@@ -152,23 +123,24 @@ bool IocpTransmitSocket::_PostInputOperation() {
     return true;
 }
 
-bool IocpTransmitSocket::_PostOutputOperation() {
-    int sendLength = m_socketBuffer.m_sendBuffer.GetPullLength();
+bool IocpTransmitStrategy::_PostOutputOperation() {
+    int sendLength = m_transmitSocket.GetSocketBuffer().m_sendBuffer.GetPullLength();
     if (sendLength <= 0) {
-        sendLength = m_socketBuffer.PrepareSendBuffer();    
+        sendLength = m_transmitSocket.GetSocketBuffer().PrepareSendBuffer();
     }
     if (sendLength <= 0) {
         m_sendOperation.SetBusy(false);
         return true;
     }
 
-    char* sendBuffer = m_socketBuffer.m_sendBuffer.GetPullBuffer();
+    char* sendBuffer = m_transmitSocket.GetSocketBuffer().m_sendBuffer.GetPullBuffer();
 
     m_sendOperation.m_wsaBuf.buf = sendBuffer;
     m_sendOperation.m_wsaBuf.len = sendLength;
 
     DWORD bytesSent = 0;
-    const int ret = ::WSASend(m_sockId
+    const SockId_t& transmitSockId = m_transmitSocket.GetSockId();
+    const int ret = ::WSASend(transmitSockId
         , &m_sendOperation.m_wsaBuf
         , 1
         , &bytesSent
@@ -186,101 +158,101 @@ bool IocpTransmitSocket::_PostOutputOperation() {
     return true;
 }
 
-bool IocpTransmitSocket::HandleInputSuccessOperation(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::HandleInputSuccessOperation(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_recvOperation == iocpOperation);
 
     if (0 == byteNumber) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-        Close();
+        m_transmitSocket.Close();
         return true;
     }
 
-    m_socketBuffer.m_recvBuffer.JumpPushIndex(byteNumber);
+    m_transmitSocket.GetSocketBuffer().m_recvBuffer.JumpPushIndex(byteNumber);
 
-    const char* recvData = m_socketBuffer.m_recvBuffer.GetPullBuffer();
-    const int recvLength = m_socketBuffer.m_recvBuffer.GetPullLength();
+    const char* recvData = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPullBuffer();
+    const int recvLength = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPullLength();
 
-    const int processLength = OnRecvData(recvData, recvLength);
+    const int processLength = m_transmitSocket.OnRecvData(recvData, recvLength);
     if (processLength < 0) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-        Close();
+        m_transmitSocket.Close();
         return false;
     }
 
-    m_socketBuffer.m_recvBuffer.JumpPullIndex(processLength);
-    m_socketBuffer.m_recvBuffer.Compact();
+    m_transmitSocket.GetSocketBuffer().m_recvBuffer.JumpPullIndex(processLength);
+    m_transmitSocket.GetSocketBuffer().m_recvBuffer.Compact();
 
     return _PostInputOperation();
 }
 
-bool IocpTransmitSocket::HandleOutputSuccessOperation(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::HandleOutputSuccessOperation(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_sendOperation == iocpOperation);
 
     if (0 == byteNumber) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-        Close();
+        m_transmitSocket.Close();
         return true;
     }
 
-    const char* sendData = m_socketBuffer.m_sendBuffer.GetPullBuffer();
+    const char* sendData = m_transmitSocket.GetSocketBuffer().m_sendBuffer.GetPullBuffer();
     const int sendLength = byteNumber;
 
-    const int processLength = OnSendData(sendData, sendLength);
+    const int processLength = m_transmitSocket.OnSendData(sendData, sendLength);
     if (processLength < 0) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-        Close();
+        m_transmitSocket.Close();
         return false;
     }
 
-    m_socketBuffer.m_sendBuffer.JumpPullIndex(processLength);
-    m_socketBuffer.m_sendBuffer.Compact();
+    m_transmitSocket.GetSocketBuffer().m_sendBuffer.JumpPullIndex(processLength);
+    m_transmitSocket.GetSocketBuffer().m_sendBuffer.Compact();
 
     return _PostOutputOperation();
 }
 
-bool IocpTransmitSocket::HandleInputFailureOperation(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::HandleInputFailureOperation(const IocpOperation* iocpOperation
     , DWORD byteNumber, int error) {
     ASSERT_TRUE(&m_recvOperation == iocpOperation);
 
     ::printf("Socket Error: socket close, error[%d]. [%s:%d]\n", error, __FILE__, __LINE__);
-    Close();
-    OnError(error);
+    m_transmitSocket.Close();
+    m_transmitSocket.OnError(error);
 
     m_recvOperation.SetBusy(false);
     return true;
 }
 
-bool IocpTransmitSocket::HandleOutputFailureOperation(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::HandleOutputFailureOperation(const IocpOperation* iocpOperation
     , DWORD byteNumber, int error) {
     ASSERT_TRUE(&m_sendOperation == iocpOperation);
 
     ::printf("Socket Error: socket close, error[%d]. [%s:%d]\n", error, __FILE__, __LINE__);
-    Close();
-    OnError(error);
+    m_transmitSocket.Close();
+    m_transmitSocket.OnError(error);
 
     m_sendOperation.SetBusy(false);
     return true;
 }
 
-bool IocpTransmitSocket::HandleInputCloseOperation(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::HandleInputCloseOperation(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_recvOperation == iocpOperation);
 
     ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-    Close();
+    m_transmitSocket.Close();
 
     m_recvOperation.SetBusy(false);
     return true;
 }
 
-bool IocpTransmitSocket::HandleOutputCloseOperation(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::HandleOutputCloseOperation(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_sendOperation == iocpOperation);
 
     ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-    Close();
+    m_transmitSocket.Close();
 
     m_sendOperation.SetBusy(false);
     return true;

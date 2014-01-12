@@ -8,8 +8,8 @@
 #include <Metazion/Share/Thread/Thread.hpp>
 #include <Metazion/Share/Sync/AutoGuard.hpp>
 #include <Metazion/Share/Sync/MutexLock.hpp>
+#include "Metazion/Net/Socket.hpp"
 #include "Metazion/Net/SocketServer.hpp"
-#include "Metazion/Net/IocpSocket.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
@@ -21,7 +21,6 @@ class IocpSocketServer : public SocketServer {
 
     friend class IocpIoThread;
     friend class IocpMaintenanceThread;
-    friend class IocpSocket;
 
 public:
     struct SocketCtrl {
@@ -29,7 +28,7 @@ public:
             : m_socket(nullptr)
             , m_active(false) {}
 
-        IocpSocket* m_socket;
+        Socket* m_socket;
         bool m_active;
     };
 
@@ -79,11 +78,11 @@ private:
 
     SocketCtrl& GetSocketCtrl(int index);
 
-    void AddSocketCtrl(int index, IocpSocket* socket);
+    void AddSocketCtrl(int index, Socket* socket);
 
     void RemoveSocketCtrl(int index);
 
-    bool AssociateWithIocp(IocpSocket* socket);
+    bool AssociateWithIocp(Socket* socket);
 
     int GetVacantIndex() const;
 
@@ -160,9 +159,9 @@ protected:
 private:
     void ProcessSockets();
 
-    void ProcessActiveSocket(IocpSocket* iocpSocket, int index);
+    void ProcessActiveSocket(Socket* socket, int index);
 
-    void ProcessClosedSocket(IocpSocket* iocpSocket, int index);
+    void ProcessClosedSocket(Socket* socket, int index);
 
 private:
     IocpSocketServer* m_socketServer;

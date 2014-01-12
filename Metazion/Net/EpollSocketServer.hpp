@@ -8,7 +8,7 @@
 #include <Metazion/Share/Sync/AutoGuard.hpp>
 #include <Metazion/Share/Sync/MutexLock.hpp>
 #include <Metazion/Share/Thread/Thread.hpp>
-#include "Metazion/Net/EpollSocket.hpp"
+#include "Metazion/Net/Socket.hpp"
 #include "Metazion/Net/SocketServer.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
@@ -21,7 +21,6 @@ class EpollSocketServer : public SocketServer {
 
     friend class EpollIoThread;
     friend class EpollMaintenanceThread;
-    friend class EpollSocket;
 
 public:
     struct SocketCtrl {
@@ -29,7 +28,7 @@ public:
             : m_socket(nullptr)
             , m_active(false) {}
 
-        EpollSocket* m_socket;
+        Socket* m_socket;
         bool m_active;
     };
 
@@ -79,7 +78,7 @@ private:
 
     SocketCtrl& GetSocketCtrl(int index);
 
-    void AddSocketCtrl(int index, EpollSocket* socket);
+    void AddSocketCtrl(int index, Socket* socket);
 
     void RemoveSocketCtrl(int index);
 
@@ -87,7 +86,7 @@ private:
 
     struct epoll_event& GetEpollEvent(int index);
 
-    bool AssociateWithEpoll(EpollSocket* socket);
+    bool AssociateWithEpoll(Socket* socket);
 
     int GetVacantIndex() const;
 
@@ -163,9 +162,9 @@ protected:
 private:
     void ProcessSockets();
 
-    void ProcessActiveSocket(EpollSocket* iocpSocket, int index);
+    void ProcessActiveSocket(Socket* socket, int index);
 
-    void ProcessClosedSocket(EpollSocket* iocpSocket, int index);
+    void ProcessClosedSocket(Socket* socket, int index);
 
 private:
     EpollSocketServer* m_socketServer;

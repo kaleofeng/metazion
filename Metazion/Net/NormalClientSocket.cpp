@@ -17,7 +17,7 @@ int NormalClientSocket::GetType() const {
 }
 
 void NormalClientSocket::Reset() {
-    BaseTransmitSocket::Reset();
+    TransmitSocket::Reset();
     m_remoteHost.Reset();
     m_stage = STAGE_NONE;
     m_connectTime = 0;
@@ -25,7 +25,7 @@ void NormalClientSocket::Reset() {
 }
 
 void NormalClientSocket::OnAttached() {
-    BaseTransmitSocket::OnAttached();
+    TransmitSocket::OnAttached();
 
     SocketServer* server = GetSocketServer();
     NormalSocketServer* normalServer = static_cast<NormalSocketServer*>(server);
@@ -36,22 +36,22 @@ void NormalClientSocket::OnAttached() {
 }
 
 void NormalClientSocket::OnStarted() {
-    BaseTransmitSocket::OnStarted();
+    TransmitSocket::OnStarted();
     OnConnected();
 }
 
 void NormalClientSocket::OnClosed() {
-    BaseTransmitSocket::OnClosed();
+    TransmitSocket::OnClosed();
     OnDisconnected();
 }
 
 void NormalClientSocket::Tick(int interval) {
-    BaseTransmitSocket::Tick(interval);
+    TransmitSocket::Tick(interval);
     ConnectStage();
 }
 
-bool NormalClientSocket::IsActive() {
-    bool ret = BaseTransmitSocket::IsActive();
+bool NormalClientSocket::IsActive() const {
+    bool ret = TransmitSocket::IsActive();
     if (!ret) {
         return false;
     }
@@ -63,8 +63,8 @@ bool NormalClientSocket::IsActive() {
     return true;
 }
 
-bool NormalClientSocket::IsClosing() {
-    bool ret = BaseTransmitSocket::IsClosing();
+bool NormalClientSocket::IsAlive() const {
+    bool ret = TransmitSocket::IsAlive();
     if (ret) {
         return true;
     }

@@ -3,13 +3,13 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include "Metazion/Net/BaseListenSocket.hpp"
+#include "Metazion/Net/ListenSocket.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class NormalServerSocket;
 
-class NormalListenSocket : public BaseListenSocket {
+class NormalListenSocket : public ListenSocket {
     DISALLOW_COPY_AND_ASSIGN(NormalListenSocket)
 
 public:

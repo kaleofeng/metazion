@@ -3,11 +3,11 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include "Metazion/Net/BaseTransmitSocket.hpp"
+#include "Metazion/Net/TransmitSocket.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class NormalServerSocket : public BaseTransmitSocket {
+class NormalServerSocket : public TransmitSocket {
     DISALLOW_COPY_AND_ASSIGN(NormalServerSocket)
 
 public:

@@ -5,8 +5,9 @@
 
 #include <Metazion/Share/Sync/AutoGuard.hpp>
 #include <Metazion/Share/Sync/MutexLock.hpp>
-#include "Metazion/Net/SocketDefine.hpp"
 #include "Metazion/Net/Host.hpp"
+#include "Metazion/Net/IoStrategy.hpp"
+#include "Metazion/Net/SocketDefine.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
@@ -22,6 +23,8 @@ public:
 
 public:
     virtual int GetType() const = 0;
+
+    virtual IoStrategy& GetIoStrategy() = 0;
 
     virtual void Reset();
 
@@ -45,20 +48,28 @@ public:
 
     virtual bool OnError(int error);
 
-    virtual bool IsActive();
+    virtual bool IsActive() const;
     
-    virtual bool IsClosed();
+    virtual bool IsClosed() const;
 
-    virtual bool IsClosing();
+    virtual bool IsAlive() const;
 
 public:
-    void Rework();
+    void Start();
     
     void Close();
 
-    bool IsValid() const;
+    bool IsValid() const {
+        return m_refCount > 0;
+    }
 
-    bool IsReady() const;
+    bool IsReady() const {
+        return INVALID_SOCKID != m_sockId;
+    }
+
+    bool IsWorking() const {
+        return m_working;
+    }
 
     int GetRefCount() const {
         return m_refCount;
@@ -67,10 +78,6 @@ public:
     void GrabRef();
 
     void ReleaseRef();
-
-    bool IsIoAvailable() const {
-        return m_ioAvailable;
-    }
 
     const SockId_t& GetSockId() const {
         return m_sockId;
@@ -98,8 +105,8 @@ public:
 
 protected:
     NS_SHARE::MutexLock m_lock;
+    volatile bool m_working;
     volatile int m_refCount;
-    volatile bool m_ioAvailable;
     SockId_t m_sockId;
     int m_index;
     SocketServer* m_socketServer;

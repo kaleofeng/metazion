@@ -3,11 +3,11 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include "Metazion/Net/BaseTransmitSocket.hpp"
+#include "Metazion/Net/TransmitSocket.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class NormalClientSocket : public BaseTransmitSocket {
+class NormalClientSocket : public TransmitSocket {
     DISALLOW_COPY_AND_ASSIGN(NormalClientSocket)
 
     enum Stage {
@@ -36,9 +36,9 @@ public: // @Override
 
     void Tick(int interval);
 
-    bool IsActive();
+    bool IsActive() const;
 
-    bool IsClosing();
+    bool IsAlive() const;
 
     virtual void OnConnected();
 

@@ -2,6 +2,8 @@
 
 #include <Metazion/Share/Time/Time.hpp>
 #include <Metazion/Share/Utility/Random.hpp>
+#include "Metazion/Net/ListenSocket.hpp"
+#include "Metazion/Net/TransmitSocket.hpp"
 
 #if defined(MZ_PLATFORM_LINUX)
 
@@ -66,19 +68,19 @@ void EpollSocketServer::Finalize() {
     SafeDeleteArray(m_ioThreadList);
 
     for (int index = 0; index < m_socketCapacity; ++index) {
-        SocketCtrl& socketInfo = m_socketCtrlList[index];
-        if (IsNull(socketInfo.m_socket)) {
+        SocketCtrl& socketCtrl = m_socketCtrlList[index];
+        if (IsNull(socketCtrl.m_socket)) {
             continue;
         }
 
-        if (socketInfo.m_active) {
-            socketInfo.m_socket->Close();
+        if (socketCtrl.m_active) {
+            socketCtrl.m_socket->Close();
         }
         else {
-            socketInfo.m_socket->DetachSockId();
+            socketCtrl.m_socket->DetachSockId();
         }
-        socketInfo.m_socket->Destory();
-        socketInfo.m_socket = nullptr;
+        socketCtrl.m_socket->Destory();
+        socketCtrl.m_socket = nullptr;
     }
     SafeDeleteArray(m_socketCtrlList);
 
@@ -94,8 +96,7 @@ void EpollSocketServer::Finalize() {
 }
 
 bool EpollSocketServer::Attach(Socket* socket) {
-    EpollSocket* epollSocket = static_cast<EpollSocket*>(socket);
-    ASSERT_TRUE(!IsNull(epollSocket));
+    ASSERT_TRUE(!IsNull(socket));
 
     if (!CanAttachMore()) {
         return false;
@@ -103,12 +104,12 @@ bool EpollSocketServer::Attach(Socket* socket) {
 
     Lock();
     const int index = GetVacantIndex();
-    AddSocketCtrl(index, epollSocket);
+    AddSocketCtrl(index, socket);
     Unlock();
 
-    epollSocket->SetIndex(index);
-    epollSocket->SetSocketServer(this);
-    epollSocket->OnAttached();
+    socket->SetIndex(index);
+    socket->SetSocketServer(this);
+    socket->OnAttached();
     return true;
 }
 
@@ -121,16 +122,16 @@ void EpollSocketServer::MarkSocketActive(int index) {
     ASSERT_TRUE(!IsNull(m_socketCtrlList[index].m_socket));
     ASSERT_TRUE(!m_socketCtrlList[index].m_active);
 
-    SocketCtrl& socketInfo = m_socketCtrlList[index];
-    socketInfo.m_active = true;
+    SocketCtrl& socketCtrl = m_socketCtrlList[index];
+    socketCtrl.m_active = true;
 
-    EpollSocket* epollSocket = m_socketCtrlList[index].m_socket;
-    if (!AssociateWithEpoll(epollSocket)) {
-        epollSocket->DetachSockId();
+    Socket* socket = m_socketCtrlList[index].m_socket;
+    if (!AssociateWithEpoll(socket)) {
+        socket->DetachSockId();
         return;
     }
 
-    epollSocket->Rework();
+    socket->Start();
 }
 
 void EpollSocketServer::MarkSocketClosed(int index) {
@@ -138,15 +139,15 @@ void EpollSocketServer::MarkSocketClosed(int index) {
     ASSERT_TRUE(!IsNull(m_socketCtrlList[index].m_socket));
     ASSERT_TRUE(m_socketCtrlList[index].m_active);
 
-    SocketCtrl& socketInfo = m_socketCtrlList[index];
-    socketInfo.m_active = false;
+    SocketCtrl& socketCtrl = m_socketCtrlList[index];
+    socketCtrl.m_active = false;
 }
 
 EpollSocketServer::SocketCtrl& EpollSocketServer::GetSocketCtrl(int index) {
     return m_socketCtrlList[index];
 }
 
-void EpollSocketServer::AddSocketCtrl(int index, EpollSocket* socket) {
+void EpollSocketServer::AddSocketCtrl(int index, Socket* socket) {
     m_socketCtrlList[index].m_socket = socket;
     m_socketCtrlList[index].m_active = false;
     ++m_socketCount;
@@ -166,7 +167,7 @@ struct epoll_event& EpollSocketServer::GetEpollEvent(int index) {
     return m_epollEventList[index];
 }
 
-bool EpollSocketServer::AssociateWithEpoll(EpollSocket* socket) {
+bool EpollSocketServer::AssociateWithEpoll(Socket* socket) {
     const SockId_t& sockId = socket->GetSockId();
     const int socketIndex = socket->GetIndex();
     const int threadIndex = GetThreadIndex(socketIndex);
@@ -266,7 +267,7 @@ void EpollIoThread::ProcessSockets() {
             continue;
         }
 
-        socketCtrl.m_socket->Output();
+        socketCtrl.m_socket->GetIoStrategy().Output();
     }
 }
 
@@ -285,20 +286,20 @@ void EpollIoThread::ProcessEvents() {
 
     for (int index = 0; index < count; ++index)  {
         struct epoll_event& event = m_eventList[index];
-        EpollSocket* epollSocket = static_cast<EpollSocket*>(event.data.ptr);
+        Socket* socket = static_cast<Socket*>(event.data.ptr);
 
         if (event.events & EPOLLRDHUP) {
             ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-            epollSocket->Close();
+            socket->Close();
             continue;
         }
 
         if (event.events & EPOLLIN) {
-            epollSocket->Input();
+            socket->GetIoStrategy().Input();
         }
 
         if (event.events & EPOLLOUT) {
-            epollSocket->SetCanOutput(true);
+            socket->GetIoStrategy().EnableOutput();
         }
     }
 }
@@ -363,26 +364,26 @@ void EpollMaintenanceThread::ProcessSockets() {
     }
 }
 
-void EpollMaintenanceThread::ProcessActiveSocket(EpollSocket* epollSocket, int index) {
-    if (epollSocket->IsClosed()) {
+void EpollMaintenanceThread::ProcessActiveSocket(Socket* socket, int index) {
+    if (socket->IsClosed()) {
         m_socketServer->MarkSocketClosed(index);
         return;
     }
 
-    epollSocket->Tick(m_interval);
+    socket->Tick(m_interval);
 }
 
-void EpollMaintenanceThread::ProcessClosedSocket(EpollSocket* epollSocket, int index) {
-    if (epollSocket->IsActive()) {
+void EpollMaintenanceThread::ProcessClosedSocket(Socket* socket, int index) {
+    if (socket->IsActive()) {
         m_socketServer->MarkSocketActive(index);
         return;
     }
 
-    epollSocket->Tick(m_interval);
+    socket->Tick(m_interval);
 
-    if (!epollSocket->IsClosing()) {
+    if (!socket->IsAlive()) {
         m_socketServer->Lock();
-        if (epollSocket->IsClosing()) {
+        if (socket->IsAlive()) {
             m_socketServer->Unlock();
             return;
         }
@@ -390,8 +391,8 @@ void EpollMaintenanceThread::ProcessClosedSocket(EpollSocket* epollSocket, int i
         m_socketServer->RemoveSocketCtrl(index);
         m_socketServer->Unlock();
 
-        epollSocket->OnDetached();
-        epollSocket->Destory();
+        socket->OnDetached();
+        socket->Destory();
     }
 }
 

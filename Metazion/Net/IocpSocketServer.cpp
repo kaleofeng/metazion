@@ -1,6 +1,8 @@
 #include "Metazion/Net/IocpSocketServer.hpp"
 
 #include <Metazion/Share/Time/Time.hpp>
+#include "Metazion/Net/ListenSocket.hpp"
+#include "Metazion/Net/TransmitSocket.hpp"
 
 #if defined(MZ_PLATFORM_WINOWS)
 
@@ -54,19 +56,19 @@ void IocpSocketServer::Finalize() {
     SafeDeleteArray(m_ioThreadList);
 
     for (int index = 0; index < m_socketCapacity; ++index) {
-        SocketCtrl& socketInfo = m_socketCtrlList[index];
-        if (IsNull(socketInfo.m_socket)) {
+        SocketCtrl& socketCtrl = m_socketCtrlList[index];
+        if (IsNull(socketCtrl.m_socket)) {
             continue;
         }
 
-        if (socketInfo.m_active) {
-            socketInfo.m_socket->Close();
+        if (socketCtrl.m_active) {
+            socketCtrl.m_socket->Close();
         }
         else {
-            socketInfo.m_socket->DetachSockId();
+            socketCtrl.m_socket->DetachSockId();
         }
-        socketInfo.m_socket->Destory();
-        socketInfo.m_socket = nullptr;
+        socketCtrl.m_socket->Destory();
+        socketCtrl.m_socket = nullptr;
     }
     SafeDeleteArray(m_socketCtrlList);
 
@@ -74,8 +76,7 @@ void IocpSocketServer::Finalize() {
 }
 
 bool IocpSocketServer::Attach(Socket* socket) {
-    IocpSocket* iocpSocket = static_cast<IocpSocket*>(socket);
-    ASSERT_TRUE(!IsNull(iocpSocket));
+    ASSERT_TRUE(!IsNull(socket));
 
     if (!CanAttachMore()) {
         return false;
@@ -83,12 +84,12 @@ bool IocpSocketServer::Attach(Socket* socket) {
 
     Lock();
     const int index = GetVacantIndex();
-    AddSocketCtrl(index, iocpSocket);
+    AddSocketCtrl(index, socket);
     Unlock();
 
-    iocpSocket->SetIndex(index);
-    iocpSocket->SetSocketServer(this);
-    iocpSocket->OnAttached();
+    socket->SetIndex(index);
+    socket->SetSocketServer(this);
+    socket->OnAttached();
     return true;
 }
 
@@ -101,16 +102,16 @@ void IocpSocketServer::MarkSocketActive(int index) {
     ASSERT_TRUE(!IsNull(m_socketCtrlList[index].m_socket));
     ASSERT_TRUE(!m_socketCtrlList[index].m_active);
 
-    SocketCtrl& socketInfo = m_socketCtrlList[index];
-    socketInfo.m_active = true;
+    SocketCtrl& socketCtrl = m_socketCtrlList[index];
+    socketCtrl.m_active = true;
 
-    IocpSocket* iocpSocket = m_socketCtrlList[index].m_socket;
-    if (!AssociateWithIocp(iocpSocket)) {
-        iocpSocket->DetachSockId();
+    Socket* socket = m_socketCtrlList[index].m_socket;
+    if (!AssociateWithIocp(socket)) {
+        socket->DetachSockId();
         return;
     }
 
-    iocpSocket->Rework();
+    socket->Start();
 }
 
 void IocpSocketServer::MarkSocketClosed(int index) {
@@ -118,15 +119,15 @@ void IocpSocketServer::MarkSocketClosed(int index) {
     ASSERT_TRUE(!IsNull(m_socketCtrlList[index].m_socket));
     ASSERT_TRUE(m_socketCtrlList[index].m_active);
 
-    SocketCtrl& socketInfo = m_socketCtrlList[index];
-    socketInfo.m_active = false;
+    SocketCtrl& socketCtrl = m_socketCtrlList[index];
+    socketCtrl.m_active = false;
 }
 
 IocpSocketServer::SocketCtrl& IocpSocketServer::GetSocketCtrl(int index) {
     return m_socketCtrlList[index];
 }
 
-void IocpSocketServer::AddSocketCtrl(int index, IocpSocket* socket) {
+void IocpSocketServer::AddSocketCtrl(int index, Socket* socket) {
     m_socketCtrlList[index].m_socket = socket;
     m_socketCtrlList[index].m_active = false;
     ++m_socketCount;
@@ -138,7 +139,7 @@ void IocpSocketServer::RemoveSocketCtrl(int index) {
     --m_socketCount;
 }
 
-bool IocpSocketServer::AssociateWithIocp(IocpSocket* socket) {
+bool IocpSocketServer::AssociateWithIocp(Socket* socket) {
     const SockId_t& sockId = socket->GetSockId();
     HANDLE sockHandle = reinterpret_cast<HANDLE>(sockId);
     ULONG_PTR compKey = reinterpret_cast<ULONG_PTR>(socket);
@@ -181,7 +182,7 @@ void IocpIoThread::Stop() {
 }
 
 void IocpIoThread::Execute() {
-    IocpSocket* iocpSocket = nullptr;
+    Socket* socket = nullptr;
     IocpOperation* iocpOperation = nullptr;
     DWORD numberOfBytes = 0;
     ULONG_PTR completionKey = 0;
@@ -202,7 +203,7 @@ void IocpIoThread::Execute() {
             , &overLapped
             , 200);
 
-        iocpSocket = reinterpret_cast<IocpSocket*>(completionKey);
+        socket = reinterpret_cast<Socket*>(completionKey);
         iocpOperation = CONTAINING_RECORD(overLapped, IocpOperation, m_overlapped);
 
         const DWORD error = ::WSAGetLastError();
@@ -213,13 +214,13 @@ void IocpIoThread::Execute() {
 
         switch (result) {
         case RESULT_SUCCESS:
-            iocpSocket->HandleSuccessOperation(iocpOperation, numberOfBytes);
+            socket->GetIoStrategy().HandleSuccessOperation(iocpOperation, numberOfBytes);
             break;
         case RESULT_FAILURE:
-            iocpSocket->HandleFailureOperation(iocpOperation, numberOfBytes, error);
+            socket->GetIoStrategy().HandleFailureOperation(iocpOperation, numberOfBytes, error);
             break;
         case RESULT_CLOSE:
-            iocpSocket->HandleCloseOperation(iocpOperation, numberOfBytes);
+            socket->GetIoStrategy().HandleCloseOperation(iocpOperation, numberOfBytes);
             break;
         case RESULT_TIMEOUT:
             break;
@@ -313,29 +314,29 @@ void IocpMaintenanceThread::ProcessSockets() {
     }
 }
 
-void IocpMaintenanceThread::ProcessActiveSocket(IocpSocket* iocpSocket, int index) {
-    if (iocpSocket->IsClosed()) {
+void IocpMaintenanceThread::ProcessActiveSocket(Socket* socket, int index) {
+    if (socket->IsClosed()) {
         m_socketServer->MarkSocketClosed(index);
         return;
     }
 
-    iocpSocket->Tick(m_interval);
+    socket->Tick(m_interval);
 
-    iocpSocket->PostInputOperation();
-    iocpSocket->PostOutputOperation();
+    socket->GetIoStrategy().PostInputOperation();
+    socket->GetIoStrategy().PostOutputOperation();
 }
 
-void IocpMaintenanceThread::ProcessClosedSocket(IocpSocket* iocpSocket, int index) {
-    if (iocpSocket->IsActive()) {
+void IocpMaintenanceThread::ProcessClosedSocket(Socket* socket, int index) {
+    if (socket->IsActive()) {
         m_socketServer->MarkSocketActive(index);
         return;
     }
 
-    iocpSocket->Tick(m_interval);
+    socket->Tick(m_interval);
 
-    if (!iocpSocket->IsClosing()) {
+    if (!socket->IsAlive()) {
         m_socketServer->Lock();
-        if (iocpSocket->IsClosing()) {
+        if (socket->IsAlive()) {
             m_socketServer->Unlock();
             return;
         }
@@ -343,8 +344,8 @@ void IocpMaintenanceThread::ProcessClosedSocket(IocpSocket* iocpSocket, int inde
         m_socketServer->RemoveSocketCtrl(index);
         m_socketServer->Unlock();
 
-        iocpSocket->OnDetached();
-        iocpSocket->Destory();
+        socket->OnDetached();
+        socket->Destory();
     }
 }
 

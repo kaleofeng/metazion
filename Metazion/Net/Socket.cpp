@@ -4,7 +4,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 
 Socket::Socket()
     : m_refCount(0)
-    , m_ioAvailable(false)
+    , m_working(false)
     , m_sockId(INVALID_SOCKID)
     , m_index(-1)
     , m_socketServer(nullptr) {}
@@ -13,7 +13,7 @@ Socket::~Socket() {}
 
 void Socket::Reset() {
     m_refCount = 0;
-    m_ioAvailable = false;
+    m_working = false;
     m_sockId = INVALID_SOCKID;
     m_index = -1;
     m_socketServer = nullptr;
@@ -49,7 +49,7 @@ bool Socket::OnError(int error) {
     return true;
 }
 
-bool Socket::IsActive() {
+bool Socket::IsActive() const {
     if (!IsReady()) {
         return false;
     }
@@ -57,7 +57,7 @@ bool Socket::IsActive() {
     return true;
 }
 
-bool Socket::IsClosed() {
+bool Socket::IsClosed() const {
     if (IsReady()) {
         return false;
     }
@@ -65,7 +65,7 @@ bool Socket::IsClosed() {
     return true;
 }
 
-bool Socket::IsClosing() {
+bool Socket::IsAlive() const {
     if (IsValid()) {
         return true;
     }
@@ -73,9 +73,9 @@ bool Socket::IsClosing() {
     return false;
 }
 
-void Socket::Rework() {
+void Socket::Start() {
     OnStarted();
-    m_ioAvailable = true;
+    m_working = true;
 }
 
 void Socket::Close() {
@@ -89,19 +89,11 @@ void Socket::Close() {
         return;
     }
 
-    m_ioAvailable = false;
+    m_working = false;
     DetachSockId();
     m_lock.Unlock();
 
     OnClosed();
-}
-
-bool Socket::IsValid() const {
-    return m_refCount > 0;
-}
-
-bool Socket::IsReady() const {
-    return INVALID_SOCKID != m_sockId;
 }
 
 void Socket::GrabRef() {

@@ -14,7 +14,7 @@ int NormalListenSocket::GetType() const {
 }
 
 bool NormalListenSocket::OnAccepted(const SockId_t& sockId) {
-    BaseListenSocket::OnAccepted(sockId);
+    ListenSocket::OnAccepted(sockId);
 
     NormalServerSocket* socket = CreateServerSocket();
     ASSERT_TRUE(!IsNull(socket));

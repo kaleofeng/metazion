@@ -17,7 +17,7 @@ void NormalServerSocket::Attach(const SockId_t& sockId) {
 }
 
 void NormalServerSocket::OnAttached() {
-    BaseTransmitSocket::OnAttached();
+    TransmitSocket::OnAttached();
 
     SocketServer* server = GetSocketServer();
     NormalSocketServer* normalServer = static_cast<NormalSocketServer*>(server);
@@ -28,12 +28,12 @@ void NormalServerSocket::OnAttached() {
 }
 
 void NormalServerSocket::OnStarted() {
-    BaseTransmitSocket::OnStarted();
+    TransmitSocket::OnStarted();
     OnConnected();
 }
 
 void NormalServerSocket::OnClosed() {
-    BaseTransmitSocket::OnClosed();
+    TransmitSocket::OnClosed();
     OnDisconnected();
 }
 

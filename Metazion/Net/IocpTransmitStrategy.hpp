@@ -1,34 +1,29 @@
-#ifndef MZ_NET_IOCPTRANSMITSOCKET_HPP
-#define MZ_NET_IOCPTRANSMITSOCKET_HPP
+#ifndef MZ_NET_IOCPTRANSMITSTRATEGY_HPP
+#define MZ_NET_IOCPTRANSMITSTRATEGY_HPP
 
 #include "Metazion/Net/NetInclude.hpp"
 
 #if defined(MZ_PLATFORM_WINOWS)
 
-#include "Metazion/Net/IocpSocket.hpp"
-#include "Metazion/Net/TcpSocketBuffer.hpp"
+#include "Metazion/Net/IocpStrategy.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class IocpTransmitSocket : public IocpSocket {
-    DISALLOW_COPY_AND_ASSIGN(IocpTransmitSocket)
+class TransmitSocket;
+
+class IocpTransmitStrategy : public IocpStrategy {
+    DISALLOW_COPY_AND_ASSIGN(IocpTransmitStrategy)
 
 public:
-    IocpTransmitSocket();
+    IocpTransmitStrategy(TransmitSocket& transmitSocket);
 
-    virtual ~IocpTransmitSocket();
+    virtual ~IocpTransmitStrategy();
 
 public: // @Override
     void Reset();
 
-    void OnStarted();
+    bool IsBusy() const;
 
-    bool IsClosing();
-
-public:
-    int Send(const void* data, int length);
-
-private: // @Override
     bool PostInputOperation();
 
     bool PostOutputOperation();
@@ -65,10 +60,8 @@ private:
     bool HandleOutputCloseOperation(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
-protected:
-    TcpSocketBuffer m_socketBuffer;
-
 private:
+    TransmitSocket& m_transmitSocket;
     SendOperation m_sendOperation;
     RecvOperation m_recvOperation;
 };
@@ -77,4 +70,4 @@ DECL_NAMESPACE_MZ_NET_END
 
 #endif // MZ_PLATFORM_WINOWS
 
-#endif // MZ_NET_IOCPTRANSMITSOCKET_HPP
+#endif // MZ_NET_IOCPTRANSMITSTRATEGY_HPP

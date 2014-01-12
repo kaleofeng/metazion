@@ -1,5 +1,5 @@
-#ifndef MZ_NET_IOCPLISTENSOCKET_HPP
-#define MZ_NET_IOCPLISTENSOCKET_HPP
+#ifndef MZ_NET_IOCPLISTENSTRATEGY_HPP
+#define MZ_NET_IOCPLISTENSTRATEGY_HPP
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -7,31 +7,25 @@
 
 #include <Metazion/Share/Memory/PieceBuffer.hpp>
 #include <Metazion/Share/Memory/RingBuffer.hpp>
-#include "Metazion/Net/IocpSocket.hpp"
+#include "Metazion/Net/IocpStrategy.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class IocpListenSocket : public IocpSocket {
-    DISALLOW_COPY_AND_ASSIGN(IocpListenSocket)
+class ListenSocket;
+
+class IocpListenStrategy : public IocpStrategy {
+    DISALLOW_COPY_AND_ASSIGN(IocpListenStrategy)
 
 public:
-    IocpListenSocket();
+    IocpListenStrategy(ListenSocket& listenSocket);
 
-    virtual ~IocpListenSocket();
+    virtual ~IocpListenStrategy();
 
 public: // @Override
     void Reset();
 
-    void OnStarted();
+    bool IsBusy() const;
 
-    bool IsClosing();
-
-public:
-    void SetLocalHost(const char* ip, int port);
-
-    bool Listen(int backlog);
-
-private: // @Override
     bool PostInputOperation();
 
     bool PostOutputOperation();
@@ -48,10 +42,8 @@ private: // @Override
 private:
     bool _PostAcceptOperation();
 
-protected:
-    Host m_localHost;
-
 private:
+    ListenSocket& m_listenSocket;
     AcceptOperation m_acceptOperation;
     char m_acceptBuffer[256];
 };
@@ -60,4 +52,4 @@ DECL_NAMESPACE_MZ_NET_END
 
 #endif // MZ_PLATFORM_WINOWS
 
-#endif // MZ_NET_IOCPLISTENSOCKET_HPP
+#endif // MZ_NET_IOCPLISTENSTRATEGY_HPP

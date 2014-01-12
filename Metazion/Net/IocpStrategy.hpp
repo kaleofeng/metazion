@@ -5,24 +5,23 @@
 
 #if defined(MZ_PLATFORM_WINOWS)
 
-#include "Metazion/Net/Socket.hpp"
 #include "Metazion/Net/IocpOperation.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class IocpSocket : public Socket {
-    DISALLOW_COPY_AND_ASSIGN(IocpSocket)
-
-    friend class IocpIoThread;
-    friend class IocpMaintenanceThread;
-    friend class IocpSocketServer;
+class IocpStrategy {
+    DISALLOW_COPY_AND_ASSIGN(IocpStrategy)
 
 public:
-    IocpSocket();
+    IocpStrategy() {}
 
-    virtual ~IocpSocket();
+    virtual ~IocpStrategy() {}
 
-protected:
+public:
+    virtual void Reset() = 0;
+
+    virtual bool IsBusy() const = 0;
+
     virtual bool PostInputOperation() = 0;
 
     virtual bool PostOutputOperation() = 0;
