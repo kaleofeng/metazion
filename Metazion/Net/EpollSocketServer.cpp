@@ -113,10 +113,6 @@ bool EpollSocketServer::Attach(Socket* socket) {
     return true;
 }
 
-bool EpollSocketServer::CanAttachMore() const {
-    return m_socketCount < m_socketCapacity;
-}
-
 void EpollSocketServer::MarkSocketActive(int index) {
     ASSERT_TRUE(index >= 0 && index < m_socketCapacity);
     ASSERT_TRUE(!IsNull(m_socketCtrlList[index].m_socket));
@@ -143,30 +139,6 @@ void EpollSocketServer::MarkSocketClosed(int index) {
     socketCtrl.m_active = false;
 }
 
-EpollSocketServer::SocketCtrl& EpollSocketServer::GetSocketCtrl(int index) {
-    return m_socketCtrlList[index];
-}
-
-void EpollSocketServer::AddSocketCtrl(int index, Socket* socket) {
-    m_socketCtrlList[index].m_socket = socket;
-    m_socketCtrlList[index].m_active = false;
-    ++m_socketCount;
-}
-
-void EpollSocketServer::RemoveSocketCtrl(int index) {
-    m_socketCtrlList[index].m_socket = nullptr;
-    m_socketCtrlList[index].m_active = false;
-    --m_socketCount;
-}
-
-int EpollSocketServer::GetEpollfd(int threadIndex) const {
-    return m_epollfdList[threadIndex];
-}
-
-struct epoll_event& EpollSocketServer::GetEpollEvent(int index) {
-    return m_epollEventList[index];
-}
-
 bool EpollSocketServer::AssociateWithEpoll(Socket* socket) {
     const SockId_t& sockId = socket->GetSockId();
     const int socketIndex = socket->GetIndex();
@@ -181,6 +153,18 @@ bool EpollSocketServer::AssociateWithEpoll(Socket* socket) {
     }
 
     return true;
+}
+
+void EpollSocketServer::AddSocketCtrl(int index, Socket* socket) {
+    m_socketCtrlList[index].m_socket = socket;
+    m_socketCtrlList[index].m_active = false;
+    ++m_socketCount;
+}
+
+void EpollSocketServer::RemoveSocketCtrl(int index) {
+    m_socketCtrlList[index].m_socket = nullptr;
+    m_socketCtrlList[index].m_active = false;
+    --m_socketCount;
 }
 
 int EpollSocketServer::GetVacantIndex() const {

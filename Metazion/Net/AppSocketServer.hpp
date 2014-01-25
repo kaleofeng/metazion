@@ -41,19 +41,23 @@ public:
 
     PackBuffer& GetPackBuffer();
 
-    UnpackBuffer::BufferPool_t& GetUnpackBufferPool() {
-        return m_unpackBufferPool;
-    }
+    UnpackBuffer::BufferPool_t& GetUnpackBufferPool();
 
-    PacketCache_t::BufferPool_t& GetPacketCachePool() {
-        return m_packetCachePool;
-    }
+    PacketCache_t::BufferPool_t& GetPacketCachePool();
 
 private:
     int m_packBufferKey;
     UnpackBuffer::BufferPool_t m_unpackBufferPool;
     PacketCache_t::BufferPool_t m_packetCachePool;
 };
+
+inline UnpackBuffer::BufferPool_t& AppSocketServer::GetUnpackBufferPool() {
+    return m_unpackBufferPool;
+}
+
+inline PacketCache_t::BufferPool_t& AppSocketServer::GetPacketCachePool() {
+    return m_packetCachePool;
+}
 
 DECL_NAMESPACE_MZ_NET_END
 

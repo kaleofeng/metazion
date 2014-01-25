@@ -93,10 +93,6 @@ bool IocpSocketServer::Attach(Socket* socket) {
     return true;
 }
 
-bool IocpSocketServer::CanAttachMore() const {
-    return m_socketCount < m_socketCapacity;
-}
-
 void IocpSocketServer::MarkSocketActive(int index) {
     ASSERT_TRUE(index >= 0 && index < m_socketCapacity);
     ASSERT_TRUE(!IsNull(m_socketCtrlList[index].m_socket));
@@ -123,8 +119,15 @@ void IocpSocketServer::MarkSocketClosed(int index) {
     socketCtrl.m_active = false;
 }
 
-IocpSocketServer::SocketCtrl& IocpSocketServer::GetSocketCtrl(int index) {
-    return m_socketCtrlList[index];
+bool IocpSocketServer::AssociateWithIocp(Socket* socket) {
+    const SockId_t& sockId = socket->GetSockId();
+    HANDLE sockHandle = reinterpret_cast<HANDLE>(sockId);
+    ULONG_PTR compKey = reinterpret_cast<ULONG_PTR>(socket);
+    HANDLE hIocp = ::CreateIoCompletionPort(sockHandle, m_hIocp, compKey, 0);
+    if (IsNull(hIocp)) {
+        return false;
+    }
+    return true;
 }
 
 void IocpSocketServer::AddSocketCtrl(int index, Socket* socket) {
@@ -137,17 +140,6 @@ void IocpSocketServer::RemoveSocketCtrl(int index) {
     m_socketCtrlList[index].m_socket = nullptr;
     m_socketCtrlList[index].m_active = false;
     --m_socketCount;
-}
-
-bool IocpSocketServer::AssociateWithIocp(Socket* socket) {
-    const SockId_t& sockId = socket->GetSockId();
-    HANDLE sockHandle = reinterpret_cast<HANDLE>(sockId);
-    ULONG_PTR compKey = reinterpret_cast<ULONG_PTR>(socket);
-    HANDLE hIocp = ::CreateIoCompletionPort(sockHandle, m_hIocp, compKey, 0);
-    if (IsNull(hIocp)) {
-        return false;
-    }
-    return true;
 }
 
 int IocpSocketServer::GetVacantIndex() const {

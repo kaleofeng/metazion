@@ -46,47 +46,34 @@ public:
 
     bool CanAttachMore() const override;
 
-public:
-    void Lock() {
-        m_lock.Lock();
-    }
+    void Lock();
 
-    void Unlock() {
-        m_lock.Unlock();
-    }
+    void Unlock();
 
-    int GetSocketCapacity() const {
-        return m_socketCapacity;
-    }
+    int GetSocketCapacity();
 
-    int GetIoThreadNumber() const {
-        return m_ioThreadNumber;
-    }
+    int GetIoThreadNumber();
 
-    int GetSocketCount() const {
-        return m_socketCount;
-    }
+    int GetSocketCount() const;
 
-    Socket* GetSocket(int index) {
-        return m_socketCtrlList[index].m_socket;
-    }
+    Socket* GetSocket(int index);
 
 private:
     void MarkSocketActive(int index);
 
     void MarkSocketClosed(int index);
 
-    SocketCtrl& GetSocketCtrl(int index);
-
-    void AddSocketCtrl(int index, Socket* socket);
-
-    void RemoveSocketCtrl(int index);
+    bool AssociateWithEpoll(Socket* socket);
 
     int GetEpollfd(int threadIndex) const;
 
     struct epoll_event& GetEpollEvent(int index);
 
-    bool AssociateWithEpoll(Socket* socket);
+    SocketCtrl& GetSocketCtrl(int index);
+
+    void AddSocketCtrl(int index, Socket* socket);
+
+    void RemoveSocketCtrl(int index);
 
     int GetVacantIndex() const;
 
@@ -107,6 +94,46 @@ private:
     EpollIoThread** m_ioThreadList;
     EpollMaintenanceThread* m_maintenanceThread;
 };
+
+inline bool EpollSocketServer::CanAttachMore() const {
+    return m_socketCount < m_socketCapacity;
+}
+
+inline void EpollSocketServer::Lock() {
+    m_lock.Lock();
+}
+
+inline void EpollSocketServer::Unlock() {
+    m_lock.Unlock();
+}
+
+inline int EpollSocketServer::GetSocketCapacity() const {
+    return m_socketCapacity;
+}
+
+inline int EpollSocketServer::GetIoThreadNumber() const {
+    return m_ioThreadNumber;
+}
+
+inline int EpollSocketServer::GetSocketCount() const {
+    return m_socketCount;
+}
+
+inline Socket* EpollSocketServer::GetSocket(int index) {
+    return m_socketCtrlList[index].m_socket;
+}
+
+inline int EpollSocketServer::GetEpollfd(int threadIndex) const {
+    return m_epollfdList[threadIndex];
+}
+
+inline struct epoll_event& EpollSocketServer::GetEpollEvent(int index) {
+    return m_epollEventList[index];
+}
+
+inline EpollSocketServer::SocketCtrl& EpollSocketServer::GetSocketCtrl(int index) {
+    return m_socketCtrlList[index];
+}
 
 class EpollIoThread : public NS_SHARE::Thread {
     DISALLOW_COPY_AND_ASSIGN(EpollIoThread)

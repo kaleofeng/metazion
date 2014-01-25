@@ -12,10 +12,6 @@ NormalClientSocket::NormalClientSocket()
 
 NormalClientSocket::~NormalClientSocket() {}
 
-int NormalClientSocket::GetType() const {
-    return SOCKET_TCP_CLIENT;
-}
-
 void NormalClientSocket::Reset() {
     TransmitSocket::Reset();
     m_remoteHost.Reset();

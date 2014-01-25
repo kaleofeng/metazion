@@ -9,10 +9,6 @@ NormalListenSocket::NormalListenSocket() {}
 
 NormalListenSocket::~NormalListenSocket() {}
 
-int NormalListenSocket::GetType() const {
-    return SOCKET_TCP_LISTEN;
-}
-
 bool NormalListenSocket::OnAccepted(const SockId_t& sockId) {
     ListenSocket::OnAccepted(sockId);
 

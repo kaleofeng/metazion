@@ -17,6 +17,8 @@ public:
     virtual ~TransmitSocket();
 
 public:
+    IoStrategy& GetIoStrategy() override;
+
     void Reset() override;
 
     void OnStarted() override;
@@ -25,13 +27,7 @@ public:
 
     int Send(const void* data, int length);
 
-    TcpSocketBuffer& GetSocketBuffer() {
-        return m_socketBuffer;
-    }
-
-    IoStrategy& GetIoStrategy() {
-        return m_transmitStrategy;
-    }
+    TcpSocketBuffer& GetSocketBuffer();
 
 protected:
     TcpSocketBuffer m_socketBuffer;
@@ -39,6 +35,10 @@ protected:
 private:
     TransmitStrategy m_transmitStrategy;
 };
+
+inline TcpSocketBuffer& TransmitSocket::GetSocketBuffer() {
+    return m_socketBuffer;
+}
 
 DECL_NAMESPACE_MZ_NET_END
 

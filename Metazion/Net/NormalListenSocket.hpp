@@ -26,6 +26,10 @@ protected:
     virtual NormalServerSocket* CreateServerSocket() = 0;
 };
 
+inline int NormalListenSocket::GetType() const {
+    return SOCKET_TCP_LISTEN;
+}
+
 DECL_NAMESPACE_MZ_NET_END
 
 #endif // MZ_NET_NORMALLISTENSOCKET_HPP

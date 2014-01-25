@@ -46,35 +46,26 @@ public:
 
     bool CanAttachMore() const override;
 
-public:
-    void Lock() {
-        m_lock.Lock();
-    }
+    void Lock();
 
-    void Unlock() {
-        m_lock.Unlock();
-    }
+    void Unlock();
 
-    int GetSocketCapacity() const {
-        return m_socketCapacity;
-    }
+    int GetSocketCapacity() const;
 
-    int GetIoThreadNumber() const {
-        return m_ioThreadNumber;
-    }
+    int GetIoThreadNumber() const;
 
-    int GetSocketCount() const {
-        return m_socketCount;
-    }
+    int GetSocketCount() const;
 
-    Socket* GetSocket(int index) {
-        return m_socketCtrlList[index].m_socket;
-    }
+    Socket* GetSocket(int index);
 
 private:
     void MarkSocketActive(int index);
 
     void MarkSocketClosed(int index);
+
+    bool AssociateWithIocp(Socket* socket);
+
+    HANDLE GetIocpHandle() const;
 
     SocketCtrl& GetSocketCtrl(int index);
 
@@ -82,13 +73,7 @@ private:
 
     void RemoveSocketCtrl(int index);
 
-    bool AssociateWithIocp(Socket* socket);
-
     int GetVacantIndex() const;
-
-    HANDLE GetIocpHandle() const {
-        return m_hIocp;
-    }
 
 private:
     NS_SHARE::MutexLock m_lock;
@@ -100,6 +85,42 @@ private:
     IocpIoThread** m_ioThreadList;
     IocpMaintenanceThread* m_maintenanceThread;
 };
+
+inline bool IocpSocketServer::CanAttachMore() const {
+    return m_socketCount < m_socketCapacity;
+}
+
+inline void IocpSocketServer::Lock() {
+    m_lock.Lock();
+}
+
+inline void IocpSocketServer::Unlock() {
+    m_lock.Unlock();
+}
+
+inline int IocpSocketServer::GetSocketCapacity() const {
+    return m_socketCapacity;
+}
+
+inline int IocpSocketServer::GetIoThreadNumber() const {
+    return m_ioThreadNumber;
+}
+
+inline int IocpSocketServer::GetSocketCount() const {
+    return m_socketCount;
+}
+
+inline Socket* IocpSocketServer::GetSocket(int index) {
+    return m_socketCtrlList[index].m_socket;
+}
+
+inline HANDLE IocpSocketServer::GetIocpHandle() const {
+    return m_hIocp;
+}
+
+inline IocpSocketServer::SocketCtrl& IocpSocketServer::GetSocketCtrl(int index) {
+    return m_socketCtrlList[index];
+}
 
 class IocpIoThread : public NS_SHARE::Thread {
     DISALLOW_COPY_AND_ASSIGN(IocpIoThread)

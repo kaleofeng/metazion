@@ -82,6 +82,10 @@ protected:
     int m_reconnectInterval;
 };
 
+inline int NormalClientSocket::GetType() const {
+    return SOCKET_TCP_CLIENT;
+}
+
 DECL_NAMESPACE_MZ_NET_END
 
 #endif // MZ_NET_NORMALCLIENTSOCKET_HPP

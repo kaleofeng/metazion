@@ -31,6 +31,10 @@ public:
     void Attach(const SockId_t& sockId);
 };
 
+inline int NormalServerSocket::GetType() const {
+    return SOCKET_TCP_SERVER;
+}
+
 DECL_NAMESPACE_MZ_NET_END
 
 #endif // MZ_NET_NORMALSERVERSOCKET_HPP

@@ -18,6 +18,8 @@ public:
     virtual ~ListenSocket();
 
 public:
+    IoStrategy& GetIoStrategy() override;
+
     void Reset() override;
 
     void OnStarted() override;
@@ -28,16 +30,16 @@ public:
 
     bool Listen(int backlog);
 
-    IoStrategy& GetIoStrategy() {
-        return m_listenStrategy;
-    }
-
 protected:
     Host m_localHost;
 
 private:
     ListenStrategy m_listenStrategy;
 };
+
+inline IoStrategy& ListenSocket::GetIoStrategy() {
+    return m_listenStrategy;
+}
 
 DECL_NAMESPACE_MZ_NET_END
 

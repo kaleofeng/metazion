@@ -8,10 +8,6 @@ NormalServerSocket::NormalServerSocket() {}
 
 NormalServerSocket::~NormalServerSocket() {}
 
-int NormalServerSocket::GetType() const {
-    return SOCKET_TCP_SERVER;
-}
-
 void NormalServerSocket::Attach(const SockId_t& sockId) {
     AttachSockId(sockId);
 }

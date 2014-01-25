@@ -59,49 +59,31 @@ public:
     
     void Close();
 
-    bool IsValid() const {
-        return m_refCount > 0;
-    }
+    bool IsValid() const;
 
-    bool IsReady() const {
-        return INVALID_SOCKID != m_sockId;
-    }
+    bool IsReady() const;
 
-    bool IsWorking() const {
-        return m_working;
-    }
+    bool IsWorking() const;
 
-    int GetRefCount() const {
-        return m_refCount;
-    }
+    int GetRefCount() const;
 
     void GrabRef();
 
     void ReleaseRef();
 
-    const SockId_t& GetSockId() const {
-        return m_sockId;
-    }
+    const SockId_t& GetSockId() const;
 
     void AttachSockId(const SockId_t& sockId);
 
     void DetachSockId();
 
-    int GetIndex() const {
-        return m_index;
-    }
+    int GetIndex() const;
 
-    void SetIndex(int index) {
-        m_index = index;
-    }
+    void SetIndex(int index);
 
-    SocketServer* GetSocketServer() {
-        return m_socketServer;
-    }
+    SocketServer* GetSocketServer();
 
-    void SetSocketServer(SocketServer* socketServer) {
-        m_socketServer = socketServer;
-    }
+    void SetSocketServer(SocketServer* socketServer);
 
 protected:
     NS_SHARE::MutexLock m_lock;
@@ -111,6 +93,42 @@ protected:
     int m_index;
     SocketServer* m_socketServer;
 };
+
+inline bool Socket::IsValid() const {
+    return m_refCount > 0;
+}
+
+inline bool Socket::IsReady() const {
+    return INVALID_SOCKID != m_sockId;
+}
+
+inline bool Socket::IsWorking() const {
+    return m_working;
+}
+
+inline int Socket::GetRefCount() const {
+    return m_refCount;
+}
+
+inline const SockId_t& Socket::GetSockId() const {
+    return m_sockId;
+}
+
+inline int Socket::GetIndex() const {
+    return m_index;
+}
+
+inline void Socket::SetIndex(int index) {
+    m_index = index;
+}
+
+inline SocketServer* Socket::GetSocketServer() {
+    return m_socketServer;
+}
+
+inline void Socket::SetSocketServer(SocketServer* socketServer) {
+    m_socketServer = socketServer;
+}
 
 DECL_NAMESPACE_MZ_NET_END
 
