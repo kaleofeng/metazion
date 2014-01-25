@@ -50,9 +50,9 @@ public:
 
     void Unlock();
 
-    int GetSocketCapacity();
+    int GetSocketCapacity() const;
 
-    int GetIoThreadNumber();
+    int GetIoThreadNumber() const;
 
     int GetSocketCount() const;
 
