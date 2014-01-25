@@ -23,28 +23,27 @@ public:
 
     virtual ~NormalClientSocket();
 
-public: // @Override
-    int GetType() const;
+public:
+    int GetType() const override;
 
-    void Reset();
+    void Reset() override;
 
-    void OnAttached();
+    void OnAttached() override;
 
-    void OnStarted();
+    void OnStarted() override;
 
-    void OnClosed();
+    void OnClosed() override;
 
-    void Tick(int interval);
+    void Tick(int interval) override;
 
-    bool IsActive() const;
+    bool IsActive() const override;
 
-    bool IsAlive() const;
+    bool IsAlive() const override;
 
     virtual void OnConnected();
 
     virtual void OnDisconnected();
 
-public:
     void SetRemoteHost(const char* ip, int port);
 
     void SetReconnectInterval(int milliseconds);

@@ -13,7 +13,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 
 class ListenSocket;
 
-class IocpListenStrategy : public IocpStrategy {
+class IocpListenStrategy final : public IocpStrategy {
     DISALLOW_COPY_AND_ASSIGN(IocpListenStrategy)
 
 public:
@@ -21,23 +21,23 @@ public:
 
     virtual ~IocpListenStrategy();
 
-public: // @Override
-    void Reset();
+public:
+    void Reset() override final;
 
-    bool IsBusy() const;
+    bool IsBusy() const override final;
 
-    bool PostInputOperation();
+    bool PostInputOperation() override final;
 
-    bool PostOutputOperation();
+    bool PostOutputOperation() override final;
 
     bool HandleSuccessOperation(const IocpOperation* iocpOperation
-        , DWORD byteNumber);
+        , DWORD byteNumber) override final;
 
     bool HandleFailureOperation(const IocpOperation* iocpOperation
-        , DWORD byteNumber, int error);
+        , DWORD byteNumber, int error) override final;
 
     bool HandleCloseOperation(const IocpOperation* iocpOperation
-        , DWORD byteNumber);
+        , DWORD byteNumber) override final;
 
 private:
     bool _PostAcceptOperation();

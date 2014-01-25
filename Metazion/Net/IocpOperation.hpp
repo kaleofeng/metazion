@@ -33,7 +33,7 @@ struct IocpOperation {
     volatile bool m_busy;
 };
 
-struct AcceptOperation : public IocpOperation {
+struct AcceptOperation final : public IocpOperation {
     AcceptOperation()
         : IocpOperation(TYPE_ACCEPT)
         , m_buffer(nullptr)
@@ -49,7 +49,7 @@ struct AcceptOperation : public IocpOperation {
     SockId_t m_sockId;
 };
 
-struct SendOperation : public IocpOperation {
+struct SendOperation final : public IocpOperation {
     SendOperation()
         : IocpOperation(TYPE_SEND) {}
     
@@ -61,7 +61,7 @@ struct SendOperation : public IocpOperation {
     WSABUF m_wsaBuf;
 };
 
-struct RecvOperation : public IocpOperation {
+struct RecvOperation final : public IocpOperation {
     RecvOperation()
         : IocpOperation(TYPE_RECV) {}
 

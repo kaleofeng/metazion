@@ -39,6 +39,8 @@
 
 #   else
 #       define nullptr 0
+#       define override
+#       define final
 #   endif // _MSC_VER >= 1600
 #endif // MZ_PLATFORM_WINOWS
 

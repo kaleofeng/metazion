@@ -11,7 +11,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 
 class TransmitSocket;
 
-class IocpTransmitStrategy : public IocpStrategy {
+class IocpTransmitStrategy final : public IocpStrategy {
     DISALLOW_COPY_AND_ASSIGN(IocpTransmitStrategy)
 
 public:
@@ -19,23 +19,23 @@ public:
 
     virtual ~IocpTransmitStrategy();
 
-public: // @Override
-    void Reset();
+public:
+    void Reset() override final;
 
-    bool IsBusy() const;
+    bool IsBusy() const override final;
 
-    bool PostInputOperation();
+    bool PostInputOperation() override final;
 
-    bool PostOutputOperation();
+    bool PostOutputOperation() override final;
 
     bool HandleSuccessOperation(const IocpOperation* iocpOperation
-        , DWORD byteNumber);
+        , DWORD byteNumber) override final;
 
     bool HandleFailureOperation(const IocpOperation* iocpOperation
-        , DWORD byteNumber, int error);
+        , DWORD byteNumber, int error) override final;
 
     bool HandleCloseOperation(const IocpOperation* iocpOperation
-        , DWORD byteNumber);
+        , DWORD byteNumber) override final;
 
 private:
     bool _PostInputOperation();

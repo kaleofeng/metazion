@@ -16,14 +16,13 @@ public:
 
     virtual ~TransmitSocket();
 
-public: // @Override
-    void Reset();
-
-    void OnStarted();
-
-    bool IsAlive() const;
-
 public:
+    void Reset() override;
+
+    void OnStarted() override;
+
+    bool IsAlive() const override;
+
     int Send(const void* data, int length);
 
     TcpSocketBuffer& GetSocketBuffer() {

@@ -37,14 +37,14 @@ public:
 
     virtual ~EpollSocketServer();
 
-public: // @Override
-    bool Initialize(int socketCapacity, int ioThreadNumber);
+public:
+    bool Initialize(int socketCapacity, int ioThreadNumber) override;
 
-    void Finalize();
+    void Finalize() override;
 
-    bool Attach(Socket* socket);
+    bool Attach(Socket* socket) override;
 
-    bool CanAttachMore() const;
+    bool CanAttachMore() const override;
 
 public:
     void Lock() {

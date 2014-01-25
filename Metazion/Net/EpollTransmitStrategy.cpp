@@ -65,11 +65,11 @@ void EpollTransmitStrategy::Input() {
 }
 
 void EpollTransmitStrategy::Output() {
-    if (!m_transmitSocket.IsReady()) {
+    if (!m_canOutput) {
         return;
     }
-
-    if (!m_canOutput) {
+    
+    if (!m_transmitSocket.IsReady()) {
         return;
     }
 

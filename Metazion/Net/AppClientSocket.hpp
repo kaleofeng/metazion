@@ -18,16 +18,15 @@ public:
 
     virtual ~AppClientSocket();
 
-public: // @Override
-    void Reset();
-
-    void OnAttached();
-    
-    void OnStarted();
-
-    int OnRecvData(const void* data, int length);
-
 public:
+    void Reset() override;
+
+    void OnAttached() override;
+    
+    void OnStarted() override;
+
+    int OnRecvData(const void* data, int length) override;
+
     bool SendData(int command, const void* data, int length);
 
     int PullPackets(void* buffer, int length, PacketArray_t& packetArray);

@@ -17,10 +17,10 @@ public:
 
     virtual ~NormalListenSocket();
 
-public: // @Override
-    int GetType() const;
+public:
+    int GetType() const override;
 
-    bool OnAccepted(const SockId_t& sockId);
+    bool OnAccepted(const SockId_t& sockId) override;
 
 protected:
     virtual NormalServerSocket* CreateServerSocket() = 0;

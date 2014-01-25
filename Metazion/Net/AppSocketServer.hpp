@@ -30,12 +30,11 @@ public:
 
     virtual ~AppSocketServer();
 
-public: // @Override
-    bool Initialize(int socketCapacity, int ioThreadNumber);
-
-    void Finalize();
-
 public:
+    bool Initialize(int socketCapacity, int ioThreadNumber) override;
+
+    void Finalize() override;
+
     int LockSockets(SocketFilter& filter, SocketArray_t& socketArray);
 
     void UnlockSockets(SocketArray_t& socketArray);

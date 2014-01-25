@@ -15,20 +15,19 @@ public:
 
     virtual ~NormalServerSocket();
 
-public: // @Override
-    int GetType() const;
+public:
+    int GetType() const override;
 
-    void OnAttached();
+    void OnAttached() override;
 
-    void OnStarted();
+    void OnStarted() override;
 
-    void OnClosed();
+    void OnClosed() override;
 
     virtual void OnConnected();
 
     virtual void OnDisconnected();
 
-public:
     void Attach(const SockId_t& sockId);
 };
 

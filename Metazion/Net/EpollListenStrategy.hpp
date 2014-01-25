@@ -11,7 +11,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 
 class ListenSocket;
 
-class EpollListenStrategy : public EpollStrategy {
+class EpollListenStrategy final : public EpollStrategy {
     DISALLOW_COPY_AND_ASSIGN(EpollListenStrategy)
 
 public:
@@ -19,16 +19,16 @@ public:
 
     virtual ~EpollListenStrategy();
 
-public: // @Override
-    void Reset();
+public:
+    void Reset() override final;
 
-    bool IsBusy() const;
+    bool IsBusy() const override final;
 
-    void Input();
+    void Input() override final;
 
-    void Output();
+    void Output() override final;
 
-    void EnableOutput();
+    void EnableOutput() override final;
 
 private:
     ListenSocket& m_listenSocket;

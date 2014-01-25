@@ -276,7 +276,8 @@ void EpollIoThread::ProcessEvents() {
     if (0 == count) {
         return;
     }
-    else if (count < 0) {
+    
+    if (count < 0) {
         const int error = GetLastError();
         if (EINTR != error) {
             ::printf("Socket Warning: epoll wait, error[%d]. [%s:%d]\n", error, __FILE__, __LINE__);
