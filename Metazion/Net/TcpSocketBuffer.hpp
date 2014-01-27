@@ -13,9 +13,9 @@ class TcpSocketBuffer {
     DISALLOW_COPY_AND_ASSIGN(TcpSocketBuffer)
     
 public:
-    typedef NS_SHARE::StepBuffer<1024 * 4, 1024 * 256> SendCache_t;
-    typedef NS_SHARE::PieceBuffer<4096> SendBuffer_t;
-    typedef NS_SHARE::PieceBuffer<4096> RecvBuffer_t;
+    using SendCache_t = NS_SHARE::StepBuffer<1024 * 4, 1024 * 256>;
+    using SendBuffer_t = NS_SHARE::PieceBuffer<4096>;
+    using RecvBuffer_t = NS_SHARE::PieceBuffer<4096>;
 
 public:
     TcpSocketBuffer(NS_SHARE::MutexLock& lock);

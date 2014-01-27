@@ -12,7 +12,7 @@ template<typename ValueType
 class DynamicArray {
     DISALLOW_COPY_AND_ASSIGN(DynamicArray)
 
-    typedef ValueType Value_t;
+    using Value_t = ValueType;
 
 public:
     DynamicArray()

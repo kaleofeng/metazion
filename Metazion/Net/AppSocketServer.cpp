@@ -40,7 +40,7 @@ int AppSocketServer::LockSockets(SocketFilter& filter, SocketArray_t& socketArra
             continue;
         }
 
-        socket->GrabRef();
+        socket->Retain();
         socketArray.Add(socket);
     }
     Unlock();
@@ -53,7 +53,7 @@ void AppSocketServer::UnlockSockets(SocketArray_t& socketArray) {
     for (int index = 0; index < size; ++index) {
         Socket* socket = socketArray[index];
         ASSERT_TRUE(!IsNull(socket));
-        socket->ReleaseRef();
+        socket->Release();
     }
 }
 

@@ -18,10 +18,9 @@ template<typename ObjectType
 class ObjectPool {
     DISALLOW_COPY_AND_ASSIGN(ObjectPool)
     
-    typedef ObjectType Object_t;
-    typedef LockType Lock_t;
-    typedef typename AllocatorFamily::template
-        Rebind<sizeof(Object_t)>::Allocator_t Allocator_t;
+    using Object_t = ObjectType;
+    using Lock_t = LockType;
+    using Allocator_t = typename AllocatorFamily::template Rebind<sizeof(Object_t)>;
 
 public:
     ObjectPool() { m_allocator.Initialize(); }
@@ -63,8 +62,8 @@ template<typename ObjectType
 , typename LockType = NoneLock
 >
 class PortableObjectPool {
-    typedef ObjectType Object_t;
-    typedef ObjectPool<Object_t, AllocatorFamily, LockType> ObjectPool_t;
+    using Object_t = ObjectType;
+    using ObjectPool_t = ObjectPool<Object_t, AllocatorFamily, LockType>;
 
 public:
     static Object_t* Obtain() {

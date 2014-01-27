@@ -20,7 +20,7 @@ template<typename NodeType>
 class SelfList {
     DISALLOW_COPY_AND_ASSIGN(SelfList)
 
-    typedef NodeType Node_t;
+    using Node_t = NodeType;
 
 public:
     SelfList()

@@ -9,7 +9,7 @@ class MemoryRecordset {
     DISALLOW_COPY_AND_ASSIGN(MemoryRecordset)
 
 public:
-    typedef void* Handle;
+    using Handle = void*;
 
     struct Header {
         Header();

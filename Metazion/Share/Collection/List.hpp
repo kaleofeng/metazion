@@ -15,15 +15,14 @@ template<typename ValueType
 class List {
     DISALLOW_COPY_AND_ASSIGN(List)
 
-    typedef ValueType Value_t;
-    typedef SelfListNode<Value_t> Node_t;
-    typedef typename AllocatorFamily::template
-        Rebind<sizeof(Node_t)>::Allocator_t Allocator_t;
-    typedef SelfList<Node_t> List_t;
+    using Value_t =ValueType;
+    using Node_t = SelfListNode<Value_t>;
+    using List_t = SelfList<Node_t>;
+    using Allocator_t = typename AllocatorFamily::template Rebind<sizeof(Node_t)>;
 
 public:
-    typedef ListIterator<Value_t, Node_t> Iterator_t;
-    typedef ListConstIterator<Value_t, Node_t> ConstIterator_t;
+    using Iterator_t = ListIterator<Value_t, Node_t>;
+    using ConstIterator_t = ListConstIterator<Value_t, Node_t>;
 
 public:
     List() { m_allocator.Initialize(); }

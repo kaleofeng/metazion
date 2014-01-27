@@ -5,11 +5,11 @@
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
-template<typename T>
+template<typename LockType>
 class AutoGuard {
     DISALLOW_COPY_AND_ASSIGN(AutoGuard)
 
-    typedef T Lock_t;
+    using Lock_t = LockType;
 
 public:
     AutoGuard(Lock_t& lock)

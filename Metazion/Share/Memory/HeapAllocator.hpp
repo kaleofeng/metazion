@@ -13,9 +13,7 @@ class HeapAllocator {
 
 public:
     template<int OTHERLENGTH>
-    struct Rebind{
-        typedef HeapAllocator<OTHERLENGTH> Allocator_t;
-    };
+    using Rebind = HeapAllocator<OTHERLENGTH>;
 
 public:
     HeapAllocator() {}

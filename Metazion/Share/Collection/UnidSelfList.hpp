@@ -25,7 +25,7 @@ template<typename NodeType>
 class UnidSelfList {
     DISALLOW_COPY_AND_ASSIGN(UnidSelfList)
 
-    typedef NodeType Node_t;
+    using Node_t = NodeType;
 
 public:
     UnidSelfList()

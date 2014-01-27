@@ -14,24 +14,21 @@ template<int STEPSIZE
 class ShrinkStepAllocator {
     DISALLOW_COPY_AND_ASSIGN(ShrinkStepAllocator)
 
-    typedef UnidSelfListNode<void> UnitNode_t;
-    typedef UnidSelfList<UnitNode_t> UnitList_t;
+    using UnitNode_t = UnidSelfListNode<void>;
+    using UnitList_t = UnidSelfList<UnitNode_t>;
 
     enum {
         MINLENGTH = MAX(UNITLENGTH, sizeof(UnitNode_t)),
         ALIGNLENGTH = ALIGN_LENGTH(MINLENGTH, DEFAULT_ALIGNMENT),
     };
 
-    typedef MemoryPiece<STEPSIZE, ALIGNLENGTH> Piece_t;
-
-    typedef UnidSelfListNode<Piece_t> PieceNode_t;
-    typedef UnidSelfList<PieceNode_t> PieceList_t;
+    using Piece_t = MemoryPiece<STEPSIZE, ALIGNLENGTH>;
+    using PieceNode_t = UnidSelfListNode<Piece_t>;
+    using PieceList_t = UnidSelfList<PieceNode_t>;
 
 public:
     template<int OTHERLENGTH>
-    struct Rebind{
-        typedef StepAllocator<STEPSIZE, OTHERLENGTH> Allocator_t;
-    };
+    using Rebind = ShrinkStepAllocator<STEPSIZE, OTHERLENGTH>;
 
 public:
     ShrinkStepAllocator() {}

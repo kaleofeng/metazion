@@ -35,7 +35,7 @@ enum PacketValue {
 struct PackBuffer {
     enum { LENGTH = MAXAPPPACKETLENGTH + 256 };
 
-    typedef NS_SHARE::PieceBuffer<LENGTH> Buffer_t;
+    using Buffer_t = NS_SHARE::PieceBuffer<LENGTH>;
     
     PackBuffer() {}
     
@@ -46,9 +46,9 @@ struct PackBuffer {
 struct UnpackBuffer {
     enum { LENGTH = MAXAPPPACKETLENGTH + 256 };
 
-    typedef NS_SHARE::PieceBuffer<LENGTH> Buffer_t;
-    typedef NS_SHARE::ObjectPool<Buffer_t, NS_SHARE::StepAllocator<256>
-        , NS_SHARE::MutexLock> BufferPool_t;
+    using Buffer_t = NS_SHARE::PieceBuffer<LENGTH>;
+    using BufferPool_t = NS_SHARE::ObjectPool<Buffer_t
+        , NS_SHARE::StepAllocator<256>, NS_SHARE::MutexLock>;
 
     UnpackBuffer()
         : m_buffer(nullptr)
@@ -68,9 +68,9 @@ struct ThreadPackBuffer {
     PackBuffer m_packBuffer;
 };
 
-typedef NS_SHARE::StepBuffer<1024 * 4, 1024 * 256> PacketCache_t;
+using PacketCache_t = NS_SHARE::StepBuffer<1024 * 4, 1024 * 256>;
 
-typedef NS_SHARE::DynamicArray<void*> PacketArray_t;
+using PacketArray_t = NS_SHARE::DynamicArray<void*>;
 
 DECL_NAMESPACE_MZ_NET_END
 

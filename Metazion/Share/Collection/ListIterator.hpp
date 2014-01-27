@@ -7,8 +7,8 @@ template<typename ValueType
 , typename NodeType
 >
 class ListIterator {
-    typedef ValueType Value_t;
-    typedef NodeType Node_t;
+    using Value_t = ValueType;
+    using Node_t = NodeType;
     
 public:
     ListIterator()
@@ -67,8 +67,8 @@ template<typename ValueType
 , typename NodeType
 >
 class ListConstIterator {
-    typedef ValueType Value_t;
-    typedef NodeType Node_t;
+    using Value_t = ValueType;
+    using Node_t = NodeType;
 
 public:
     ListConstIterator()

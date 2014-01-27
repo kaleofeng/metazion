@@ -13,7 +13,7 @@ class AppSocketServer : public NormalSocketServer {
     DISALLOW_COPY_AND_ASSIGN(AppSocketServer)
 
 public:
-    typedef NS_SHARE::DynamicArray<Socket*> SocketArray_t;
+    using SocketArray_t = NS_SHARE::DynamicArray<Socket*>;
 
 public:
     struct SocketFilter {

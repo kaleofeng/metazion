@@ -19,10 +19,10 @@ class StepBuffer {
     enum { MAXSTEPNUMBER = MAXLENGTH + (STEPLENGTH - 1) / STEPLENGTH };
 
 public:
-    typedef PieceBuffer<STEPLENGTH> Buffer_t;
-    typedef UnidSelfListNode<Buffer_t> BufferNode_t;
-    typedef UnidSelfList<BufferNode_t> BufferList_t;
-    typedef ObjectPool<BufferNode_t, StepAllocator<256>, MutexLock> BufferPool_t;
+    using Buffer_t = PieceBuffer<STEPLENGTH>;
+    using BufferNode_t = UnidSelfListNode<Buffer_t>;
+    using BufferList_t = UnidSelfList<BufferNode_t>;
+    using BufferPool_t = ObjectPool<BufferNode_t, StepAllocator<256>, MutexLock>;
 
 public:
     StepBuffer()

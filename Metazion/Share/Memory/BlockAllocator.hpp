@@ -15,13 +15,11 @@ class BlockAllocator {
 
     enum { ALIGNLENGTH = ALIGN_LENGTH(UNITLENGTH, DEFAULT_ALIGNMENT) };
 
-    typedef MemoryPiece<MAXSIZE, ALIGNLENGTH> Piece_t;
+    using Piece_t = MemoryPiece<MAXSIZE, ALIGNLENGTH>;
 
 public:
     template<int OTHERLENGTH>
-    struct Rebind{
-        typedef BlockAllocator<MAXSIZE, OTHERLENGTH> Allocator_t;
-    };
+    using Rebind = BlockAllocator<MAXSIZE, OTHERLENGTH>;
 
 public:
     BlockAllocator() {}
