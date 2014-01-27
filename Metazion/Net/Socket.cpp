@@ -3,7 +3,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 Socket::Socket()
-    : m_refCount(0)
+    : m_reference(0)
     , m_working(false)
     , m_sockId(INVALID_SOCKID)
     , m_index(-1)
@@ -12,7 +12,7 @@ Socket::Socket()
 Socket::~Socket() {}
 
 void Socket::Reset() {
-    m_refCount = 0;
+    m_reference = 0;
     m_working = false;
     m_sockId = INVALID_SOCKID;
     m_index = -1;
@@ -96,15 +96,15 @@ void Socket::Close() {
     OnClosed();
 }
 
-void Socket::GrabRef() {
+void Socket::Retain() {
     m_lock.Lock();
-    ++m_refCount;
+    ++m_reference;
     m_lock.Unlock();
 }
 
-void Socket::ReleaseRef() {
+void Socket::Release() {
     m_lock.Lock();
-    --m_refCount;
+    --m_reference;
     m_lock.Unlock();
 }
 

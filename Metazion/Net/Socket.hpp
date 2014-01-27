@@ -55,21 +55,19 @@ public:
     virtual bool IsAlive() const;
 
 public:
-    void Start();
-    
-    void Close();
-
     bool IsValid() const;
 
     bool IsReady() const;
 
     bool IsWorking() const;
 
-    int GetRefCount() const;
+    void Start();
+    
+    void Close();
 
-    void GrabRef();
+    void Retain();
 
-    void ReleaseRef();
+    void Release();
 
     const SockId_t& GetSockId() const;
 
@@ -87,15 +85,15 @@ public:
 
 protected:
     NS_SHARE::MutexLock m_lock;
+    volatile int m_reference;
     volatile bool m_working;
-    volatile int m_refCount;
     SockId_t m_sockId;
     int m_index;
     SocketServer* m_socketServer;
 };
 
 inline bool Socket::IsValid() const {
-    return m_refCount > 0;
+    return m_reference > 0;
 }
 
 inline bool Socket::IsReady() const {
@@ -104,10 +102,6 @@ inline bool Socket::IsReady() const {
 
 inline bool Socket::IsWorking() const {
     return m_working;
-}
-
-inline int Socket::GetRefCount() const {
-    return m_refCount;
 }
 
 inline const SockId_t& Socket::GetSockId() const {
