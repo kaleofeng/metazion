@@ -1,5 +1,5 @@
-#ifndef MZ_SHARE_LISTITERATOR_HPP
-#define MZ_SHARE_LISTITERATOR_HPP
+#ifndef _MZ_SHARE_LISTITERATOR_HPP_
+#define _MZ_SHARE_LISTITERATOR_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
@@ -123,4 +123,4 @@ private:
     const Node_t* m_node;
 };
 
-#endif // MZ_SHARE_LISTITERATOR_HPP
+#endif // _MZ_SHARE_LISTITERATOR_HPP_

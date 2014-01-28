@@ -1,5 +1,5 @@
-#ifndef MZ_NET_HOST_HPP
-#define MZ_NET_HOST_HPP
+#ifndef _MZ_NET_HOST_HPP_
+#define _MZ_NET_HOST_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -15,7 +15,11 @@ public:
 
     ~Host() {}
 
-    Host(const char *ip, int port, int family = AF_INET) {
+    Host(const Host& other) {
+        *this = other;
+    }
+
+    Host(const char* ip, int port, int family = AF_INET) {
         m_sockAddrIn.sin_family = family;
         m_sockAddrIn.sin_addr.s_addr = inet_addr(ip);
         m_sockAddrIn.sin_port = htons(port);
@@ -50,24 +54,24 @@ public:
         return m_sockAddrIn.sin_family;
     }
 
-    void SetFamily(int arg) {
-        m_sockAddrIn.sin_family = arg;
+    void SetFamily(int family) {
+        m_sockAddrIn.sin_family = family;
     }
 
     const char* GetIP() const {
         return inet_ntoa(m_sockAddrIn.sin_addr);
     }
 
-    void SetIp(const char* arg) {
-        m_sockAddrIn.sin_addr.s_addr = inet_addr(arg);
+    void SetIp(const char* ip) {
+        m_sockAddrIn.sin_addr.s_addr = inet_addr(ip);
     }
 
     int GetPort() const {
         return m_sockAddrIn.sin_port;
     }
 
-    void SetPort(int arg) {
-        m_sockAddrIn.sin_port = htons(arg);
+    void SetPort(int port) {
+        m_sockAddrIn.sin_port = htons(port);
     }
 
 private:
@@ -76,4 +80,4 @@ private:
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_HOST_HPP
+#endif // _MZ_NET_HOST_HPP_

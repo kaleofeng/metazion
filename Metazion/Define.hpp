@@ -1,5 +1,5 @@
-#ifndef MZ_DEFINE_HPP
-#define MZ_DEFINE_HPP
+#ifndef _MZ_DEFINE_HPP_
+#define _MZ_DEFINE_HPP_
 
 #include "Metazion/CoreInclude.hpp"
 
@@ -29,4 +29,4 @@ DECL_NAMESPACE_MZ_BEGIN
 
 DECL_NAMESPACE_MZ_END
 
-#endif // MZ_DEFINE_HPP
+#endif // _MZ_DEFINE_HPP_

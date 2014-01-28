@@ -1,5 +1,5 @@
-#ifndef MZ_TYPE_HPP
-#define MZ_TYPE_HPP
+#ifndef _MZ_TYPE_HPP_
+#define _MZ_TYPE_HPP_
 
 #include "Metazion/CoreInclude.hpp"
 
@@ -7,4 +7,4 @@ DECL_NAMESPACE_MZ_BEGIN
 
 DECL_NAMESPACE_MZ_END
 
-#endif // MZ_TYPE_HPP
+#endif // _MZ_TYPE_HPP_

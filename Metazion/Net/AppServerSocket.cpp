@@ -58,6 +58,10 @@ int AppServerSocket::OnRecvData(const void* data, int length) {
     return processLength;
 }
 
+int AppServerSocket::PullPackets(void* buffer, int length, PacketArray_t& packetArray) {
+    return m_packetSpecific.PullPackets(buffer, length, packetArray);
+}
+
 bool AppServerSocket::SendData(int command, const void* data, int length) {
     PackBuffer& packBuffer = GetPackBuffer();
     if (!m_packetSpecific.Pack(command, data, length, packBuffer)) {
@@ -67,10 +71,6 @@ bool AppServerSocket::SendData(int command, const void* data, int length) {
     const void* pullBuffer = packBuffer.m_resultBuffer.GetPullBuffer();
     const int pullLength = packBuffer.m_resultBuffer.GetPullLength();
     return Send(pullBuffer, pullLength) == pullLength;
-}
-
-int AppServerSocket::PullPackets(void* buffer, int length, PacketArray_t& packetArray) {
-    return m_packetSpecific.PullPackets(buffer, length, packetArray);
 }
 
 PackBuffer& AppServerSocket::GetPackBuffer() {

@@ -1,5 +1,5 @@
-#ifndef MZ_SHARE_MEMORYPIECE_HPP
-#define MZ_SHARE_MEMORYPIECE_HPP
+#ifndef _MZ_SHARE_MEMORYPIECE_HPP_
+#define _MZ_SHARE_MEMORYPIECE_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
@@ -92,4 +92,4 @@ private:
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // MZ_SHARE_MEMORYPIECE_HPP
+#endif // _MZ_SHARE_MEMORYPIECE_HPP_

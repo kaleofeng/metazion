@@ -1,5 +1,5 @@
-#ifndef MZ_NET_IOCPTRANSMITSTRATEGY_HPP
-#define MZ_NET_IOCPTRANSMITSTRATEGY_HPP
+#ifndef _MZ_NET_IOCPTRANSMITSTRATEGY_HPP_
+#define _MZ_NET_IOCPTRANSMITSTRATEGY_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -17,7 +17,7 @@ class IocpTransmitStrategy final : public IocpStrategy {
 public:
     IocpTransmitStrategy(TransmitSocket& transmitSocket);
 
-    virtual ~IocpTransmitStrategy();
+    ~IocpTransmitStrategy();
 
 public:
     void Reset() override final;
@@ -70,4 +70,4 @@ DECL_NAMESPACE_MZ_NET_END
 
 #endif // MZ_PLATFORM_WINOWS
 
-#endif // MZ_NET_IOCPTRANSMITSTRATEGY_HPP
+#endif // _MZ_NET_IOCPTRANSMITSTRATEGY_HPP_

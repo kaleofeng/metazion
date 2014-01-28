@@ -1,5 +1,5 @@
-#ifndef MZ_NET_IOCPLISTENSTRATEGY_HPP
-#define MZ_NET_IOCPLISTENSTRATEGY_HPP
+#ifndef _MZ_NET_IOCPLISTENSTRATEGY_HPP_
+#define _MZ_NET_IOCPLISTENSTRATEGY_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -19,7 +19,7 @@ class IocpListenStrategy final : public IocpStrategy {
 public:
     IocpListenStrategy(ListenSocket& listenSocket);
 
-    virtual ~IocpListenStrategy();
+    ~IocpListenStrategy();
 
 public:
     void Reset() override final;
@@ -52,4 +52,4 @@ DECL_NAMESPACE_MZ_NET_END
 
 #endif // MZ_PLATFORM_WINOWS
 
-#endif // MZ_NET_IOCPLISTENSTRATEGY_HPP
+#endif // _MZ_NET_IOCPLISTENSTRATEGY_HPP_

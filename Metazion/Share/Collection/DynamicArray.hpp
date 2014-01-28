@@ -1,5 +1,5 @@
-#ifndef MZ_SHARE_DYNAMICARRAY_HPP
-#define MZ_SHARE_DYNAMICARRAY_HPP
+#ifndef _MZ_SHARE_DYNAMICARRAY_HPP_
+#define _MZ_SHARE_DYNAMICARRAY_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
@@ -98,7 +98,7 @@ public:
         }
 
         if (index < m_size) {
-            memmove(m_values + index + 1, m_values + index
+            ::memmove(m_values + index + 1, m_values + index
                 , sizeof(Value_t) * (m_size - index));
         }
         m_values[index] = element;
@@ -110,7 +110,7 @@ public:
         if (index < 0 || index >= m_size) {
             return -1;
         }
-        memmove(m_values + index, m_values + index + 1
+        ::memmove(m_values + index, m_values + index + 1
             , sizeof(Value_t) * (m_size - index - 1));
         --m_size;
         return index;
@@ -139,7 +139,7 @@ private:
         }
 
         Value_t* tValues = new Value_t[m_capacity];
-        memmove(tValues, m_values, sizeof(Value_t) * m_size);
+        ::memmove(tValues, m_values, sizeof(Value_t) * m_size);
         SafeDeleteArray(m_values);
         m_values = tValues;
     }
@@ -153,4 +153,4 @@ private:
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // MZ_SHARE_DYNAMICARRAY_HPP
+#endif // _MZ_SHARE_DYNAMICARRAY_HPP_

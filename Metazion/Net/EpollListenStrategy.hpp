@@ -1,5 +1,5 @@
-#ifndef MZ_NET_EPOLLLISTENSTRATEGY_HPP
-#define MZ_NET_EPOLLLISTENSTRATEGY_HPP
+#ifndef _MZ_NET_EPOLLLISTENSTRATEGY_HPP_
+#define _MZ_NET_EPOLLLISTENSTRATEGY_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -17,7 +17,7 @@ class EpollListenStrategy final : public EpollStrategy {
 public:
     EpollListenStrategy(ListenSocket& m_listenSocket);
 
-    virtual ~EpollListenStrategy();
+    ~EpollListenStrategy();
 
 public:
     void Reset() override final;
@@ -38,4 +38,4 @@ DECL_NAMESPACE_MZ_NET_END
 
 #endif // MZ_PLATFORM_LINUX
 
-#endif // MZ_NET_EPOLLLISTENSTRATEGY_HPP
+#endif // _MZ_NET_EPOLLLISTENSTRATEGY_HPP_

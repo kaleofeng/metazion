@@ -1,5 +1,5 @@
-#ifndef MZ_NET_PACKETSPECIFIC_HPP
-#define MZ_NET_PACKETSPECIFIC_HPP
+#ifndef _MZ_NET_PACKETSPECIFIC_HPP_
+#define _MZ_NET_PACKETSPECIFIC_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -63,4 +63,4 @@ private:
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_PACKETSPECIFIC_HPP
+#endif // _MZ_NET_PACKETSPECIFIC_HPP_

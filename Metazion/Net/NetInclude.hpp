@@ -1,5 +1,5 @@
-#ifndef MZ_NET_INCLUDE_HPP
-#define MZ_NET_INCLUDE_HPP
+#ifndef _MZ_NET_INCLUDE_HPP_
+#define _MZ_NET_INCLUDE_HPP_
 
 #include "Metazion/Overall.hpp"
 
@@ -10,4 +10,4 @@
 #define NS_MZ_NET                       mz::net
 #define NS_NET                          net
 
-#endif // MZ_NET_INCLUDE_HPP
+#endif // _MZ_NET_INCLUDE_HPP_

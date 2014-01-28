@@ -1,5 +1,5 @@
-#ifndef MZ_FUNCTION_HPP
-#define MZ_FUNCTION_HPP
+#ifndef _MZ_FUNCTION_HPP_
+#define _MZ_FUNCTION_HPP_
 
 #include "Metazion/CoreInclude.hpp"
 
@@ -44,4 +44,4 @@ void MilliSleep(int milliseconds);
 
 DECL_NAMESPACE_MZ_END
     
-#endif // MZ_FUNCTION_HPP
+#endif // _MZ_FUNCTION_HPP_

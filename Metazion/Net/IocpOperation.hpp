@@ -1,5 +1,5 @@
-#ifndef MZ_NET_IOCPOPERATION_HPP
-#define MZ_NET_IOCPOPERATION_HPP
+#ifndef _MZ_NET_IOCPOPERATION_HPP_
+#define _MZ_NET_IOCPOPERATION_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -25,8 +25,13 @@ struct IocpOperation {
         m_busy = false;
     }
 
-    bool IsBusy() const { return m_busy; }
-    void SetBusy(bool arg) { m_busy = arg; }
+    bool IsBusy() const {
+        return m_busy;
+    }
+
+    void SetBusy(bool busy) {
+        m_busy = busy;
+    }
 
     Type m_type;
     OVERLAPPED m_overlapped;
@@ -77,4 +82,4 @@ DECL_NAMESPACE_MZ_NET_END
 
 #endif // MZ_PLATFORM_WINOWS
 
-#endif // MZ_NET_IOCPOPERATION_HPP
+#endif // _MZ_NET_IOCPOPERATION_HPP_

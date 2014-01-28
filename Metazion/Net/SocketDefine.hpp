@@ -1,5 +1,5 @@
-#ifndef MZ_NET_SOCKETDEFINE_HPP
-#define MZ_NET_SOCKETDEFINE_HPP
+#ifndef _MZ_NET_SOCKETDEFINE_HPP_
+#define _MZ_NET_SOCKETDEFINE_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -70,4 +70,4 @@ int SetSockOpt(SockId_t sockId
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_SOCKETDEFINE_HPP
+#endif // _MZ_NET_SOCKETDEFINE_HPP_

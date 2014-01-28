@@ -1,5 +1,5 @@
-#ifndef MZ_SHARE_LIST_HPP
-#define MZ_SHARE_LIST_HPP
+#ifndef _MZ_SHARE_LIST_HPP_
+#define _MZ_SHARE_LIST_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
@@ -15,7 +15,7 @@ template<typename ValueType
 class List {
     DISALLOW_COPY_AND_ASSIGN(List)
 
-    using Value_t =ValueType;
+    using Value_t = ValueType;
     using Node_t = SelfListNode<Value_t>;
     using List_t = SelfList<Node_t>;
     using Allocator_t = typename AllocatorFamily::template Rebind<sizeof(Node_t)>;
@@ -169,4 +169,4 @@ private:
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // MZ_SHARE_LIST_HPP
+#endif // _MZ_SHARE_LIST_HPP_

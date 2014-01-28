@@ -1,5 +1,5 @@
-#ifndef MZ_SHARE_TIME_HPP
-#define MZ_SHARE_TIME_HPP
+#ifndef _MZ_SHARE_TIME_HPP_
+#define _MZ_SHARE_TIME_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
@@ -9,4 +9,4 @@ int32_t GetTickMillisecond();
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // MZ_SHARE_TIME_HPP
+#endif // _MZ_SHARE_TIME_HPP_

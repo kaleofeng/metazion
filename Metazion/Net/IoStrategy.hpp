@@ -1,5 +1,5 @@
-#ifndef MZ_NET_IOSTRATEGY_HPP
-#define MZ_NET_IOSTRATEGY_HPP
+#ifndef _MZ_NET_IOSTRATEGY_HPP_
+#define _MZ_NET_IOSTRATEGY_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -24,4 +24,4 @@ typedef EpollTransmitStrategy TransmitStrategy;
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_IOSTRATEGY_HPP
+#endif // _MZ_NET_IOSTRATEGY_HPP_

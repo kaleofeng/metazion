@@ -1,5 +1,5 @@
-#ifndef MZ_SHARE_THREAD_LIN_HPP
-#define MZ_SHARE_THREAD_LIN_HPP
+#ifndef _MZ_SHARE_THREAD_LIN_HPP_
+#define _MZ_SHARE_THREAD_LIN_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
@@ -22,13 +22,9 @@ public:
 
     void Wait();
 
-    int GetThreadId() const {
-        return static_cast<int>(m_threadId);
-    }
+    int GetThreadId() const;
     
-    void SetThreadId(int threadId) {
-        m_threadId = static_cast<pthread_t>(threadId);
-    }
+    void SetThreadId(int threadId);
 
 protected:
     virtual void Execute() = 0;
@@ -40,8 +36,16 @@ private:
     pthread_t m_threadId;
 };
 
+inline int Thread::GetThreadId() const {
+    return static_cast<int>(m_threadId);
+}
+
+inline void Thread:SetThreadId(int threadId) {
+    m_threadId = static_cast<pthread_t>(threadId);
+}
+
 DECL_NAMESPACE_MZ_SHARE_END
 
 #endif // MZ_PLATFORM_LINUX
 
-#endif // MZ_SHARE_THREAD_LIN_HPP
+#endif // _MZ_SHARE_THREAD_LIN_HPP_

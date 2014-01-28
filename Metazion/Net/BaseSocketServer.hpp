@@ -1,5 +1,5 @@
-#ifndef MZ_NET_BASESOCKETSERVER_HPP
-#define MZ_NET_BASESOCKETSERVER_HPP
+#ifndef _MZ_NET_BASESOCKETSERVER_HPP_
+#define _MZ_NET_BASESOCKETSERVER_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -18,4 +18,4 @@ typedef EpollSocketServer BaseSocketServer;
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_BASESOCKETSERVER_HPP
+#endif // _MZ_NET_BASESOCKETSERVER_HPP_

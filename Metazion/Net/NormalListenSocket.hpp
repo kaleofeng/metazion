@@ -1,5 +1,5 @@
-#ifndef MZ_NET_NORMALLISTENSOCKET_HPP
-#define MZ_NET_NORMALLISTENSOCKET_HPP
+#ifndef _MZ_NET_NORMALLISTENSOCKET_HPP_
+#define _MZ_NET_NORMALLISTENSOCKET_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -32,4 +32,4 @@ inline int NormalListenSocket::GetType() const {
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_NORMALLISTENSOCKET_HPP
+#endif // _MZ_NET_NORMALLISTENSOCKET_HPP_

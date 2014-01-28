@@ -1,5 +1,5 @@
-#ifndef MZ_PLATFORM_HPP
-#define MZ_PLATFORM_HPP
+#ifndef _MZ_PLATFORM_HPP_
+#define _MZ_PLATFORM_HPP_
 
 // Current platform
 #if defined(_WIN32)
@@ -60,4 +60,4 @@
 #include <string.h>
 #include <time.h>
 
-#endif // MZ_PLATFORM_HPP
+#endif // _MZ_PLATFORM_HPP_

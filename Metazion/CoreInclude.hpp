@@ -1,5 +1,5 @@
-#ifndef MZ_CORE_INCLUDE_HPP
-#define MZ_CORE_INCLUDE_HPP
+#ifndef _MZ_CORE_INCLUDE_HPP_
+#define _MZ_CORE_INCLUDE_HPP_
 
 #include "Metazion/Platform.hpp"
 
@@ -8,4 +8,4 @@
 #define USING_NAMESPACE_MZ       using namespace mz;
 #define NS_MZ                    mz
 
-#endif // MZ_CORE_INCLUDE_HPP
+#endif // _MZ_CORE_INCLUDE_HPP_

@@ -1,5 +1,5 @@
-#ifndef MZ_NET_APPCLIENTSOCKET_HPP
-#define MZ_NET_APPCLIENTSOCKET_HPP
+#ifndef _MZ_NET_APPCLIENTSOCKET_HPP_
+#define _MZ_NET_APPCLIENTSOCKET_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -27,9 +27,9 @@ public:
 
     int OnRecvData(const void* data, int length) override;
 
-    bool SendData(int command, const void* data, int length);
+    int PullPackets(void* buffer, int length, PacketArray_t& packetArray) override;
 
-    int PullPackets(void* buffer, int length, PacketArray_t& packetArray);
+    bool SendData(int command, const void* data, int length);
 
 private:
     PackBuffer& GetPackBuffer();
@@ -40,4 +40,4 @@ private:
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_APPCLIENTSOCKET_HPP
+#endif // _MZ_NET_APPCLIENTSOCKET_HPP_

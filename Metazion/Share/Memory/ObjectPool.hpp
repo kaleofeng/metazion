@@ -1,5 +1,5 @@
-#ifndef MZ_SHARE_OBJECTPOOL_HPP
-#define MZ_SHARE_OBJECTPOOL_HPP
+#ifndef _MZ_SHARE_OBJECTPOOL_HPP_
+#define _MZ_SHARE_OBJECTPOOL_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
@@ -34,7 +34,7 @@ public:
         return CreateObject();
     }
 
-    void Return(Object_t *object) {
+    void Return(Object_t* object) {
         AutoGuard<Lock_t> autoGuard(m_lock);
 
         DestoryObject(object);
@@ -83,4 +83,4 @@ private:
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // MZ_SHARE_OBJECTPOOL_HPP
+#endif // _MZ_SHARE_OBJECTPOOL_HPP_

@@ -1,5 +1,5 @@
-#ifndef MZ_NET_EPOLLTRANSMITSTRATEGY_HPP
-#define MZ_NET_EPOLLTRANSMITSTRATEGY_HPP
+#ifndef _MZ_NET_EPOLLTRANSMITSTRATEGY_HPP_
+#define _MZ_NET_EPOLLTRANSMITSTRATEGY_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -17,7 +17,7 @@ class EpollTransmitStrategy final : public EpollStrategy {
 public:
     EpollTransmitStrategy(TransmitSocket& transmitSocket);
 
-    virtual ~EpollTransmitStrategy();
+    ~EpollTransmitStrategy();
 
 public:
     void Reset() override final;
@@ -39,4 +39,4 @@ DECL_NAMESPACE_MZ_NET_END
 
 #endif // MZ_PLATFORM_LINUX
 
-#endif // MZ_NET_EPOLLTRANSMITSTRATEGY_HPP
+#endif // _MZ_NET_EPOLLTRANSMITSTRATEGY_HPP_

@@ -1,5 +1,5 @@
-#ifndef MZ_NET_NORMALSOCKETSERVER_HPP
-#define MZ_NET_NORMALSOCKETSERVER_HPP
+#ifndef _MZ_NET_NORMALSOCKETSERVER_HPP_
+#define _MZ_NET_NORMALSOCKETSERVER_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -29,4 +29,4 @@ inline TcpSocketBuffer::SendCache_t::BufferPool_t& NormalSocketServer::GetSendCa
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_NORMALSOCKETSERVER_HPP
+#endif // _MZ_NET_NORMALSOCKETSERVER_HPP_

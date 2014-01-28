@@ -1,5 +1,5 @@
-#ifndef MZ_SHARE_INCLUDE_HPP
-#define MZ_SHARE_INCLUDE_HPP
+#ifndef _MZ_SHARE_INCLUDE_HPP_
+#define _MZ_SHARE_INCLUDE_HPP_
 
 #include "Metazion/Overall.hpp"
 
@@ -10,4 +10,4 @@
 #define NS_MZ_SHARE                     mz::share
 #define NS_SHARE                        share
 
-#endif // MZ_SHARE_INCLUDE_HPP
+#endif // _MZ_SHARE_INCLUDE_HPP_

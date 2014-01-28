@@ -1,5 +1,5 @@
-#ifndef MZ_NET_NORMALCLIENTSOCKET_HPP
-#define MZ_NET_NORMALCLIENTSOCKET_HPP
+#ifndef _MZ_NET_NORMALCLIENTSOCKET_HPP_
+#define _MZ_NET_NORMALCLIENTSOCKET_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -67,13 +67,9 @@ private:
 
     void ResetConnectTime();
 
-    bool IsStage(int stage) const {
-        return stage == m_stage;
-    }
-
-    void SetStage(int stage) {
-        m_stage = stage;
-    }
+    bool IsStage(int stage) const;
+    
+    void SetStage(int stage);
 
 protected:
     Host m_remoteHost;
@@ -86,6 +82,14 @@ inline int NormalClientSocket::GetType() const {
     return SOCKET_TCP_CLIENT;
 }
 
+inline bool NormalClientSocket::IsStage(int stage) const {
+    return stage == m_stage;
+}
+
+inline void NormalClientSocket::SetStage(int stage) {
+    m_stage = stage;
+}
+
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_NORMALCLIENTSOCKET_HPP
+#endif // _MZ_NET_NORMALCLIENTSOCKET_HPP_

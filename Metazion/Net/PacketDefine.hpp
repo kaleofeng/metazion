@@ -1,5 +1,5 @@
-#ifndef MZ_NET_PACKETDEFINE_HPP
-#define MZ_NET_PACKETDEFINE_HPP
+#ifndef _MZ_NET_PACKETDEFINE_HPP_
+#define _MZ_NET_PACKETDEFINE_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -74,4 +74,4 @@ using PacketArray_t = NS_SHARE::DynamicArray<void*>;
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_PACKETDEFINE_HPP
+#endif // _MZ_NET_PACKETDEFINE_HPP_

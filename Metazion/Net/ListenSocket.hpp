@@ -1,5 +1,5 @@
-#ifndef MZ_NET_LISTENSOCKET_HPP
-#define MZ_NET_LISTENSOCKET_HPP
+#ifndef _MZ_NET_LISTENSOCKET_HPP_
+#define _MZ_NET_LISTENSOCKET_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -43,4 +43,4 @@ inline IoStrategy& ListenSocket::GetIoStrategy() {
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_NET_LISTENSOCKET_HPP
+#endif // _MZ_NET_LISTENSOCKET_HPP_

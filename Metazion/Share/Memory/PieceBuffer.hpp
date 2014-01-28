@@ -1,5 +1,5 @@
-#ifndef MZ_SHARE_PIECEBUFFER_HPP
-#define MZ_SHARE_PIECEBUFFER_HPP
+#ifndef _MZ_SHARE_PIECEBUFFER_HPP_
+#define _MZ_SHARE_PIECEBUFFER_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
@@ -83,7 +83,7 @@ public:
         }
 
         if(m_pushIndex > m_pullIndex) {
-            memmove(&m_buffer[0], &m_buffer[m_pullIndex], m_pushIndex-m_pullIndex);
+            ::memmove(&m_buffer[0], &m_buffer[m_pullIndex], m_pushIndex-m_pullIndex);
             m_pushIndex = m_pushIndex - m_pullIndex;
             m_pullIndex = 0;
         } else  {
@@ -108,12 +108,12 @@ public:
         return m_pushIndex - m_pullIndex;
     }
 
-    void SetPullIndex(int arg) {
-        m_pullIndex = arg;
+    void SetPullIndex(int pullIndex) {
+        m_pullIndex = pullIndex;
     }
 
-    void JumpPullIndex(int arg) {
-        m_pullIndex += arg;
+    void JumpPullIndex(int pullOffset) {
+        m_pullIndex += pullOffset;
     }
 
     char* GetPullBuffer() {
@@ -128,12 +128,12 @@ public:
         return MAXLENGTH - m_pushIndex;
     }
 
-    void SetPushIndex(int arg) {
-        m_pushIndex = arg;
+    void SetPushIndex(int pushIndex) {
+        m_pushIndex = pushIndex;
     }
 
-    void JumpPushIndex(int arg) {
-        m_pushIndex += arg;
+    void JumpPushIndex(int pushOffset) {
+        m_pushIndex += pushOffset;
     }
 
     char* GetPushBuffer() {
@@ -152,4 +152,4 @@ private:
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // MZ_SHARE_PIECE_BUFFER_HPP
+#endif // _MZ_SHARE_PIECE_BUFFER_HPP_

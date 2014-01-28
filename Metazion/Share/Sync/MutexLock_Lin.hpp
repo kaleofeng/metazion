@@ -1,5 +1,5 @@
-#ifndef MZ_SHARE_MUTEXLOCK_LIN_HPP
-#define MZ_SHARE_MUTEXLOCK_LIN_HPP
+#ifndef _MZ_SHARE_MUTEXLOCK_LIN_HPP_
+#define _MZ_SHARE_MUTEXLOCK_LIN_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
@@ -21,6 +21,7 @@ public:
         ::pthread_mutex_destroy(&m_mutex);
     }
 
+public:
     void Lock() {
         ::pthread_mutex_lock(&m_mutex);
     }
@@ -37,4 +38,4 @@ DECL_NAMESPACE_MZ_SHARE_END
 
 #endif // MZ_PLATFORM_LINUX
 
-#endif // MZ_SHARE_MUTEXLOCK_LIN_HPP
+#endif // _MZ_SHARE_MUTEXLOCK_LIN_HPP_

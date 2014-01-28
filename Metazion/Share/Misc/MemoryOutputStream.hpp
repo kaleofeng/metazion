@@ -1,5 +1,5 @@
-#ifndef MZ_SHARE_MSGOUTPUTSTREAM_HPP
-#define MZ_SHARE_MSGOUTPUTSTREAM_HPP
+#ifndef _MZ_SHARE_MSGOUTPUTSTREAM_HPP_
+#define _MZ_SHARE_MSGOUTPUTSTREAM_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
@@ -21,16 +21,27 @@ public:
     void Seek(int position);
 
     bool WriteInt8(int8_t value);
+    
     bool WriteUint8(uint8_t value);
+    
     bool WriteInt16(int16_t value);
+    
     bool WriteUint16(uint16_t value);
+    
     bool WriteInt32(int32_t value);
+    
     bool WriteUint32(uint32_t value);
+    
     bool WriteInt64(int64_t value);
+
     bool WriteUint64(uint64_t value);
+    
     bool WriteFloat(float value);
+    
     bool WriteDouble(double value);
+    
     bool WriteString(const char* buffer, int32_t length);
+    
     bool Write(const void* buffer, int32_t length);
 
 private:
@@ -46,4 +57,4 @@ private:
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // MZ_SHARE_MSGOUTPUTSTREAM_HPP
+#endif // _MZ_SHARE_MSGOUTPUTSTREAM_HPP_
