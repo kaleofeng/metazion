@@ -12,7 +12,11 @@ public:
     using Handle = void*;
 
     struct Header {
-        Header();
+        Header()
+            : m_usedCount(0)
+            , m_firstFree(0)
+            , m_recordSize(0)
+            , m_capacity(0) {}
 
         volatile int m_usedCount;
         int m_firstFree;
@@ -21,11 +25,15 @@ public:
     };
 
 private:
-    enum { INVALIDRECORDINDEX = 0x7fffffff };
-    enum { RECORDALIGNLENGTH = DEFAULT_ALIGNMENT };
+    enum {
+        INVALIDRECORDINDEX = 0x7FFFFFFF,
+        RECORDALIGNLENGTH = DEFAULT_ALIGNMENT,
+    };
 
     struct Record {
-        Record();
+        Record() {
+            ::memset(&m_data, 0, sizeof(m_data));
+        }
 
         union {
             int m_flag;
@@ -35,28 +43,35 @@ private:
 
 public:
     MemoryRecordset();
+
     ~MemoryRecordset();
 
 public:
     void Initialize(int recordSize, int capacity);
+
     void Finalize();
 
     void Attach(Header& header, void* buffer);
+
     void Detach();
 
     void Reset();
 
     Handle ObtainRecord();
+
     bool ReturnRecord(Handle handle);
 
     void* GetMemory(Handle handle);
+
     Handle GetHandle(void* memory);
 
     bool IsValidHandle(Handle handle);
+
     bool IsValidMomory(void* memory);
 
 private:
     int HandleToRecordIndex(Handle handle);
+
     Handle RecordIndexToHandle(int index);
 
     bool IsValidRecordIndex(int index);

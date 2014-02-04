@@ -20,22 +20,22 @@ public:
     ~IocpTransmitStrategy();
 
 public:
-    void Reset() override final;
+    void Reset() override;
 
-    bool IsBusy() const override final;
+    bool IsBusy() const override;
 
-    bool PostInputOperation() override final;
+    bool PostInputOperation() override;
 
-    bool PostOutputOperation() override final;
+    bool PostOutputOperation() override;
 
     bool HandleSuccessOperation(const IocpOperation* iocpOperation
-        , DWORD byteNumber) override final;
+        , DWORD byteNumber) override;
 
     bool HandleFailureOperation(const IocpOperation* iocpOperation
-        , DWORD byteNumber, int error) override final;
+        , DWORD byteNumber, int error) override;
 
     bool HandleCloseOperation(const IocpOperation* iocpOperation
-        , DWORD byteNumber) override final;
+        , DWORD byteNumber) override;
 
 private:
     bool _PostInputOperation();

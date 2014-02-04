@@ -16,6 +16,16 @@ struct SelfListNode {
     SelfListNode* m_nextNode;
 };
 
+template<>
+struct SelfListNode<void> {
+    SelfListNode()
+        : m_prevNode(nullptr)
+        , m_nextNode(nullptr) {}
+
+    SelfListNode* m_prevNode;
+    SelfListNode* m_nextNode;
+};
+
 template<typename NodeType>
 class SelfList {
     DISALLOW_COPY_AND_ASSIGN(SelfList)

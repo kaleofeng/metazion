@@ -20,15 +20,15 @@ public:
     ~EpollListenStrategy();
 
 public:
-    void Reset() override final;
+    void Reset() override;
 
-    bool IsBusy() const override final;
+    bool IsBusy() const override;
 
-    void Input() override final;
+    void Input() override;
 
-    void Output() override final;
+    void Output() override;
 
-    void EnableOutput() override final;
+    void EnableOutput() override;
 
 private:
     ListenSocket& m_listenSocket;

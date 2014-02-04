@@ -3,9 +3,9 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
-#include "Metazion/Share/Memory/HeapAllocator.hpp"
 #include "Metazion/Share/Collection/ListIterator.hpp"
 #include "Metazion/Share/Collection/SelfList.hpp"
+#include "Metazion/Share/Memory/HeapAllocator.hpp"
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 

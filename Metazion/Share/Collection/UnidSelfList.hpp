@@ -16,7 +16,8 @@ struct UnidSelfListNode {
 
 template<>
 struct UnidSelfListNode<void> {
-    UnidSelfListNode() {}
+    UnidSelfListNode()
+        : m_nextNode(nullptr) {}
 
     UnidSelfListNode* m_nextNode;
 };

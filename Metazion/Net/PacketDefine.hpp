@@ -3,9 +3,9 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include <Metazion/Share/Memory/PieceBuffer.hpp>
-#include <Metazion/Share/Memory/ObjectPool.hpp>
 #include <Metazion/Share/Collection/DynamicArray.hpp>
+#include <Metazion/Share/Memory/ObjectPool.hpp>
+#include <Metazion/Share/Memory/PieceBuffer.hpp>
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 

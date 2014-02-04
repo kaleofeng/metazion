@@ -3,9 +3,9 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
-#include "Metazion/Share/Memory/StepAllocator.hpp"
 #include "Metazion/Share/Collection/UnidList.hpp"
 #include "Metazion/Share/Collection/UnidSelfList.hpp"
+#include "Metazion/Share/Memory/StepAllocator.hpp"
 #include "Metazion/Share/Sync/NoneLock.hpp"
 #include "Metazion/Share/Sync/AutoGuard.hpp"
 

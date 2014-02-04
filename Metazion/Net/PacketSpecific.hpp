@@ -5,6 +5,7 @@
 
 #include <Metazion/Share/Memory/StepBuffer.hpp>
 #include <Metazion/Share/Sync/MutexLock.hpp>
+
 #include "Metazion/Net/PacketDefine.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN

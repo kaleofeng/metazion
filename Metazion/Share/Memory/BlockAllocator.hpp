@@ -22,7 +22,8 @@ public:
     using Rebind = BlockAllocator<MAXSIZE, OTHERLENGTH>;
 
 public:
-    BlockAllocator() {}
+    BlockAllocator()
+        : m_piece(nullptr) {}
 
     ~BlockAllocator() {}
 

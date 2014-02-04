@@ -2,14 +2,6 @@
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
-MemoryRecordset::Header::Header()
-    : m_recordSize(0)
-    , m_capacity(0)
-    , m_firstFree(0)
-    , m_usedCount(0) {}
-
-MemoryRecordset::Record::Record() { m_data.m_flag = 0; }
-
 MemoryRecordset::MemoryRecordset()
     : m_activeHeader(nullptr)
     , m_buffer(nullptr)

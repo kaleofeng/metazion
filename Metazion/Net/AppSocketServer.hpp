@@ -4,6 +4,7 @@
 #include "Metazion/Net/NetInclude.hpp"
 
 #include <Metazion/Share/Collection/DynamicArray.hpp>
+
 #include "Metazion/Net/NormalSocketServer.hpp"
 #include "Metazion/Net/PacketSpecific.hpp"
 

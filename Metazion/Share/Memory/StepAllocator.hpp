@@ -3,8 +3,8 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
-#include "Metazion/Share/Memory/MemoryPiece.hpp"
 #include "Metazion/Share/Collection/UnidSelfList.hpp"
+#include "Metazion/Share/Memory/MemoryPiece.hpp"
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
