@@ -10,55 +10,70 @@ template<typename ValueType
 , int STEPSIZE = 16
 >
 class DynamicArray {
-    DISALLOW_COPY_AND_ASSIGN(DynamicArray)
-
     using Value_t = ValueType;
 
 public:
     DynamicArray()
         : m_values(nullptr)
         , m_capacity(0)
-        , m_size(0)
-        , m_dependent(false) {}
+        , m_size(0) {}
 
-    ~DynamicArray() { Clear(); }
+    ~DynamicArray() { 
+        Clear();
+    }
+
+    DynamicArray(DynamicArray& other)
+        : DynamicArray() {
+        *this = other;
+    }
+
+    DynamicArray& operator =(DynamicArray& other) {
+        if (&other != this) {
+            Clear();
+            m_values = new Value_t[other.m_capacity];
+            ::memcpy(m_values, other.m_values, sizeof(Value_t) * other.m_size);
+            m_capacity = other.m_capacity;
+            m_size = other.m_size;
+        }
+
+        return *this;
+    }
+
+    DynamicArray(DynamicArray&& other)
+        : DynamicArray() {
+        *this = std::move(other);
+    }
+
+    DynamicArray& operator =(DynamicArray&& other) {
+        if (&other != this) {
+            m_values = other.m_values;
+            m_capacity = other.m_capacity;
+            m_size = other.m_size;
+
+            other.m_values = nullptr;
+            other.m_capacity = 0;
+            other.m_size = 0;
+        }
+
+        return *this;
+    }
 
 public:
     void Clear() {
-        if (!m_dependent) {
-            SafeDeleteArray(m_values);
-            m_capacity = 0;
-        }
+        SafeDeleteArray(m_values);
+        m_capacity = 0;
         m_size = 0;
     }
 
-    void Attach(Value_t* buffer, int capacity, int size) {
-        Clear();
-        m_values = buffer;
-        m_capacity = capacity;
-        m_size = size;
-        m_dependent = true;
-    }
-
-    void Detach() {
-        if (m_dependent) {
-            m_values = nullptr;
-            m_capacity = 0;
-            m_size = 0;
-            m_dependent = false;
-        }
-    }
-
     Value_t& At(int index) {
-        ASSERT_TRUE(index >= 0);
-        if (index >= m_capacity) {
-            Inflate(index + 1);
-        }
+        ASSERT_TRUE(index >= 0 && index < m_size);
+
         return m_values[index];
     }
 
     const Value_t& At(int index) const {
         ASSERT_TRUE(index >= 0 && index < m_size);
+
         return m_values[index];
     }
 
@@ -70,59 +85,65 @@ public:
         return At(index);
     }
 
-    int Add(const Value_t& element) {
+    int Insert(int index, const Value_t& value) {
+        if (index >= m_size) {
+            return Set(index, value);
+        }
+
         if (m_size >= m_capacity) {
             Inflate(m_size + 1);
         }
-        const int index = m_size;
-        m_values[index] = element;
+
+        ::memmove(m_values + index + 1, m_values + index
+            , sizeof(Value_t)* (m_size - index));
+
+        m_values[index] = value;
         ++m_size;
         return index;
     }
 
-    int Insert(int index, const Value_t& element) {
-        bool needInflate = true;
-        int capacity = 0;
-        if (index >= m_capacity) {
-            capacity = index + 1;
-        }
-        else if (m_size >= m_capacity) {
-            capacity = m_size;
-        }
-        else {
-            needInflate = false;
-        }
-
-        if (needInflate) {
-            Inflate(capacity);
-        }
-
-        if (index < m_size) {
-            ::memmove(m_values + index + 1, m_values + index
-                , sizeof(Value_t) * (m_size - index));
-        }
-        m_values[index] = element;
-        ++m_size;
-        return index;
+    int Add(const Value_t& value) {
+        const int index = m_size;
+        return Set(index, value);
     }
 
     int Remove(int index) {
         if (index < 0 || index >= m_size) {
             return -1;
         }
+
         ::memmove(m_values + index, m_values + index + 1
             , sizeof(Value_t) * (m_size - index - 1));
         --m_size;
         return index;
     }
 
-    int GetCapacity() const { return m_capacity; }
+    int GetCapacity() const {
+        return m_capacity;
+    }
 
-    int GetSize() const { return m_size; }
+    int GetSize() const {
+        return m_size;
+    }
 
 private:
+    int Set(int index, const Value_t& value) {
+        ASSERT_TRUE(index >= 0);
+
+        const int size = index + 1;
+        if (size > m_capacity) {
+            Inflate(size);
+        }
+
+        if (size > m_size) {
+            m_size = size;
+        }
+
+        m_values[index] = value;
+        return index;
+    }
+
     void Inflate(int capacity) {
-        ASSERT_TRUE(!m_dependent);
         ASSERT_TRUE(capacity > m_capacity);
         
         if (m_capacity <= 0) {
@@ -148,7 +169,6 @@ private:
     Value_t* m_values;
     int m_capacity;
     int m_size;
-    bool m_dependent;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END
