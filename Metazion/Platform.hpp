@@ -53,6 +53,7 @@
 #endif // MZ_PLATFORM_LINUX
 
 #include <new>
+#include <algorithm>
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>

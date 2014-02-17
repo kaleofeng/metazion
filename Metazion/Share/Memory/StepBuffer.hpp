@@ -10,7 +10,7 @@
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
-template <int STEPLENGTH
+template<int STEPLENGTH
 , int MAXLENGTH
 >
 class StepBuffer {

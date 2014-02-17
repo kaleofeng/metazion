@@ -14,17 +14,17 @@ public:
     ListIterator()
         : m_node(nullptr) {}
 
-    ListIterator(const ListIterator& another)
-        : m_node(another.m_node) {}
+    ListIterator(const ListIterator& other)
+        : m_node(other.m_node) {}
 
     ListIterator(Node_t* node)
         : m_node(node) {}
 
     ~ListIterator() {}
 
-    ListIterator& operator =(const ListIterator& another) {
-        if (&another != this) {
-            m_node = another.m_node;
+    ListIterator& operator =(const ListIterator& other) {
+        if (&other != this) {
+            m_node = other.m_node;
         }
         return *this;
     }
@@ -51,12 +51,12 @@ public:
         return ListIterator(node);
     }
 
-    bool operator ==(const ListIterator& another) const {
-        return m_node == another.m_node;
+    bool operator ==(const ListIterator& other) const {
+        return m_node == other.m_node;
     }
 
-    bool operator !=(const ListIterator& another) const {
-        return m_node != another.m_node;
+    bool operator !=(const ListIterator& other) const {
+        return m_node != other.m_node;
     }
 
 private:
@@ -74,17 +74,17 @@ public:
     ListConstIterator()
         : m_node(nullptr) {}
 
-    ListConstIterator(const ListConstIterator& another)
-        : m_node(another.m_node) {}
+    ListConstIterator(const ListConstIterator& other)
+        : m_node(other.m_node) {}
 
     ListConstIterator(const Node_t* node)
         : m_node(node) {}
 
     ~ListConstIterator() {}
 
-    ListConstIterator& operator =(const ListConstIterator& another) {
-        if (&another != this) {
-            m_node = another.m_node;
+    ListConstIterator& operator =(const ListConstIterator& other) {
+        if (&other != this) {
+            m_node = other.m_node;
         }
         return *this;
     }
@@ -111,12 +111,12 @@ public:
         return ListConstIterator(node);
     }
 
-    bool operator ==(const ListConstIterator& another) const {
-        return m_node == another.m_node;
+    bool operator ==(const ListConstIterator& other) const {
+        return m_node == other.m_node;
     }
 
-    bool operator !=(const ListConstIterator& another) const {
-        return m_node != another.m_node;
+    bool operator !=(const ListConstIterator& other) const {
+        return m_node != other.m_node;
     }
 
 private:

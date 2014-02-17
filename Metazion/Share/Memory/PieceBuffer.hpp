@@ -5,7 +5,7 @@
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
-template <int MAXLENGTH>
+template<int MAXLENGTH>
 class PieceBuffer {
     DISALLOW_COPY_AND_ASSIGN(PieceBuffer)
 

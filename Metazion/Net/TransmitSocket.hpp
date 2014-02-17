@@ -36,6 +36,10 @@ private:
     TransmitStrategy m_transmitStrategy;
 };
 
+inline IoStrategy& TransmitSocket::GetIoStrategy() {
+    return m_transmitStrategy;
+}
+
 inline TcpSocketBuffer& TransmitSocket::GetSocketBuffer() {
     return m_socketBuffer;
 }
