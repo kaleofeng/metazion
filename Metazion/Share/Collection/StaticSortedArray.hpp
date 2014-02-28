@@ -31,6 +31,10 @@ public:
         m_array.Detach();
     }
 
+    void Clear() {
+        m_array.Clear();
+    }
+
     Value_t& At(int index) {
         return m_array.At(index);
     }

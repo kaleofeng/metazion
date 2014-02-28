@@ -32,6 +32,10 @@ public:
         m_size = 0;
     }
 
+    void Clear() {
+        m_size = 0;
+    }
+
     Value_t& At(int index) {
         ASSERT_TRUE(index >= 0 && index < m_size);
 
