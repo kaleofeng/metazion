@@ -21,27 +21,6 @@ void NormalClientSocket::Reset() {
     m_reconnectInterval = 0;
 }
 
-void NormalClientSocket::OnAttached() {
-    TransmitSocket::OnAttached();
-
-    SocketServer* server = GetSocketServer();
-    NormalSocketServer* normalServer = static_cast<NormalSocketServer*>(server);
-    ASSERT_TRUE(!IsNull(normalServer));
-
-    TcpSocketBuffer::SendCache_t::BufferPool_t& bufferPool = normalServer->GetSendCachePool();
-    m_socketBuffer.SetSendCachePool(bufferPool);
-}
-
-void NormalClientSocket::OnStarted() {
-    TransmitSocket::OnStarted();
-    OnConnected();
-}
-
-void NormalClientSocket::OnClosed() {
-    TransmitSocket::OnClosed();
-    OnDisconnected();
-}
-
 void NormalClientSocket::Tick(int interval) {
     TransmitSocket::Tick(interval);
     ConnectStage();
@@ -72,10 +51,6 @@ bool NormalClientSocket::IsAlive() const {
 
     return false;
 }
-
-void NormalClientSocket::OnConnected() {}
-
-void NormalClientSocket::OnDisconnected() {}
 
 void NormalClientSocket::SetRemoteHost(const char* ip, int port) {
     m_remoteHost.SetFamily(AF_INET);

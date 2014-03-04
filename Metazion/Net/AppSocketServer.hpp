@@ -3,10 +3,10 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include <Metazion/Share/Collection/DynamicArray.hpp>
+#include <Metazion/Share/Collection/StaticArray.hpp>
 
 #include "Metazion/Net/NormalSocketServer.hpp"
-#include "Metazion/Net/PacketSpecific.hpp"
+#include "Metazion/Net/PacketDefine.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
@@ -14,7 +14,7 @@ class AppSocketServer : public NormalSocketServer {
     DISALLOW_COPY_AND_ASSIGN(AppSocketServer)
 
 public:
-    using SocketArray_t = NS_SHARE::DynamicArray<Socket*>;
+    using SocketArray_t = NS_SHARE::StaticArray<Socket*>;
 
 public:
     struct SocketFilter {
@@ -40,25 +40,14 @@ public:
 
     void UnlockSockets(SocketArray_t& socketArray);
 
-    PackBuffer& GetPackBuffer();
+    EncodeBuffer& GetEncodeBuffer();
 
-    UnpackBuffer::BufferPool_t& GetUnpackBufferPool();
-
-    PacketCache_t::BufferPool_t& GetPacketCachePool();
+    DecodeBuffer& GetDecodeBuffer();
 
 private:
-    int m_packBufferKey;
-    UnpackBuffer::BufferPool_t m_unpackBufferPool;
-    PacketCache_t::BufferPool_t m_packetCachePool;
+    int m_encodeBufferKey;
+    int m_decodeBufferKey;
 };
-
-inline UnpackBuffer::BufferPool_t& AppSocketServer::GetUnpackBufferPool() {
-    return m_unpackBufferPool;
-}
-
-inline PacketCache_t::BufferPool_t& AppSocketServer::GetPacketCachePool() {
-    return m_packetCachePool;
-}
 
 DECL_NAMESPACE_MZ_NET_END
 

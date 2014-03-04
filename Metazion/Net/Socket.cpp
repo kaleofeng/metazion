@@ -25,6 +25,8 @@ void Socket::Destory() {
 
 void Socket::Tick(int interval) {}
 
+void Socket::Dispatch() {}
+
 void Socket::OnAttached() {}
 
 void Socket::OnDetached() {}
@@ -33,20 +35,16 @@ void Socket::OnStarted() {}
 
 void Socket::OnClosed() {}
 
-bool Socket::OnAccepted(const SockId_t& sockId) {
-    return true;
-}
-
-int Socket::OnSendData(const void* data, int length) {
-    return length;
-}
-
-int Socket::OnRecvData(const void* data, int length) {
-    return length;
-}
-
 bool Socket::OnError(int error) {
     return true;
+}
+
+bool Socket::IsAlive() const {
+    if (IsValid()) {
+        return true;
+    }
+
+    return false;
 }
 
 bool Socket::IsActive() const {
@@ -63,14 +61,6 @@ bool Socket::IsClosed() const {
     }
 
     return true;
-}
-
-bool Socket::IsAlive() const {
-    if (IsValid()) {
-        return true;
-    }
-
-    return false;
 }
 
 void Socket::Start() {

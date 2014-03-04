@@ -27,6 +27,8 @@ public:
 
     bool IsAlive() const override;
 
+    virtual bool OnAccepted(const SockId_t& sockId);
+
     void SetLocalHost(const char* ip, int port);
 
     bool Listen(int backlog);
@@ -37,10 +39,6 @@ protected:
 private:
     ListenStrategy m_listenStrategy;
 };
-
-inline IoStrategy& ListenSocket::GetIoStrategy() {
-    return m_listenStrategy;
-}
 
 DECL_NAMESPACE_MZ_NET_END
 

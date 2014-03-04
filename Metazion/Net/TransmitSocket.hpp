@@ -4,7 +4,7 @@
 #include "Metazion/Net/NetInclude.hpp"
 
 #include "Metazion/Net/Socket.hpp"
-#include "Metazion/Net/TcpSocketBuffer.hpp"
+#include "Metazion/Net/SocketBuffer.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
@@ -21,26 +21,38 @@ public:
 
     void Reset() override;
 
+    void OnAttached() override;
+
     void OnStarted() override;
+
+    void OnClosed() override;
 
     bool IsAlive() const override;
 
+    virtual void OnConnected();
+
+    virtual void OnDisconnected();
+
+    virtual int OnSendData(const void* data, int length);
+
+    virtual int OnRecvData(const void* data, int length);
+
     int Send(const void* data, int length);
 
-    TcpSocketBuffer& GetSocketBuffer();
+    int Recv(void* data, int length);
+
+    int Peek(void* data, int length);
+
+    SocketBuffer& GetSocketBuffer();
 
 protected:
-    TcpSocketBuffer m_socketBuffer;
+    SocketBuffer m_socketBuffer;
 
 private:
     TransmitStrategy m_transmitStrategy;
 };
 
-inline IoStrategy& TransmitSocket::GetIoStrategy() {
-    return m_transmitStrategy;
-}
-
-inline TcpSocketBuffer& TransmitSocket::GetSocketBuffer() {
+inline SocketBuffer& TransmitSocket::GetSocketBuffer() {
     return m_socketBuffer;
 }
 

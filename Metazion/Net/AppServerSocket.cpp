@@ -4,80 +4,57 @@
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-AppServerSocket::AppServerSocket() {}
+AppServerSocket::AppServerSocket()
+    : m_packetSpecific(*this) {}
 
 AppServerSocket::~AppServerSocket() {}
 
-void AppServerSocket::Reset() {
-    NormalServerSocket::Reset();
-    m_packetSpecific.Reset();
-}
+void AppServerSocket::Dispatch() {
+    DecodeBuffer& decodeBuffer = GetDecodeBuffer();
 
-void AppServerSocket::OnAttached() {
-    NormalServerSocket::OnAttached();
-
-    SocketServer* server = GetSocketServer();
-    AppSocketServer* appServer = static_cast<AppSocketServer*>(server);
-    ASSERT_TRUE(!IsNull(appServer));
-
-    UnpackBuffer::BufferPool_t& bufferPool = appServer->GetUnpackBufferPool();
-    m_packetSpecific.SetUnpackBufferPool(bufferPool);
-    PacketCache_t::BufferPool_t& packetCachePool = appServer->GetPacketCachePool();
-    m_packetSpecific.SetPacketCachePool(packetCachePool);
-}
-
-void AppServerSocket::OnStarted() {
-    NormalServerSocket::OnStarted();
-    m_packetSpecific.Rework();
-}
-
-int AppServerSocket::OnRecvData(const void* data, int length) {
-    NormalServerSocket::OnRecvData(data, length);
-
-    int processLength = 0;
-    const char* curBuffer = static_cast<const char*>(data);
-    int curLength = length;
-    while (curLength > sizeof(PacketHeader)) {
-        const int packetLength = m_packetSpecific.CheckPacketLength(curBuffer, curLength);
-        if (packetLength < 0) {
-            return -1;
-        }
-        else if (packetLength == 0) {
+    while (true) {
+        int command = 0;
+        decodeBuffer.m_resultBuffer.Reset();
+        const int ret = m_packetSpecific.Decode(command, decodeBuffer);
+        if (0 == ret) {
             break;
         }
-
-        if (!m_packetSpecific.Unpack(curBuffer, packetLength)) {
-            return -2;
+        else if (ret < 0) {
+            OnInvalidPacket();
         }
 
-        curBuffer += packetLength;
-        curLength -= packetLength;
-        processLength += packetLength;
+        const char* pullBuffer = decodeBuffer.m_resultBuffer.GetPullBuffer();
+        const int pullLength = decodeBuffer.m_resultBuffer.GetPullLength();
+        OnValidPacket(command, pullBuffer, pullLength);
     }
-
-    return processLength;
-}
-
-int AppServerSocket::PullPackets(void* buffer, int length, PacketArray_t& packetArray) {
-    return m_packetSpecific.PullPackets(buffer, length, packetArray);
 }
 
 bool AppServerSocket::SendData(int command, const void* data, int length) {
-    PackBuffer& packBuffer = GetPackBuffer();
-    if (!m_packetSpecific.Pack(command, data, length, packBuffer)) {
+    EncodeBuffer& encodeBuffer = GetEncodeBuffer();
+    encodeBuffer.m_resultBuffer.Reset();
+
+    const int ret = m_packetSpecific.Encode(command, data, length, encodeBuffer);
+    if (ret <= 0) {
         return false;
     }
 
-    const void* pullBuffer = packBuffer.m_resultBuffer.GetPullBuffer();
-    const int pullLength = packBuffer.m_resultBuffer.GetPullLength();
+    const void* pullBuffer = encodeBuffer.m_resultBuffer.GetPullBuffer();
+    const int pullLength = encodeBuffer.m_resultBuffer.GetPullLength();
     return Send(pullBuffer, pullLength) == pullLength;
 }
 
-PackBuffer& AppServerSocket::GetPackBuffer() {
+EncodeBuffer& AppServerSocket::GetEncodeBuffer() {
     SocketServer* server = GetSocketServer();
     AppSocketServer* appServer = static_cast<AppSocketServer*>(server);
     ASSERT_TRUE(!IsNull(appServer));
-    return appServer->GetPackBuffer();
+    return appServer->GetEncodeBuffer();
+}
+
+DecodeBuffer& AppServerSocket::GetDecodeBuffer() {
+    SocketServer* server = GetSocketServer();
+    AppSocketServer* appServer = static_cast<AppSocketServer*>(server);
+    ASSERT_TRUE(!IsNull(appServer));
+    return appServer->GetDecodeBuffer();
 }
 
 DECL_NAMESPACE_MZ_NET_END

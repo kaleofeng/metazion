@@ -96,8 +96,10 @@ bool IocpTransmitStrategy::HandleCloseOperation(const IocpOperation* iocpOperati
 }
 
 bool IocpTransmitStrategy::_PostInputOperation() {
-    const int recvLength = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPushLength();
-    char* recvBuffer = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPushBuffer();
+    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+
+    const int recvLength = socketBuffer.m_recvBuffer.GetPushLength();
+    char* recvBuffer = socketBuffer.m_recvBuffer.GetPushBuffer();
 
     m_recvOperation.m_wsaBuf.buf = recvBuffer;
     m_recvOperation.m_wsaBuf.len = recvLength;
@@ -124,16 +126,18 @@ bool IocpTransmitStrategy::_PostInputOperation() {
 }
 
 bool IocpTransmitStrategy::_PostOutputOperation() {
-    int sendLength = m_transmitSocket.GetSocketBuffer().m_sendBuffer.GetPullLength();
+    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+
+    int sendLength = socketBuffer.m_sendBuffer.GetPullLength();
     if (sendLength <= 0) {
-        sendLength = m_transmitSocket.GetSocketBuffer().PrepareSendBuffer();
+        sendLength = socketBuffer.PrepareSendBuffer();
     }
     if (sendLength <= 0) {
         m_sendOperation.SetBusy(false);
         return true;
     }
 
-    char* sendBuffer = m_transmitSocket.GetSocketBuffer().m_sendBuffer.GetPullBuffer();
+    char* sendBuffer = socketBuffer.m_sendBuffer.GetPullBuffer();
 
     m_sendOperation.m_wsaBuf.buf = sendBuffer;
     m_sendOperation.m_wsaBuf.len = sendLength;
@@ -162,26 +166,27 @@ bool IocpTransmitStrategy::HandleInputSuccessOperation(const IocpOperation* iocp
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_recvOperation == iocpOperation);
 
+    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+
     if (0 == byteNumber) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
         m_transmitSocket.Close();
         return true;
     }
 
-    m_transmitSocket.GetSocketBuffer().m_recvBuffer.JumpPushIndex(byteNumber);
+    socketBuffer.m_recvBuffer.JumpPushIndex(byteNumber);
 
-    const char* recvData = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPullBuffer();
-    const int recvLength = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPullLength();
+    const char* recvData = socketBuffer.m_recvBuffer.GetPullBuffer();
+    const int recvLength = socketBuffer.m_recvBuffer.GetPullLength();
 
-    const int processLength = m_transmitSocket.OnRecvData(recvData, recvLength);
-    if (processLength < 0) {
+    m_transmitSocket.OnRecvData(recvData, recvLength);
+
+    const int processLength = socketBuffer.PreserveRecvBuffer();
+    if (processLength < recvLength) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
         m_transmitSocket.Close();
         return false;
     }
-
-    m_transmitSocket.GetSocketBuffer().m_recvBuffer.JumpPullIndex(processLength);
-    m_transmitSocket.GetSocketBuffer().m_recvBuffer.Compact();
 
     return _PostInputOperation();
 }
@@ -190,24 +195,21 @@ bool IocpTransmitStrategy::HandleOutputSuccessOperation(const IocpOperation* ioc
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_sendOperation == iocpOperation);
 
+    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+
     if (0 == byteNumber) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
         m_transmitSocket.Close();
         return true;
     }
 
-    const char* sendData = m_transmitSocket.GetSocketBuffer().m_sendBuffer.GetPullBuffer();
+    const char* sendData = socketBuffer.m_sendBuffer.GetPullBuffer();
     const int sendLength = byteNumber;
 
-    const int processLength = m_transmitSocket.OnSendData(sendData, sendLength);
-    if (processLength < 0) {
-        ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-        m_transmitSocket.Close();
-        return false;
-    }
+    m_transmitSocket.OnSendData(sendData, sendLength);
 
-    m_transmitSocket.GetSocketBuffer().m_sendBuffer.JumpPullIndex(processLength);
-    m_transmitSocket.GetSocketBuffer().m_sendBuffer.Compact();
+    socketBuffer.m_sendBuffer.JumpPullIndex(sendLength);
+    socketBuffer.m_sendBuffer.Compact();
 
     return _PostOutputOperation();
 }

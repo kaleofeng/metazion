@@ -7,6 +7,10 @@ ListenSocket::ListenSocket()
 
 ListenSocket::~ListenSocket() {}
 
+IoStrategy& ListenSocket::GetIoStrategy() {
+    return m_listenStrategy;
+}
+
 void ListenSocket::Reset() {
     Socket::Reset();
     m_localHost.Reset();
@@ -30,6 +34,10 @@ bool ListenSocket::IsAlive() const {
     }
 
     return false;
+}
+
+bool ListenSocket::OnAccepted(const SockId_t& sockId) {
+    return true;
 }
 
 void ListenSocket::SetLocalHost(const char* ip, int port) {

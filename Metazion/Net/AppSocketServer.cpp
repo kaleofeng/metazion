@@ -5,13 +5,19 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 AppSocketServer::AppSocketServer()
-    : m_packBufferKey(0) {}
+    : m_encodeBufferKey(0)
+    , m_decodeBufferKey(0) {}
 
 AppSocketServer::~AppSocketServer() {}
 
 bool AppSocketServer::Initialize(int socketCapacity, int ioThreadNumber) {
-    m_packBufferKey = NS_SHARE::ThreadLocalStorage::Alloc();
-    if (-1 == m_packBufferKey) {
+    m_encodeBufferKey = NS_SHARE::ThreadLocalStorage::Alloc();
+    if (-1 == m_encodeBufferKey) {
+        return false;
+    }
+
+    m_decodeBufferKey = NS_SHARE::ThreadLocalStorage::Alloc();
+    if (-1 == m_decodeBufferKey) {
         return false;
     }
 
@@ -20,9 +26,13 @@ bool AppSocketServer::Initialize(int socketCapacity, int ioThreadNumber) {
 
 void AppSocketServer::Finalize() {
     NormalSocketServer::Finalize();
+
+    if (-1 != m_decodeBufferKey) {
+        NS_SHARE::ThreadLocalStorage::Free(m_decodeBufferKey);
+    }
     
-    if (-1 != m_packBufferKey) {
-        NS_SHARE::ThreadLocalStorage::Free(m_packBufferKey);
+    if (-1 != m_encodeBufferKey) {
+        NS_SHARE::ThreadLocalStorage::Free(m_encodeBufferKey);
     }
 }
 
@@ -57,16 +67,28 @@ void AppSocketServer::UnlockSockets(SocketArray_t& socketArray) {
     }
 }
 
-PackBuffer& AppSocketServer::GetPackBuffer() {
-    void* buffer = NS_SHARE::ThreadLocalStorage::GetValue(m_packBufferKey);
+EncodeBuffer& AppSocketServer::GetEncodeBuffer() {
+    void* buffer = NS_SHARE::ThreadLocalStorage::GetValue(m_encodeBufferKey);
     if (IsNull(buffer)) {
-        buffer = new ThreadPackBuffer();
-        bool ret = NS_SHARE::ThreadLocalStorage::SetValue(m_packBufferKey, buffer);
+        buffer = new ThreadEncodeBuffer();
+        bool ret = NS_SHARE::ThreadLocalStorage::SetValue(m_encodeBufferKey, buffer);
         ASSERT_TRUE(ret);
     }
 
-    ThreadPackBuffer* threadBuffer = static_cast<ThreadPackBuffer*>(buffer);
-    return threadBuffer->m_packBuffer;
+    ThreadEncodeBuffer* threadBuffer = static_cast<ThreadEncodeBuffer*>(buffer);
+    return threadBuffer->m_buffer;
+}
+
+DecodeBuffer& AppSocketServer::GetDecodeBuffer() {
+    void* buffer = NS_SHARE::ThreadLocalStorage::GetValue(m_decodeBufferKey);
+    if (IsNull(buffer)) {
+        buffer = new ThreadDecodeBuffer();
+        bool ret = NS_SHARE::ThreadLocalStorage::SetValue(m_decodeBufferKey, buffer);
+        ASSERT_TRUE(ret);
+    }
+
+    ThreadDecodeBuffer* threadBuffer = static_cast<ThreadDecodeBuffer*>(buffer);
+    return threadBuffer->m_buffer;
 }
 
 DECL_NAMESPACE_MZ_NET_END

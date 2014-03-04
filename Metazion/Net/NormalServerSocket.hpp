@@ -18,16 +18,6 @@ public:
 public:
     int GetType() const override;
 
-    void OnAttached() override;
-
-    void OnStarted() override;
-
-    void OnClosed() override;
-
-    virtual void OnConnected();
-
-    virtual void OnDisconnected();
-
     void Attach(const SockId_t& sockId);
 };
 

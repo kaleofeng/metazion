@@ -3,7 +3,7 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include <Metazion/Share/Collection/DynamicArray.hpp>
+#include <Metazion/Share/Collection/StaticArray.hpp>
 #include <Metazion/Share/Memory/ObjectPool.hpp>
 #include <Metazion/Share/Memory/PieceBuffer.hpp>
 
@@ -25,52 +25,56 @@ struct PacketHeader {
 };
 
 enum PacketValue {
-    MAXNETPACKETLENGTH = 1024,
-    MAXNETDATALENGTH = MAXNETPACKETLENGTH - sizeof(PacketHeader),
+    MAXNETDATALENGTH = 1024,
+    MAXNETPACKETLENGTH = MAXNETDATALENGTH + sizeof(PacketHeader),
     
     MAXAPPDATALENGTH = 16 * 1024,
     MAXAPPPACKETLENGTH = MAXAPPDATALENGTH + sizeof(PacketHeader),
 };
 
-struct PackBuffer {
-    enum { LENGTH = MAXAPPPACKETLENGTH + 256 };
+struct EncodeBuffer {
+    enum { LENGTH = MAXAPPPACKETLENGTH };
 
     using Buffer_t = NS_SHARE::PieceBuffer<LENGTH>;
     
-    PackBuffer() {}
+    EncodeBuffer() {}
     
-    Buffer_t m_tempBuffer;
     Buffer_t m_resultBuffer;
 };
 
-struct UnpackBuffer {
-    enum { LENGTH = MAXAPPPACKETLENGTH + 256 };
+struct DecodeBuffer {
+    enum { LENGTH = MAXAPPPACKETLENGTH };
 
     using Buffer_t = NS_SHARE::PieceBuffer<LENGTH>;
-    using BufferPool_t = NS_SHARE::ObjectPool<Buffer_t
-        , NS_SHARE::StepAllocator<256>, NS_SHARE::MutexLock>;
 
-    UnpackBuffer()
-        : m_buffer(nullptr)
-        , m_bufferPool(nullptr) {}
+    DecodeBuffer() {}
 
-    Buffer_t* m_buffer;
-    BufferPool_t* m_bufferPool;
+    Buffer_t m_resultBuffer;
 };
 
-struct ThreadPackBuffer {
+struct ThreadEncodeBuffer {
     enum { TAG = 0xFFEEDDCC };
 
-    ThreadPackBuffer()
+    ThreadEncodeBuffer()
         : m_tag(TAG) {}
 
     uint32_t m_tag;
-    PackBuffer m_packBuffer;
+    EncodeBuffer m_buffer;
+};
+
+struct ThreadDecodeBuffer {
+    enum { TAG = 0xFFEEDDCC };
+
+    ThreadDecodeBuffer()
+        : m_tag(TAG) {}
+
+    uint32_t m_tag;
+    DecodeBuffer m_buffer;
 };
 
 using PacketCache_t = NS_SHARE::StepBuffer<1024 * 4, 1024 * 256>;
 
-using PacketArray_t = NS_SHARE::DynamicArray<void*>;
+using PacketArray_t = NS_SHARE::StaticArray<void*>;
 
 DECL_NAMESPACE_MZ_NET_END
 

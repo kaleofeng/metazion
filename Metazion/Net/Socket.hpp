@@ -33,6 +33,8 @@ public:
 
     virtual void Tick(int interval);
 
+    virtual void Dispatch();
+
     virtual void OnAttached();
 
     virtual void OnDetached();
@@ -41,19 +43,13 @@ public:
 
     virtual void OnClosed();
 
-    virtual bool OnAccepted(const SockId_t& sockId);
-
-    virtual int OnSendData(const void* data, int length);
-
-    virtual int OnRecvData(const void* data, int length);
-
     virtual bool OnError(int error);
+
+    virtual bool IsAlive() const;
 
     virtual bool IsActive() const;
     
     virtual bool IsClosed() const;
-
-    virtual bool IsAlive() const;
 
 public:
     bool IsValid() const;

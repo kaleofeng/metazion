@@ -9,8 +9,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class AppClientSocket
-    : public NormalClientSocket
-    , public PacketProcessor {
+    : public NormalClientSocket {
     DISALLOW_COPY_AND_ASSIGN(AppClientSocket)
 
 public:
@@ -19,20 +18,18 @@ public:
     virtual ~AppClientSocket();
 
 public:
-    void Reset() override;
+    void Dispatch() override;
 
-    void OnAttached() override;
+    virtual void OnValidPacket(int command, const void* data, int length) = 0;
+
+    virtual void OnInvalidPacket() = 0;
     
-    void OnStarted() override;
-
-    int OnRecvData(const void* data, int length) override;
-
-    int PullPackets(void* buffer, int length, PacketArray_t& packetArray) override;
-
     bool SendData(int command, const void* data, int length);
 
 private:
-    PackBuffer& GetPackBuffer();
+    EncodeBuffer& GetEncodeBuffer();
+
+    DecodeBuffer& GetDecodeBuffer();
 
 private:
     PacketSpecific m_packetSpecific;

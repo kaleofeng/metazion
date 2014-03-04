@@ -21,10 +21,12 @@ bool EpollTransmitStrategy::IsBusy() const {
 }
 
 void EpollTransmitStrategy::Input() {
+    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+
     const SockId_t& transmitSockId = m_transmitSocket.GetSockId();
     while (true) {
-        char* pushBuffer = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPushBuffer();
-        const int pushLength = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPushLength();
+        char* pushBuffer = socketBuffer.m_recvBuffer.GetPushBuffer();
+        const int pushLength = socketBuffer.m_recvBuffer.GetPushLength();
 
         const int recvLength = ::recv(transmitSockId, pushBuffer, pushLength, 0);
         if (0 == recvLength) {
@@ -47,24 +49,24 @@ void EpollTransmitStrategy::Input() {
             break;
         }
 
-        m_transmitSocket.GetSocketBuffer().m_recvBuffer.JumpPushIndex(recvLength);
+        socketBuffer.m_recvBuffer.JumpPushIndex(recvLength);
 
-        const char* pullBuffer = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPullBuffer();
-        const int pullLength = m_transmitSocket.GetSocketBuffer().m_recvBuffer.GetPullLength();
+        const char* pullBuffer = socketBuffer.m_recvBuffer.GetPullBuffer();
+        const int pullLength = socketBuffer.m_recvBuffer.GetPullLength();
 
-        const int processLength = m_transmitSocket.OnRecvData(pullBuffer, pullLength);
-        if (processLength < 0) {
+        m_transmitSocket.OnRecvData(recvData, recvLength);
+
+        const int processLength = socketBuffer.PreserveRecvBuffer();
+        if (processLength < recvLength) {
             ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
             m_transmitSocket.Close();
-            break;
         }
-    
-        m_transmitSocket.GetSocketBuffer().m_recvBuffer.JumpPullIndex(processLength);
-        m_transmitSocket.GetSocketBuffer().m_recvBuffer.Compact();
     }
 }
 
 void EpollTransmitStrategy::Output() {
+    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+
     if (!m_canOutput) {
         return;
     }
@@ -73,21 +75,21 @@ void EpollTransmitStrategy::Output() {
         return;
     }
 
-    if (!m_transmitSocket.GetSocketBuffer().HasDataToSend()) {
+    if (!socketBuffer.HasDataToSend()) {
         return;
     }
 
     const SockId_t& transmitSockId = m_transmitSocket.GetSockId();
     while (true) {
-        int pullLength = m_transmitSocket.GetSocketBuffer().m_sendBuffer.GetPullLength();
+        int pullLength = socketBuffer.m_sendBuffer.GetPullLength();
         if (pullLength <= 0) {
-            pullLength = m_transmitSocket.GetSocketBuffer().PrepareSendBuffer();    
+            pullLength = socketBuffer.PrepareSendBuffer();    
         }
         if (pullLength <= 0) {
             break;
         }
 
-        char* pullBuffer = m_transmitSocket.GetSocketBuffer().m_sendBuffer.GetPullBuffer();
+        char* pullBuffer = socketBuffer.m_sendBuffer.GetPullBuffer();
 
         const int sendLength = ::send(transmitSockId, pullBuffer, pullLength, MSG_NOSIGNAL);
         if (sendLength < 0) {
@@ -106,15 +108,10 @@ void EpollTransmitStrategy::Output() {
             break;
         }
 
-        const int processLength = m_transmitSocket.OnSendData(pullBuffer, sendLength);
-        if (processLength < 0) {
-            ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-            m_transmitSocket.Close();
-            break;
-        }
+        m_transmitSocket.OnSendData(pullBuffer, sendLength);
 
-        m_transmitSocket.GetSocketBuffer().m_sendBuffer.JumpPullIndex(processLength);
-        m_transmitSocket.GetSocketBuffer().m_sendBuffer.Compact();
+        socketBuffer.m_sendBuffer.JumpPullIndex(processLength);
+        socketBuffer.m_sendBuffer.Compact();
     }
 }
 

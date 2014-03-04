@@ -28,21 +28,11 @@ public:
 
     void Reset() override;
 
-    void OnAttached() override;
-
-    void OnStarted() override;
-
-    void OnClosed() override;
-
     void Tick(int interval) override;
 
     bool IsActive() const override;
 
     bool IsAlive() const override;
-
-    virtual void OnConnected();
-
-    virtual void OnDisconnected();
 
     void SetRemoteHost(const char* ip, int port);
 
