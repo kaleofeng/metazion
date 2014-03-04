@@ -53,7 +53,8 @@ public:
         const char* tData = static_cast<const char*>(data);;
         int tLength = length;
         while (tLength > 0) {
-            const int pushLength = _Push(tData, tLength);
+            BufferNode_t* buffer = m_bufferList.Back();
+            const int pushLength = _Push(buffer, tData, tLength);
             if (pushLength <= 0) {
                 if (!Inflate()) {
                     break;
@@ -69,7 +70,8 @@ public:
         char* tData = static_cast<char*>(data);;
         int tLength = length;
         while (tLength > 0) {
-            const int pullLength = _Pull(tData, tLength);
+            BufferNode_t* buffer = m_bufferList.Front();
+            const int pullLength = _Pull(buffer, tData, tLength);
             if (pullLength <= 0) {
                 break;
             }
@@ -84,7 +86,7 @@ public:
         char* tData = static_cast<char*>(data);;
         int tLength = length;
         BufferNode_t* buffer = m_bufferList.Front();
-        while (!IsNull(buffer)) {
+        while (tLength > 0) {
             const int peekLength = _Peek(buffer, tData, tLength);
             if (peekLength <= 0) {
                 break;
@@ -93,13 +95,14 @@ public:
             tLength -= peekLength;
             buffer = m_bufferList.Forward(buffer);
         }
-        return tLength;
+        return length - tLength;
     }
 
     int Skip(int length) {
         int tLength = length;
         while (tLength > 0) {
-            const int skipLength = _Skip(tLength);
+            BufferNode_t* buffer = m_bufferList.Front();
+            const int skipLength = _Skip(buffer, tLength);
             if (skipLength <= 0) {
                 break;
             }
@@ -130,8 +133,7 @@ public:
     }
 
 private:
-    int _Push(const void* data, int length) {
-        BufferNode_t* buffer = m_bufferList.Back();
+    int _Push(BufferNode_t* buffer, const void* data, int length) {
         if (IsNull(buffer)) {
             return 0;
         }
@@ -140,8 +142,7 @@ private:
         return pushLength;
     }
 
-    int _Pull(void* data, int length) {
-        BufferNode_t* buffer = m_bufferList.Front();
+    int _Pull(BufferNode_t* buffer, void* data, int length) {
         if (IsNull(buffer)) {
             return 0;
         }
@@ -157,8 +158,7 @@ private:
         return buffer->m_value.Peek(data, length);
     }
 
-    int _Skip(int length) {
-        BufferNode_t* buffer = m_bufferList.Front();
+    int _Skip(BufferNode_t* buffer, int length) {
         if (IsNull(buffer)) {
             return 0;
         }
