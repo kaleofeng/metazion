@@ -55,11 +55,15 @@ int PacketSpecific::Decode(int& command, DecodeBuffer& decodeBuffer) {
     const int pushLength = decodeBuffer.m_resultBuffer.GetPushLength();
     ASSERT_TRUE(pushLength >= packetLength);
 
+    socketBuffer.m_recvLock.Lock();
+
     const int pullHeaderLength = socketBuffer.m_recvCache.Pull(&header, headLength);
     ASSERT_TRUE(pullHeaderLength == headLength);
 
     const int pullDataLength = socketBuffer.m_recvCache.Pull(pushBuffer, packetLength);
     ASSERT_TRUE(pullDataLength == header.m_length);
+
+    socketBuffer.m_recvLock.Unlock();
 
     command = header.m_command;
     decodeBuffer.m_resultBuffer.SetPushIndex(pullDataLength);

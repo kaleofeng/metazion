@@ -98,8 +98,8 @@ bool IocpTransmitStrategy::HandleCloseOperation(const IocpOperation* iocpOperati
 bool IocpTransmitStrategy::_PostInputOperation() {
     SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
-    const int recvLength = socketBuffer.m_recvBuffer.GetPushLength();
     char* recvBuffer = socketBuffer.m_recvBuffer.GetPushBuffer();
+    const int recvLength = socketBuffer.m_recvBuffer.GetPushLength();
 
     m_recvOperation.m_wsaBuf.buf = recvBuffer;
     m_recvOperation.m_wsaBuf.len = recvLength;
@@ -179,7 +179,7 @@ bool IocpTransmitStrategy::HandleInputSuccessOperation(const IocpOperation* iocp
     const char* recvData = socketBuffer.m_recvBuffer.GetPullBuffer();
     const int recvLength = socketBuffer.m_recvBuffer.GetPullLength();
 
-    m_transmitSocket.OnRecvData(recvData, recvLength);
+    m_transmitSocket.OnRecved(recvData, recvLength);
 
     const int processLength = socketBuffer.PreserveRecvBuffer();
     if (processLength < recvLength) {
@@ -206,7 +206,7 @@ bool IocpTransmitStrategy::HandleOutputSuccessOperation(const IocpOperation* ioc
     const char* sendData = socketBuffer.m_sendBuffer.GetPullBuffer();
     const int sendLength = byteNumber;
 
-    m_transmitSocket.OnSendData(sendData, sendLength);
+    m_transmitSocket.OnSended(sendData, sendLength);
 
     socketBuffer.m_sendBuffer.JumpPullIndex(sendLength);
     socketBuffer.m_sendBuffer.Compact();

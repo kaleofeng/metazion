@@ -63,11 +63,11 @@ void TransmitSocket::OnConnected() {}
 
 void TransmitSocket::OnDisconnected() {}
 
-int TransmitSocket::OnSendData(const void* data, int length) {
+int TransmitSocket::OnSended(const void* data, int length) {
     return length;
 }
 
-int TransmitSocket::OnRecvData(const void* data, int length) {
+int TransmitSocket::OnRecved(const void* data, int length) {
     return length;
 }
 
@@ -87,21 +87,6 @@ int TransmitSocket::Send(const void* data, int length) {
     }
 
     return pushLength;
-}
-
-int TransmitSocket::Recv(void* data, int length)
-{
-    m_socketBuffer.m_recvLock.Lock();
-    const int pullLength = m_socketBuffer.m_recvCache.Pull(data, length);
-    m_socketBuffer.m_recvLock.Unlock();
-    
-    return pullLength;
-}
-
-int TransmitSocket::Peek(void* data, int length)
-{
-    const int peekLength = m_socketBuffer.m_recvCache.Peek(data, length);
-    return peekLength;
 }
 
 DECL_NAMESPACE_MZ_NET_END

@@ -33,15 +33,11 @@ public:
 
     virtual void OnDisconnected();
 
-    virtual int OnSendData(const void* data, int length);
+    virtual int OnSended(const void* data, int length);
 
-    virtual int OnRecvData(const void* data, int length);
+    virtual int OnRecved(const void* data, int length);
 
     int Send(const void* data, int length);
-
-    int Recv(void* data, int length);
-
-    int Peek(void* data, int length);
 
     SocketBuffer& GetSocketBuffer();
 

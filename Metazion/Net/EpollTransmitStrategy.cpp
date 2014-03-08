@@ -54,7 +54,7 @@ void EpollTransmitStrategy::Input() {
         const char* pullBuffer = socketBuffer.m_recvBuffer.GetPullBuffer();
         const int pullLength = socketBuffer.m_recvBuffer.GetPullLength();
 
-        m_transmitSocket.OnRecvData(recvData, recvLength);
+        m_transmitSocket.OnRecved(recvData, recvLength);
 
         const int processLength = socketBuffer.PreserveRecvBuffer();
         if (processLength < recvLength) {
@@ -89,7 +89,7 @@ void EpollTransmitStrategy::Output() {
             break;
         }
 
-        char* pullBuffer = socketBuffer.m_sendBuffer.GetPullBuffer();
+        const char* pullBuffer = socketBuffer.m_sendBuffer.GetPullBuffer();
 
         const int sendLength = ::send(transmitSockId, pullBuffer, pullLength, MSG_NOSIGNAL);
         if (sendLength < 0) {
@@ -108,7 +108,7 @@ void EpollTransmitStrategy::Output() {
             break;
         }
 
-        m_transmitSocket.OnSendData(pullBuffer, sendLength);
+        m_transmitSocket.OnSended(pullBuffer, sendLength);
 
         socketBuffer.m_sendBuffer.JumpPullIndex(processLength);
         socketBuffer.m_sendBuffer.Compact();
