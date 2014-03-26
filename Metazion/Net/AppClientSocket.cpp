@@ -21,6 +21,7 @@ void AppClientSocket::Dispatch() {
         }
         else if (ret < 0) {
             OnInvalidPacket();
+            break;
         }
 
         const char* pullBuffer = decodeBuffer.m_resultBuffer.GetPullBuffer();

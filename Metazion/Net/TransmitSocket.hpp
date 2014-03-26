@@ -17,7 +17,7 @@ public:
     virtual ~TransmitSocket();
 
 public:
-    IoStrategy& GetIoStrategy() override;
+    IoStrategy& GetIoStrategy() override final;
 
     void Reset() override;
 

@@ -16,7 +16,7 @@ public:
     virtual ~NormalServerSocket();
 
 public:
-    int GetType() const override;
+    int GetType() const override final;
 
     void Attach(const SockId_t& sockId);
 };

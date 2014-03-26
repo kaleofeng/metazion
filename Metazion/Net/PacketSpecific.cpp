@@ -35,9 +35,9 @@ int PacketSpecific::Decode(int& command, DecodeBuffer& decodeBuffer) {
     SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     PacketHeader header;
-    const int headLength = sizeof(header);
-    const int peekLength = socketBuffer.m_recvCache.Peek(&header, headLength);
-    if (peekLength != headLength) {
+    const int headerLength = sizeof(header);
+    const int peekLength = socketBuffer.m_recvCache.Peek(&header, headerLength);
+    if (peekLength != headerLength) {
         return 0;
     }
 
@@ -57,8 +57,8 @@ int PacketSpecific::Decode(int& command, DecodeBuffer& decodeBuffer) {
 
     socketBuffer.m_recvLock.Lock();
 
-    const int pullHeaderLength = socketBuffer.m_recvCache.Pull(&header, headLength);
-    ASSERT_TRUE(pullHeaderLength == headLength);
+    const int pullHeaderLength = socketBuffer.m_recvCache.Pull(&header, headerLength);
+    ASSERT_TRUE(pullHeaderLength == headerLength);
 
     const int pullDataLength = socketBuffer.m_recvCache.Pull(pushBuffer, packetLength);
     ASSERT_TRUE(pullDataLength == header.m_length);

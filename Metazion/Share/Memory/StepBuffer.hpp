@@ -30,7 +30,7 @@ public:
         , m_stepNumber(0)
         , m_length(0) {}
 
-    ~StepBuffer() {}
+    ~StepBuffer() { Reset(); }
 
 public:
     void SetBufferPool(BufferPool_t* bufferPool) {
@@ -137,6 +137,7 @@ private:
         if (IsNull(buffer)) {
             return 0;
         }
+
         const int pushLength = buffer->m_value.Push(data, length);
         m_length += pushLength;
         return pushLength;
@@ -146,6 +147,7 @@ private:
         if (IsNull(buffer)) {
             return 0;
         }
+
         const int pullLength = buffer->m_value.Pull(data, length);
         m_length -= pullLength;
         return pullLength;
@@ -155,6 +157,7 @@ private:
         if (IsNull(buffer)) {
             return 0;
         }
+
         return buffer->m_value.Peek(data, length);
     }
 
@@ -162,6 +165,7 @@ private:
         if (IsNull(buffer)) {
             return 0;
         }
+
         const int skipLength = buffer->m_value.Skip(length);
         m_length -= skipLength;
         return skipLength;
@@ -171,10 +175,12 @@ private:
         if (m_stepNumber >= MAXSTEPNUMBER) {
             return false;
         }
+
         BufferNode_t* buffer = m_bufferPool->Obtain();
         if (IsNull(buffer)) {
             return false;
         }
+
         buffer->m_value.Reset();
         m_bufferList.PushBack(buffer);
         ++m_stepNumber;
@@ -186,13 +192,16 @@ private:
         if (IsNull(buffer)) {
             return;
         }
+
         if (buffer->m_value.GetPullLength() > 0) {
             return;
         }
+
         if (m_bufferList.GetSize() == 1) {
             buffer->m_value.Reset();
             return;
         }
+
         m_bufferList.PopFront();
         m_bufferPool->Return(buffer);
         --m_stepNumber;

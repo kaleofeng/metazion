@@ -19,7 +19,7 @@ public:
     virtual ~ListenSocket();
 
 public:
-    IoStrategy& GetIoStrategy() override;
+    IoStrategy& GetIoStrategy() override final;
 
     void Reset() override;
 

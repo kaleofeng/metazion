@@ -18,7 +18,7 @@ public:
     virtual ~NormalListenSocket();
 
 public:
-    int GetType() const override;
+    int GetType() const override final;
 
     bool OnAccepted(const SockId_t& sockId) override;
 

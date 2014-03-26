@@ -24,7 +24,7 @@ public:
     virtual ~NormalClientSocket();
 
 public:
-    int GetType() const override;
+    int GetType() const override final;
 
     void Reset() override;
 
