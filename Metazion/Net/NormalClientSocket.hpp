@@ -41,8 +41,6 @@ public:
     bool Connect();
 
 private:
-    bool Reconnect();
-
     void ConnectStage();
 
     void ConnectStageWaiting();
@@ -52,6 +50,10 @@ private:
     void ConnectStageConnected();
 
     void ConnectStageClosed();
+
+    void Reconnect(bool immediately);
+
+    int TryToConnect();
 
     int CheckConnected();
 

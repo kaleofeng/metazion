@@ -67,31 +67,6 @@ bool NormalClientSocket::Connect() {
     return true;
 }
 
-bool NormalClientSocket::Reconnect() {
-    SockId_t sockId = CreateSockId(TRANSPORT_TCP);
-    if (INVALID_SOCKID == sockId) {
-        return false;
-    }
-
-    AttachSockId(sockId);
-
-    SockAddr_t* sockAddr = m_remoteHost.SockAddr();
-    SockLen_t sockAddrLen = m_remoteHost.SockAddrLen();
-    const int ret = ::connect(m_sockId, sockAddr, sockAddrLen);
-    if (0 == ret) {
-        SetStage(STAGE_CONNECTED);
-        return true;
-    }
-
-    if (IsWouldBlock()) {
-        SetStage(STAGE_CONNECTING);
-        return true;
-    }
-
-    DetachSockId();
-    return false;
-}
-
 void NormalClientSocket::ConnectStage() {
     switch (m_stage) {
     case STAGE_WAITING:
@@ -111,47 +86,81 @@ void NormalClientSocket::ConnectStage() {
 }
 
 void NormalClientSocket::ConnectStageWaiting() {
-    if (m_reconnectInterval <= 0) {
-        SetStage(STAGE_CLOSED);
-        return;
-    }
-
     const int32_t now = NS_SHARE::GetTickMillisecond();
     if (now < m_connectTime) {
         return;
     }
 
-    Reconnect();
-    ResetConnectTime();
-
-    SetStage(STAGE_CONNECTING);
+    const int ret = TryToConnect();
+    if (ret == 0) {
+        SetStage(STAGE_CONNECTING);
+    }
+    else if (ret > 0) {
+        SetStage(STAGE_CONNECTED);
+    }
+    else {
+        Reconnect(false);
+    }
 }
 
 void NormalClientSocket::ConnectStageConnecting() {
     const int ret = CheckConnected();
-    if (ret > 0) {
+    if (ret == 0) {
+        // Keep connecting.
+    }
+    else if (ret > 0) {
         SetStage(STAGE_CONNECTED);
-        return;
     }
-    
-    if (ret < 0) {
-        SetStage(STAGE_WAITING);
+    else {
         DetachSockId();
-        ResetConnectTime();
-        return;
+        Reconnect(false);
     }
-
-    // Keep connecting.
 }
 
 void NormalClientSocket::ConnectStageConnected() {
     if (!IsReady()) {
-        SetStage(STAGE_WAITING);
+        Reconnect(true);
     }
 }
 
 void NormalClientSocket::ConnectStageClosed() {
     ASSERT_TRUE(!IsReady());
+}
+
+void NormalClientSocket::Reconnect(bool immediately) {
+    if (m_reconnectInterval < 0) {
+        SetStage(STAGE_CLOSED);
+        return;
+    }
+
+    if (!immediately) {
+        ResetConnectTime();
+    }
+
+    SetStage(STAGE_WAITING);
+}
+
+int NormalClientSocket::TryToConnect() {
+    SockId_t sockId = CreateSockId(TRANSPORT_TCP);
+    if (INVALID_SOCKID == sockId) {
+        return -1;
+    }
+
+    AttachSockId(sockId);
+
+    SockAddr_t* sockAddr = m_remoteHost.SockAddr();
+    SockLen_t sockAddrLen = m_remoteHost.SockAddrLen();
+    const int ret = ::connect(m_sockId, sockAddr, sockAddrLen);
+    if (0 == ret) {
+        return 1;
+    }
+
+    if (!IsWouldBlock()) {
+        DetachSockId();
+        return -1;
+    }
+
+    return 0;
 }
 
 int NormalClientSocket::CheckConnected() {
@@ -169,8 +178,7 @@ int NormalClientSocket::CheckConnected() {
     if (0 == ret) {
         return 0;
     }
-
-    if (ret < 0) {
+    else if (ret < 0) {
         return -1;
     }
 
@@ -182,8 +190,9 @@ int NormalClientSocket::CheckConnected() {
         return -1;
     }
 
-    // It doesn't work in some situations in linux platform.
+    // It doesn't work in some situations on linux platform.
     // For examle, when listen socket's backlog queue is full.
+    // And also doesn't work on solaris platform.
     int optValue = 0;
     SockLen_t optLength = sizeof(optValue);
     GetSockOpt(m_sockId, SOL_SOCKET, SO_ERROR, &optValue, &optLength);
