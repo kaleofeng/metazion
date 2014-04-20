@@ -54,10 +54,10 @@ void EpollTransmitStrategy::Input() {
         const char* pullBuffer = socketBuffer.m_recvBuffer.GetPullBuffer();
         const int pullLength = socketBuffer.m_recvBuffer.GetPullLength();
 
-        m_transmitSocket.OnRecved(recvData, recvLength);
+        m_transmitSocket.OnRecved(pullBuffer, pullLength);
 
         const int processLength = socketBuffer.PreserveRecvBuffer();
-        if (processLength < recvLength) {
+        if (processLength < pullLength) {
             ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
             m_transmitSocket.Close();
         }
@@ -110,7 +110,7 @@ void EpollTransmitStrategy::Output() {
 
         m_transmitSocket.OnSended(pullBuffer, sendLength);
 
-        socketBuffer.m_sendBuffer.JumpPullIndex(processLength);
+        socketBuffer.m_sendBuffer.JumpPullIndex(sendLength);
         socketBuffer.m_sendBuffer.Compact();
     }
 }

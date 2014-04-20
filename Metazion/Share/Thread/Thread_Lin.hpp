@@ -40,7 +40,7 @@ inline int Thread::GetThreadId() const {
     return static_cast<int>(m_threadId);
 }
 
-inline void Thread:SetThreadId(int threadId) {
+inline void Thread::SetThreadId(int threadId) {
     m_threadId = static_cast<pthread_t>(threadId);
 }
 
