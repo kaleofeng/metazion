@@ -27,7 +27,7 @@ void NormalClientSocket::Tick(int interval) {
 }
 
 bool NormalClientSocket::IsActive() const {
-    bool ret = TransmitSocket::IsActive();
+    auto ret = TransmitSocket::IsActive();
     if (!ret) {
         return false;
     }
@@ -40,7 +40,7 @@ bool NormalClientSocket::IsActive() const {
 }
 
 bool NormalClientSocket::IsAlive() const {
-    bool ret = TransmitSocket::IsAlive();
+    auto ret = TransmitSocket::IsAlive();
     if (ret) {
         return true;
     }
@@ -86,12 +86,12 @@ void NormalClientSocket::ConnectStage() {
 }
 
 void NormalClientSocket::ConnectStageWaiting() {
-    const int32_t now = NS_SHARE::GetTickMillisecond();
+    const auto now = NS_SHARE::GetTickMillisecond();
     if (now < m_connectTime) {
         return;
     }
 
-    const int ret = TryToConnect();
+    const auto ret = TryToConnect();
     if (ret == 0) {
         SetStage(STAGE_CONNECTING);
     }
@@ -104,7 +104,7 @@ void NormalClientSocket::ConnectStageWaiting() {
 }
 
 void NormalClientSocket::ConnectStageConnecting() {
-    const int ret = CheckConnected();
+    const auto ret = CheckConnected();
     if (ret == 0) {
         // Keep connecting.
     }
@@ -150,7 +150,7 @@ int NormalClientSocket::TryToConnect() {
 
     auto sockAddr = m_remoteHost.SockAddr();
     auto sockAddrLen = m_remoteHost.SockAddrLen();
-    const int ret = ::connect(m_sockId, sockAddr, sockAddrLen);
+    const auto ret = ::connect(m_sockId, sockAddr, sockAddrLen);
     if (0 == ret) {
         return 1;
     }
@@ -173,8 +173,8 @@ int NormalClientSocket::CheckConnected() {
     FD_SET(m_sockId, &efds);
 
     struct timeval timeout = { 0, 0 };
-    const int nfds = static_cast<int>(m_sockId + 1);
-    const int ret = ::select(nfds, nullptr, &wfds, &efds, &timeout);
+    const auto nfds = static_cast<int>(m_sockId + 1);
+    const auto ret = ::select(nfds, nullptr, &wfds, &efds, &timeout);
     if (0 == ret) {
         return 0;
     }

@@ -39,11 +39,11 @@ void SocketBuffer::Rework() {
 int SocketBuffer::PrepareSendBuffer() {
     m_sendBuffer.Reset();
 
-    char* pushBuffer = m_sendBuffer.GetPushBuffer();
-    const int pushLength = m_sendBuffer.GetPushLength();
+    auto pushBuffer = m_sendBuffer.GetPushBuffer();
+    const auto pushLength = m_sendBuffer.GetPushLength();
 
     m_sendLock.Lock();
-    const int pullLength = m_sendCache.Pull(pushBuffer, pushLength);
+    const auto pullLength = m_sendCache.Pull(pushBuffer, pushLength);
     m_sendLock.Unlock();
     
     m_sendBuffer.SetPushIndex(pullLength);
@@ -51,11 +51,11 @@ int SocketBuffer::PrepareSendBuffer() {
 }
 
 int SocketBuffer::PreserveRecvBuffer() {
-    const int pullLength = m_recvBuffer.GetPullLength();
-    const char* pullBuffer = m_recvBuffer.GetPullBuffer();
+    const auto pullLength = m_recvBuffer.GetPullLength();
+    const auto pullBuffer = m_recvBuffer.GetPullBuffer();
 
     m_recvLock.Lock();
-    const int pushLength = m_recvCache.Push(pullBuffer, pullLength);
+    const auto pushLength = m_recvCache.Push(pullBuffer, pullLength);
     m_recvLock.Unlock();
 
     m_recvBuffer.JumpPullIndex(pushLength);

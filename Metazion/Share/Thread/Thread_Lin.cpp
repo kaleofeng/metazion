@@ -14,7 +14,7 @@ Thread::~Thread() {
 }
 
 void Thread::Run() {
-    const int ret = ::pthread_create(&m_threadId
+    const auto ret = ::pthread_create(&m_threadId
         , nullptr
         , ThreadFunc
         , this);
@@ -24,7 +24,7 @@ void Thread::Run() {
 void Thread::Wait() {
     if (0 != m_threadId) {
         void* status = nullptr;
-        const int ret = ::pthread_join(m_threadId, &status);
+        const auto ret = ::pthread_join(m_threadId, &status);
         ASSERT_TRUE(0 == ret);
         m_threadId = 0;
     }

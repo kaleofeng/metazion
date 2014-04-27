@@ -46,7 +46,7 @@ void TransmitSocket::OnClosed() {
 }
 
 bool TransmitSocket::IsAlive() const {
-    bool ret = Socket::IsAlive();
+    auto ret = Socket::IsAlive();
     if (ret) {
         return true;
     }
@@ -77,7 +77,7 @@ int TransmitSocket::Send(const void* data, int length) {
     }
 
     m_socketBuffer.m_sendLock.Lock();
-    const int pushLength = m_socketBuffer.m_sendCache.Push(data, length);
+    const auto pushLength = m_socketBuffer.m_sendCache.Push(data, length);
     m_socketBuffer.m_sendLock.Unlock();
 
     if (pushLength < length) {

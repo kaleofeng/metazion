@@ -17,7 +17,7 @@ void IocpTransmitStrategy::Reset() {
 }
 
 bool IocpTransmitStrategy::IsBusy() const {
-    bool ret = m_sendOperation.IsBusy();
+    auto ret = m_sendOperation.IsBusy();
     if (ret) {
         return true;
     }
@@ -98,8 +98,8 @@ bool IocpTransmitStrategy::HandleCloseOperation(const IocpOperation* iocpOperati
 bool IocpTransmitStrategy::_PostInputOperation() {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
-    char* recvBuffer = socketBuffer.m_recvBuffer.GetPushBuffer();
-    const int recvLength = socketBuffer.m_recvBuffer.GetPushLength();
+    auto recvBuffer = socketBuffer.m_recvBuffer.GetPushBuffer();
+    const auto recvLength = socketBuffer.m_recvBuffer.GetPushLength();
 
     m_recvOperation.m_wsaBuf.buf = recvBuffer;
     m_recvOperation.m_wsaBuf.len = recvLength;
@@ -107,7 +107,7 @@ bool IocpTransmitStrategy::_PostInputOperation() {
     DWORD bytesRecvd = 0;
     DWORD flags = 0;
     const auto& transmitSockId = m_transmitSocket.GetSockId();
-    const int ret = ::WSARecv(transmitSockId
+    const auto ret = ::WSARecv(transmitSockId
         , &m_recvOperation.m_wsaBuf
         , 1
         , &bytesRecvd
@@ -115,7 +115,7 @@ bool IocpTransmitStrategy::_PostInputOperation() {
         , &m_recvOperation.m_overlapped
         , NULL);
     if (0 != ret) {
-        const DWORD error = ::WSAGetLastError();
+        const auto error = ::WSAGetLastError();
         if (ERROR_IO_PENDING != error) {
             HandleFailureOperation(&m_recvOperation, 0, error);
             return false;
@@ -128,7 +128,7 @@ bool IocpTransmitStrategy::_PostInputOperation() {
 bool IocpTransmitStrategy::_PostOutputOperation() {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
-    int sendLength = socketBuffer.m_sendBuffer.GetPullLength();
+    auto sendLength = socketBuffer.m_sendBuffer.GetPullLength();
     if (sendLength <= 0) {
         sendLength = socketBuffer.PrepareSendBuffer();
     }
@@ -137,14 +137,14 @@ bool IocpTransmitStrategy::_PostOutputOperation() {
         return true;
     }
 
-    char* sendBuffer = socketBuffer.m_sendBuffer.GetPullBuffer();
+    auto sendBuffer = socketBuffer.m_sendBuffer.GetPullBuffer();
 
     m_sendOperation.m_wsaBuf.buf = sendBuffer;
     m_sendOperation.m_wsaBuf.len = sendLength;
 
     DWORD bytesSent = 0;
     const auto& transmitSockId = m_transmitSocket.GetSockId();
-    const int ret = ::WSASend(transmitSockId
+    const auto ret = ::WSASend(transmitSockId
         , &m_sendOperation.m_wsaBuf
         , 1
         , &bytesSent
@@ -152,7 +152,7 @@ bool IocpTransmitStrategy::_PostOutputOperation() {
         , &m_sendOperation.m_overlapped
         , NULL);
     if (0 != ret) {
-        const DWORD error = ::WSAGetLastError();
+        const auto error = ::WSAGetLastError();
         if (ERROR_IO_PENDING != error) {
             HandleFailureOperation(&m_sendOperation, 0, error);
             return false;
@@ -176,12 +176,12 @@ bool IocpTransmitStrategy::HandleInputSuccessOperation(const IocpOperation* iocp
 
     socketBuffer.m_recvBuffer.JumpPushIndex(byteNumber);
 
-    const char* recvData = socketBuffer.m_recvBuffer.GetPullBuffer();
-    const int recvLength = socketBuffer.m_recvBuffer.GetPullLength();
+    const auto recvData = socketBuffer.m_recvBuffer.GetPullBuffer();
+    const auto recvLength = socketBuffer.m_recvBuffer.GetPullLength();
 
     m_transmitSocket.OnRecved(recvData, recvLength);
 
-    const int processLength = socketBuffer.PreserveRecvBuffer();
+    const auto processLength = socketBuffer.PreserveRecvBuffer();
     if (processLength < recvLength) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
         m_transmitSocket.Close();
@@ -203,8 +203,8 @@ bool IocpTransmitStrategy::HandleOutputSuccessOperation(const IocpOperation* ioc
         return true;
     }
 
-    const char* sendData = socketBuffer.m_sendBuffer.GetPullBuffer();
-    const int sendLength = byteNumber;
+    const auto sendData = socketBuffer.m_sendBuffer.GetPullBuffer();
+    const auto sendLength = byteNumber;
 
     m_transmitSocket.OnSended(sendData, sendLength);
 

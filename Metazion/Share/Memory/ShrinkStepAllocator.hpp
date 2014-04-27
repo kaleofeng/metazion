@@ -58,7 +58,7 @@ public:
         }
 
         auto& piece = pieceNode->m_value;
-        void* memory = piece.Obtain();
+        auto memory = piece.Obtain();
         if (!piece.IsAvaliable()) {
             m_availPieceList.PopFront();
             m_fullPieceList.PushBack(pieceNode);
@@ -89,13 +89,13 @@ private:
     }
 
     bool ShouldShrink() {
-        const int pieceCount = GetPieceCount();
+        const auto pieceCount = GetPieceCount();
         if (pieceCount < 4) {
             return false;
         }
 
-        const int freeUnitCount = m_freeUnitList.GetSize();
-        const int freePieceCount = freeUnitCount / STEPSIZE;
+        const auto freeUnitCount = m_freeUnitList.GetSize();
+        const auto freePieceCount = freeUnitCount / STEPSIZE;
         if (freePieceCount * 2 < pieceCount) {
             return false;
         }

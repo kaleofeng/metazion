@@ -35,32 +35,32 @@ int PacketSpecific::Decode(int& command, DecodeBuffer& decodeBuffer) {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     PacketHeader header;
-    const int headerLength = sizeof(header);
-    const int peekLength = socketBuffer.m_recvCache.Peek(&header, headerLength);
+    const auto headerLength = sizeof(header);
+    const auto peekLength = socketBuffer.m_recvCache.Peek(&header, headerLength);
     if (peekLength != headerLength) {
         return 0;
     }
 
-    const int packetLength = sizeof(header) + header.m_length;
+    const auto packetLength = sizeof(header) + header.m_length;
     if (packetLength > MAXAPPPACKETLENGTH) {
         return -1;
     }
 
-    const int cacheLength = socketBuffer.m_recvCache.GetPullLength();
+    const auto cacheLength = socketBuffer.m_recvCache.GetPullLength();
     if (cacheLength < packetLength) {
         return 0;
     }
 
-    char* pushBuffer = decodeBuffer.m_resultBuffer.GetPushBuffer();
-    const int pushLength = decodeBuffer.m_resultBuffer.GetPushLength();
+    auto pushBuffer = decodeBuffer.m_resultBuffer.GetPushBuffer();
+    const auto pushLength = decodeBuffer.m_resultBuffer.GetPushLength();
     ASSERT_TRUE(pushLength >= packetLength);
 
     socketBuffer.m_recvLock.Lock();
 
-    const int pullHeaderLength = socketBuffer.m_recvCache.Pull(&header, headerLength);
+    const auto pullHeaderLength = socketBuffer.m_recvCache.Pull(&header, headerLength);
     ASSERT_TRUE(pullHeaderLength == headerLength);
 
-    const int pullDataLength = socketBuffer.m_recvCache.Pull(pushBuffer, packetLength);
+    const auto pullDataLength = socketBuffer.m_recvCache.Pull(pushBuffer, packetLength);
     ASSERT_TRUE(pullDataLength == header.m_length);
 
     socketBuffer.m_recvLock.Unlock();

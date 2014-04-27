@@ -24,7 +24,7 @@ public:
     }
 
     int Push(const void* data, int length) {
-        int pushLength = this->GetPushLength();
+        auto pushLength = this->GetPushLength();
         if (pushLength <= 0) {
             return 0;
         }
@@ -38,7 +38,7 @@ public:
     }
 
     int Pull(void* data, int length) {
-        const int pullLength = GetPullLength();
+        const auto pullLength = GetPullLength();
         if (pullLength <= 0) {
             return 0;
         }
@@ -52,7 +52,7 @@ public:
     }
 
     int Peek(void* data, int length) {
-        const int pullLength = GetPullLength();
+        const auto pullLength = GetPullLength();
         if (pullLength <= 0) {
             return 0;
         }
@@ -65,7 +65,7 @@ public:
     }
 
     int Skip(int length) {
-        const int pullLength = GetPullLength();
+        const auto pullLength = GetPullLength();
         if (pullLength <= 0) {
             return 0;
         }

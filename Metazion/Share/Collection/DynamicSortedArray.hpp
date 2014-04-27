@@ -72,13 +72,13 @@ public:
 
     int Find(const Value_t& value) {
         int index = 0;
-        bool found = BinarySearch(value, index);
+        auto found = BinarySearch(value, index);
         return found ? index : -1;
     }
 
     int Add(const Value_t& value) {
         int index = 0;
-        bool found = BinarySearch(value, index);
+        auto found = BinarySearch(value, index);
         return m_array.Insert(index, value);
     }
 

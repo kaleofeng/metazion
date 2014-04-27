@@ -131,7 +131,7 @@ public:
         ASSERT_TRUE(!IsNull(node));
         ASSERT_TRUE(IsContain(node));
 
-        auto prevNode = nullptr;
+        Node_t* prevNode = nullptr;
         auto curNode = m_headNode;
         while (!IsNull(curNode)) {
             auto nextNode = curNode->m_nextNode;

@@ -103,7 +103,7 @@ public:
     }
 
     int Add(const Value_t& value) {
-        const int index = m_size;
+        const auto index = m_size;
         return Set(index, value);
     }
 

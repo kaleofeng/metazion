@@ -50,8 +50,8 @@ public:
     }
 
     int Push(const void* data, int length) {
-        const char* tData = static_cast<const char*>(data);;
-        int tLength = length;
+        auto tData = static_cast<const char*>(data);;
+        auto tLength = length;
         while (tLength > 0) {
             auto buffer = m_bufferList.Back();
             const int pushLength = _Push(buffer, tData, tLength);
@@ -67,8 +67,8 @@ public:
     }
 
     int Pull(void* data, int length) {
-        char* tData = static_cast<char*>(data);;
-        int tLength = length;
+        auto tData = static_cast<char*>(data);;
+        auto tLength = length;
         while (tLength > 0) {
             auto buffer = m_bufferList.Front();
             const int pullLength = _Pull(buffer, tData, tLength);
@@ -83,8 +83,8 @@ public:
     }
 
     int Peek(void* data, int length) {
-        char* tData = static_cast<char*>(data);;
-        int tLength = length;
+        auto tData = static_cast<char*>(data);;
+        auto tLength = length;
         auto buffer = m_bufferList.Front();
         while (tLength > 0) {
             const int peekLength = _Peek(buffer, tData, tLength);
@@ -99,10 +99,10 @@ public:
     }
 
     int Skip(int length) {
-        int tLength = length;
+        auto tLength = length;
         while (tLength > 0) {
             auto buffer = m_bufferList.Front();
-            const int skipLength = _Skip(buffer, tLength);
+            const auto skipLength = _Skip(buffer, tLength);
             if (skipLength <= 0) {
                 break;
             }
@@ -138,7 +138,7 @@ private:
             return 0;
         }
 
-        const int pushLength = buffer->m_value.Push(data, length);
+        const auto pushLength = buffer->m_value.Push(data, length);
         m_length += pushLength;
         return pushLength;
     }
@@ -148,7 +148,7 @@ private:
             return 0;
         }
 
-        const int pullLength = buffer->m_value.Pull(data, length);
+        const auto pullLength = buffer->m_value.Pull(data, length);
         m_length -= pullLength;
         return pullLength;
     }
@@ -166,7 +166,7 @@ private:
             return 0;
         }
 
-        const int skipLength = buffer->m_value.Skip(length);
+        const auto skipLength = buffer->m_value.Skip(length);
         m_length -= skipLength;
         return skipLength;
     }

@@ -26,14 +26,14 @@ public:
     }
 
     int Push(const void* data, int length) {
-        const char* buffer = static_cast<const char*>(data);
-        const int vacant = GetPushLength();
-        const int properLength = vacant < length ? vacant : length;
+        const auto buffer = static_cast<const char*>(data);
+        const auto vacant = GetPushLength();
+        const auto properLength = vacant < length ? vacant : length;
         if (properLength <= 0) {
             return 0;
         }
 
-        const int rightLength = MAXLENGTH - m_pushIndex;
+        const auto rightLength = MAXLENGTH - m_pushIndex;
         if (properLength <= rightLength) {
             ::memcpy(&m_buffer[m_pushIndex], buffer, properLength);
             m_pushIndex += properLength;
@@ -50,15 +50,15 @@ public:
     }
 
     int Pull(void* data, int length) {
-        char* buffer = static_cast<char*>(data);
+        auto buffer = static_cast<char*>(data);
 
-        const int engaged = GetPullLength();
-        const int properLength = engaged < length ? engaged : length;
+        const auto engaged = GetPullLength();
+        const auto properLength = engaged < length ? engaged : length;
         if (properLength <= 0) {
             return 0;
         }
 
-        const int rightLength = MAXLENGTH - m_pullIndex;
+        const auto rightLength = MAXLENGTH - m_pullIndex;
         if (properLength <= rightLength) {
             ::memcpy(buffer, &m_buffer[m_pullIndex], properLength);
             m_pullIndex += properLength;
@@ -75,15 +75,15 @@ public:
     }
     
     int Peek(void* data, int length) {
-        char* buffer = static_cast<char*>(data);
+        auto buffer = static_cast<char*>(data);
 
-        const int engaged = GetPullLength();
-        const int properLength = engaged < length ? engaged : length;
+        const auto engaged = GetPullLength();
+        const auto properLength = engaged < length ? engaged : length;
         if (properLength <= 0) {
             return 0;
         }
 
-        const int rightLength = MAXLENGTH - m_pullIndex;
+        const auto rightLength = MAXLENGTH - m_pullIndex;
         if (properLength <= rightLength) {
             ::memcpy(buffer, &m_buffer[m_pullIndex], properLength);
         }
@@ -96,8 +96,8 @@ public:
     }
 
     int Skip(int length) {
-        const int engaged = GetPullLength();
-        const int properLength = engaged < length ? engaged : length;
+        const auto engaged = GetPullLength();
+        const auto properLength = engaged < length ? engaged : length;
         if (properLength <= 0) {
             return 0;
         }

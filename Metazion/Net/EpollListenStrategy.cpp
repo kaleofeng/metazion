@@ -27,7 +27,7 @@ void EpollListenStrategy::Input() {
     while (true) {
         auto sockId = ::accept(listenSockId, sockAddr, &sockAddrLen);
         if (INVALID_SOCKID == sockId) {
-            const int error = GetLastError();
+            const auto error = GetLastError();
             if (EINTR == error) {
                 continue;
             }

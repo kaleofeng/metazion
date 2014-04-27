@@ -23,19 +23,19 @@ bool EpollTransmitStrategy::IsBusy() const {
 void EpollTransmitStrategy::Input() {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
-    const SockId_t& transmitSockId = m_transmitSocket.GetSockId();
+    const auto& transmitSockId = m_transmitSocket.GetSockId();
     while (true) {
-        char* pushBuffer = socketBuffer.m_recvBuffer.GetPushBuffer();
-        const int pushLength = socketBuffer.m_recvBuffer.GetPushLength();
+        auto pushBuffer = socketBuffer.m_recvBuffer.GetPushBuffer();
+        const auto pushLength = socketBuffer.m_recvBuffer.GetPushLength();
 
-        const int recvLength = ::recv(transmitSockId, pushBuffer, pushLength, 0);
+        const auto recvLength = ::recv(transmitSockId, pushBuffer, pushLength, 0);
         if (0 == recvLength) {
             ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
             m_transmitSocket.Close();
             break;
         }
         else if (recvLength < 0) {
-            const int error = GetLastError();
+            const auto error = GetLastError();
             if (EINTR == error) {
                 continue;
             }
@@ -51,12 +51,12 @@ void EpollTransmitStrategy::Input() {
 
         socketBuffer.m_recvBuffer.JumpPushIndex(recvLength);
 
-        const char* pullBuffer = socketBuffer.m_recvBuffer.GetPullBuffer();
-        const int pullLength = socketBuffer.m_recvBuffer.GetPullLength();
+        const auto pullBuffer = socketBuffer.m_recvBuffer.GetPullBuffer();
+        const auto pullLength = socketBuffer.m_recvBuffer.GetPullLength();
 
         m_transmitSocket.OnRecved(pullBuffer, pullLength);
 
-        const int processLength = socketBuffer.PreserveRecvBuffer();
+        const auto processLength = socketBuffer.PreserveRecvBuffer();
         if (processLength < pullLength) {
             ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
             m_transmitSocket.Close();
@@ -89,11 +89,11 @@ void EpollTransmitStrategy::Output() {
             break;
         }
 
-        const char* pullBuffer = socketBuffer.m_sendBuffer.GetPullBuffer();
+        const auto pullBuffer = socketBuffer.m_sendBuffer.GetPullBuffer();
 
-        const int sendLength = ::send(transmitSockId, pullBuffer, pullLength, MSG_NOSIGNAL);
+        const auto sendLength = ::send(transmitSockId, pullBuffer, pullLength, MSG_NOSIGNAL);
         if (sendLength < 0) {
-            const int error = GetLastError();
+            const auto error = GetLastError();
             if (EINTR == error) {
                 continue;
             }

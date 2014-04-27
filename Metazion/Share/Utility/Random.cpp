@@ -22,6 +22,7 @@ int Random::GetRangeInt(int begin, int end) {
     if (begin == end) {
         return begin;
     }
+	
     return begin + GetRandInt() % (end - begin + 1);
 }
 

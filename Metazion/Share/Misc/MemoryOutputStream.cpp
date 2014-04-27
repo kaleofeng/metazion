@@ -92,19 +92,19 @@ bool MemoryOutputStream::Write(const void* buffer, int32_t length) {
 }
 
 bool MemoryOutputStream::Check(int length) {
-    const int totalLength = m_position + length;
+    const auto totalLength = m_position + length;
     if (totalLength <= m_length) {
         return true;
     }
     
-    const int alignLength = AlignLength(totalLength, 1024);
+    const auto alignLength = AlignLength(totalLength, 1024);
     if (IsNull(m_buffer)) {
         m_buffer = new char[alignLength];
         m_length = alignLength;
         return true;
     }
 
-    char* buffer = new char[alignLength];
+    auto buffer = new char[alignLength];
     ::memcpy(m_buffer, m_buffer, m_position);
     m_buffer = buffer;
     m_length = alignLength;

@@ -105,7 +105,7 @@ private:
     int Set(int index, const Value_t& value) {
         ASSERT_TRUE(index >= 0 && index < m_capacity);
 
-        const int size = index + 1;
+        const auto size = index + 1;
         if (size > m_size) {
             m_size = size;
         }

@@ -23,7 +23,7 @@ void ListenSocket::OnStarted() {
 }
 
 bool ListenSocket::IsAlive() const {
-    bool ret = Socket::IsActive();
+    auto ret = Socket::IsActive();
     if (ret) {
         return true;
     }
@@ -54,7 +54,7 @@ bool ListenSocket::Listen(int backlog) {
 
     int optValue = 1;
     SockLen_t optLength = sizeof(optValue);
-    int ret = SetSockOpt(sockId, SOL_SOCKET, SO_REUSEADDR, &optValue, optLength);
+    auto ret = SetSockOpt(sockId, SOL_SOCKET, SO_REUSEADDR, &optValue, optLength);
     if (SOCKET_ERROR == ret) {
         DestroySockId(sockId);
         return false;

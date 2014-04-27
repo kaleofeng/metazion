@@ -42,7 +42,7 @@ public:
 
 private:
     Object_t* CreateObject() {
-        void* memory = m_allocator.Alloc();
+        auto memory = m_allocator.Alloc();
         auto object = new(memory)Object_t();
         return object;
     }

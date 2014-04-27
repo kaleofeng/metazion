@@ -47,7 +47,7 @@ bool IocpListenStrategy::HandleSuccessOperation(const IocpOperation* iocpOperati
     const auto& acceptSockId = m_acceptOperation.m_sockId;
 
     const auto& listenSockId = m_listenSocket.GetSockId();
-    const int ret = ::setsockopt(acceptSockId
+    const auto ret = ::setsockopt(acceptSockId
         , SOL_SOCKET
         , SO_UPDATE_ACCEPT_CONTEXT
         , reinterpret_cast<const char*>(&listenSockId)
@@ -102,7 +102,7 @@ bool IocpListenStrategy::_PostAcceptOperation() {
 
     DWORD bytesRecvd = 0;
     const auto& listenSockId = m_listenSocket.GetSockId();
-    const BOOL ret = ::AcceptEx(listenSockId
+    const auto ret = ::AcceptEx(listenSockId
         , m_acceptOperation.m_sockId
         , m_acceptOperation.m_buffer
         , 0

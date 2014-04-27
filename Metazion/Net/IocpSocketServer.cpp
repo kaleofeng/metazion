@@ -32,7 +32,7 @@ bool IocpSocketServer::Initialize(int socketCapacity, int ioThreadNumber) {
     m_socketCtrlList = new SocketCtrl[m_socketCapacity];
 
     m_ioThreadList = new IocpIoThread*[m_ioThreadNumber];
-    for (int index = 0; index < m_ioThreadNumber; ++index) {
+    for (auto index = 0; index < m_ioThreadNumber; ++index) {
         auto& ioThread = m_ioThreadList[index];
         ioThread = new IocpIoThread();
         ioThread->Initialize(this);
@@ -49,14 +49,14 @@ void IocpSocketServer::Finalize() {
     m_maintenanceThread->Finalize();
     SafeDelete(m_maintenanceThread);
 
-    for (int index = 0; index < m_ioThreadNumber; ++index) {
+    for (auto index = 0; index < m_ioThreadNumber; ++index) {
         auto& ioThread = m_ioThreadList[index];
         ioThread->Finalize();
         SafeDelete(ioThread);
     }
     SafeDeleteArray(m_ioThreadList);
 
-    for (int index = 0; index < m_socketCapacity; ++index) {
+    for (auto index = 0; index < m_socketCapacity; ++index) {
         auto& socketCtrl = m_socketCtrlList[index];
         if (IsNull(socketCtrl.m_socket)) {
             continue;
@@ -84,7 +84,7 @@ bool IocpSocketServer::Attach(Socket* socket) {
     }
 
     Lock();
-    const int index = GetVacantIndex();
+    const auto index = GetVacantIndex();
     AddSocketCtrl(index, socket);
     Unlock();
 
@@ -144,7 +144,7 @@ void IocpSocketServer::RemoveSocketCtrl(int index) {
 }
 
 int IocpSocketServer::GetVacantIndex() const {
-    for (int index = 0; index < m_socketCapacity; ++index) {
+    for (auto index = 0; index < m_socketCapacity; ++index) {
         if (IsNull(m_socketCtrlList[index].m_socket)) {
             return index;
         }
@@ -191,7 +191,7 @@ void IocpIoThread::Execute() {
         completionKey = 0;
         overLapped = nullptr;
 
-        BOOL ret = ::GetQueuedCompletionStatus(hIocp
+        auto ret = ::GetQueuedCompletionStatus(hIocp
             , &numberOfBytes
             , &completionKey
             , &overLapped
@@ -200,8 +200,8 @@ void IocpIoThread::Execute() {
         socket = reinterpret_cast<Socket*>(completionKey);
         iocpOperation = CONTAINING_RECORD(overLapped, IocpOperation, m_overlapped);
 
-        const DWORD error = ::WSAGetLastError();
-        const int result = AnalyseStatusResult(ret
+        const auto error = ::WSAGetLastError();
+        const auto result = AnalyseStatusResult(ret
             , overLapped
             , numberOfBytes
             , error);
@@ -273,10 +273,10 @@ void IocpMaintenanceThread::Stop() {
 }
 
 void IocpMaintenanceThread::Execute() {
-    int32_t lastTime = NS_SHARE::GetTickMillisecond();
-    int32_t lastTickTime = lastTime;
+    auto lastTime = NS_SHARE::GetTickMillisecond();
+    auto lastTickTime = lastTime;
     while (!m_stopDesired) {
-        const int32_t curTime = NS_SHARE::GetTickMillisecond();
+        const auto curTime = NS_SHARE::GetTickMillisecond();
         if (curTime - lastTime < 10) {
             MilliSleep(1);
             continue;
@@ -292,8 +292,8 @@ void IocpMaintenanceThread::Execute() {
 }
 
 void IocpMaintenanceThread::ProcessSockets() {
-    const int socketCapacity = m_socketServer->GetSocketCapacity();
-    for (int index = 0; index < socketCapacity; ++index) {
+    const auto socketCapacity = m_socketServer->GetSocketCapacity();
+    for (auto index = 0; index < socketCapacity; ++index) {
         auto& socketCtrl = m_socketServer->GetSocketCtrl(index);
         if (IsNull(socketCtrl.m_socket)) {
             continue;

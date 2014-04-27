@@ -58,7 +58,7 @@ public:
         }
 
         auto& piece = pieceNode->m_value;
-        void* memory = piece.Obtain();
+        auto memory = piece.Obtain();
         if (!piece.IsAvaliable()) {
             m_availPieceList.PopFront();
             m_fullPieceList.PushBack(pieceNode);

@@ -15,7 +15,7 @@ void AppServerSocket::Dispatch() {
     while (true) {
         int command = 0;
         decodeBuffer.m_resultBuffer.Reset();
-        const int ret = m_packetSpecific.Decode(command, decodeBuffer);
+        const auto ret = m_packetSpecific.Decode(command, decodeBuffer);
         if (0 == ret) {
             break;
         }
@@ -24,8 +24,8 @@ void AppServerSocket::Dispatch() {
             break;
         }
 
-        const char* pullBuffer = decodeBuffer.m_resultBuffer.GetPullBuffer();
-        const int pullLength = decodeBuffer.m_resultBuffer.GetPullLength();
+        const auto pullBuffer = decodeBuffer.m_resultBuffer.GetPullBuffer();
+        const auto pullLength = decodeBuffer.m_resultBuffer.GetPullLength();
         OnValidPacket(command, pullBuffer, pullLength);
     }
 }
@@ -34,13 +34,13 @@ bool AppServerSocket::SendData(int command, const void* data, int length) {
     auto& encodeBuffer = GetEncodeBuffer();
     encodeBuffer.m_resultBuffer.Reset();
 
-    const int ret = m_packetSpecific.Encode(command, data, length, encodeBuffer);
+    const auto ret = m_packetSpecific.Encode(command, data, length, encodeBuffer);
     if (ret <= 0) {
         return false;
     }
 
-    const void* pullBuffer = encodeBuffer.m_resultBuffer.GetPullBuffer();
-    const int pullLength = encodeBuffer.m_resultBuffer.GetPullLength();
+    const auto pullBuffer = encodeBuffer.m_resultBuffer.GetPullBuffer();
+    const auto pullLength = encodeBuffer.m_resultBuffer.GetPullLength();
     return Send(pullBuffer, pullLength) == pullLength;
 }
 

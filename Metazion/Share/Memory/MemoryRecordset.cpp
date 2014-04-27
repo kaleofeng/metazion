@@ -61,7 +61,7 @@ void MemoryRecordset::Reset() {
 
 MemoryRecordset::Handle MemoryRecordset::ObtainRecord() {
     if (INVALIDRECORDINDEX  == m_activeHeader->m_firstFree) {
-        int recordIndex = m_activeHeader->m_usedCount;
+        auto recordIndex = m_activeHeader->m_usedCount;
         if (!IsValidRecordIndex(recordIndex)) {
             return Handle(0);
         }
@@ -70,9 +70,9 @@ MemoryRecordset::Handle MemoryRecordset::ObtainRecord() {
         return handle;
     }
 
-    const int recordIndex = m_activeHeader->m_firstFree;
+    const auto recordIndex = m_activeHeader->m_firstFree;
     Handle handle = RecordIndexToHandle(recordIndex);
-    void* memory = GetMemory(handle);
+    auto memory = GetMemory(handle);
     auto record = static_cast<Record*>(memory);
     m_activeHeader->m_firstFree = record->m_data.m_flag;
     return handle;
@@ -83,7 +83,7 @@ bool MemoryRecordset::ReturnRecord(MemoryRecordset::Handle handle) {
         return false;
     }
 
-    void* memory = GetMemory(handle);
+    auto memory = GetMemory(handle);
     auto record = static_cast<Record*>(memory);
     record->m_data.m_flag = m_activeHeader->m_firstFree;
     m_activeHeader->m_firstFree = HandleToRecordIndex(handle);
@@ -95,7 +95,7 @@ void* MemoryRecordset::GetMemory(MemoryRecordset::Handle handle) {
         return nullptr;
     }
 
-    char* memory = reinterpret_cast<char*>(handle);
+    auto memory = reinterpret_cast<char*>(handle);
     return memory;
 }
 
@@ -104,7 +104,7 @@ MemoryRecordset::Handle MemoryRecordset::GetHandle(void* memory) {
 }
 
 bool MemoryRecordset::IsValidHandle(MemoryRecordset::Handle handle) {
-    char* memory = reinterpret_cast<char*>(handle);
+    auto memory = reinterpret_cast<char*>(handle);
     return memory >= m_buffer && memory < m_buffer + m_length;
 }
 
@@ -113,13 +113,13 @@ bool MemoryRecordset::IsValidMomory(void* memory) {
 }
 
 int MemoryRecordset::HandleToRecordIndex(MemoryRecordset::Handle handle) {
-    const char* memory = reinterpret_cast<const char*>(handle);
+    const auto memory = reinterpret_cast<const char*>(handle);
     const auto memoryLength = static_cast<intptr_t>(memory - m_buffer);
     return static_cast<int>(memoryLength / m_activeHeader->m_recordSize);
 }
 
 MemoryRecordset::Handle MemoryRecordset::RecordIndexToHandle(int index) {
-    const int memoryLength = m_activeHeader->m_recordSize * index;
+    const auto memoryLength = m_activeHeader->m_recordSize * index;
     return Handle(m_buffer + memoryLength);
 }
 

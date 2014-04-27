@@ -29,9 +29,9 @@ bool EpollSocketServer::Initialize(int socketCapacity, int ioThreadNumber) {
     m_ioThreadNumber = ioThreadNumber;
 
     m_epollfdList = new int[m_ioThreadNumber];
-    for (int index = 0; index < m_ioThreadNumber; ++index) {
-        int& epollfd = m_epollfdList[index];
-        const int socketCount = GetSocketCount(index);
+    for (auto index = 0; index < m_ioThreadNumber; ++index) {
+        auto& epollfd = m_epollfdList[index];
+        const auto socketCount = GetSocketCount(index);
         epollfd = ::epoll_create(socketCount);
         if (epollfd < 0) {
             return false;
@@ -44,7 +44,7 @@ bool EpollSocketServer::Initialize(int socketCapacity, int ioThreadNumber) {
     m_socketCtrlList = new SocketCtrl[m_socketCapacity];
 
     m_ioThreadList = new EpollIoThread*[m_ioThreadNumber];
-    for (int index = 0; index < m_ioThreadNumber; ++index) {
+    for (auto index = 0; index < m_ioThreadNumber; ++index) {
         auto& ioThread = m_ioThreadList[index];
         ioThread = new EpollIoThread();
         ioThread->Initialize(this, index);
@@ -88,7 +88,7 @@ void EpollSocketServer::Finalize() {
     SafeDeleteArray(m_epollEventList);
 
     for (int index = 0; index < m_ioThreadNumber; ++index) {
-        int& epollfd = m_epollfdList[index];
+        auto& epollfd = m_epollfdList[index];
         if (epollfd >= 0) {
             ::close(epollfd);
         }
@@ -104,7 +104,7 @@ bool EpollSocketServer::Attach(Socket* socket) {
     }
 
     Lock();
-    const int index = GetVacantIndex();
+    const auto index = GetVacantIndex();
     AddSocketCtrl(index, socket);
     Unlock();
 
@@ -142,13 +142,13 @@ void EpollSocketServer::MarkSocketClosed(int index) {
 
 bool EpollSocketServer::AssociateWithEpoll(Socket* socket) {
     const auto& sockId = socket->GetSockId();
-    const int socketIndex = socket->GetIndex();
-    const int threadIndex = GetThreadIndex(socketIndex);
+    const auto socketIndex = socket->GetIndex();
+    const auto threadIndex = GetThreadIndex(socketIndex);
 
     struct epoll_event event;
     event.data.ptr = socket;
     event.events = EPOLLIN | EPOLLOUT | EPOLLET | EPOLLRDHUP;
-    const int ret = epoll_ctl(m_epollfdList[threadIndex], EPOLL_CTL_ADD, sockId, &event);
+    const auto ret = epoll_ctl(m_epollfdList[threadIndex], EPOLL_CTL_ADD, sockId, &event);
     if (ret == -1) {
         return false;
     }
@@ -169,14 +169,14 @@ void EpollSocketServer::RemoveSocketCtrl(int index) {
 }
 
 int EpollSocketServer::GetVacantIndex() const {
-    const int threadIndex = g_random.GetRangeInt(0, m_ioThreadNumber - 1);
-    const int startIndex = GetStartIndex(threadIndex);
-    for (int index = startIndex; index < m_socketCapacity; ++index) {
+    const auto threadIndex = g_random.GetRangeInt(0, m_ioThreadNumber - 1);
+    const auto startIndex = GetStartIndex(threadIndex);
+    for (auto index = startIndex; index < m_socketCapacity; ++index) {
         if (IsNull(m_socketCtrlList[index].m_socket)) {
             return index;
         }
     }
-    for (int index = 0; index < startIndex; ++index) {
+    for (auto index = 0; index < startIndex; ++index) {
         if (IsNull(m_socketCtrlList[index].m_socket)) {
             return index;
         }
@@ -187,19 +187,19 @@ int EpollSocketServer::GetVacantIndex() const {
 }
 
 int EpollSocketServer::GetThreadIndex(int socketIndex) {
-    const int eachCount = (m_socketCapacity + m_ioThreadNumber - 1) / m_ioThreadNumber;
+    const auto eachCount = (m_socketCapacity + m_ioThreadNumber - 1) / m_ioThreadNumber;
     return socketIndex / eachCount;
 }
 
 int EpollSocketServer::GetStartIndex(int threadIndex) const {
-    const int eachCount = (m_socketCapacity + m_ioThreadNumber - 1) / m_ioThreadNumber;
+    const auto eachCount = (m_socketCapacity + m_ioThreadNumber - 1) / m_ioThreadNumber;
     return eachCount * threadIndex;
 }
 
 int EpollSocketServer::GetSocketCount(int threadIndex) const {
-    const int eachCount = (m_socketCapacity + m_ioThreadNumber - 1) / m_ioThreadNumber;
-    const int startIndex = eachCount * threadIndex;
-    const int restCount = m_socketCapacity - startIndex;
+    const auto eachCount = (m_socketCapacity + m_ioThreadNumber - 1) / m_ioThreadNumber;
+    const auto startIndex = eachCount * threadIndex;
+    const auto restCount = m_socketCapacity - startIndex;
     return restCount < eachCount ? restCount : eachCount;
 }
 
@@ -217,7 +217,7 @@ EpollIoThread::~EpollIoThread() {}
 void EpollIoThread::Initialize(EpollSocketServer* socketServer, int index) {
     m_socketServer = socketServer;
     m_index = index;
-    const int startIndex = m_socketServer->GetStartIndex(m_index);
+    const auto startIndex = m_socketServer->GetStartIndex(m_index);
     m_epollfd = m_socketServer->GetEpollfd(m_index);
     m_eventList = &m_socketServer->GetEpollEvent(startIndex);
     m_socketCount = m_socketServer->GetSocketCount(m_index);
@@ -242,7 +242,7 @@ void EpollIoThread::Execute() {
 }
 
 void EpollIoThread::ProcessSockets() {
-    for (int index = 0; index < m_socketCount; ++index) {
+    for (auto index = 0; index < m_socketCount; ++index) {
         auto& socketCtrl = m_socketCtrlList[index];
         if (IsNull(socketCtrl.m_socket)) {
             continue;
@@ -257,20 +257,20 @@ void EpollIoThread::ProcessSockets() {
 }
 
 void EpollIoThread::ProcessEvents() {
-    const int count = ::epoll_wait(m_epollfd, m_eventList, m_socketCount, 10);
+    const auto count = ::epoll_wait(m_epollfd, m_eventList, m_socketCount, 10);
     if (0 == count) {
         return;
     }
     
     if (count < 0) {
-        const int error = GetLastError();
+        const auto error = GetLastError();
         if (EINTR != error) {
             ::printf("Socket Warning: epoll wait, error[%d]. [%s:%d]\n", error, __FILE__, __LINE__);
         }
         return;
     }
 
-    for (int index = 0; index < count; ++index)  {
+    for (auto index = 0; index < count; ++index)  {
         auto& event = m_eventList[index];
         auto socket = static_cast<Socket*>(event.data.ptr);
 

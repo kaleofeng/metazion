@@ -3,7 +3,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 SockId_t CreateSockId(int transportType) {
-    const int sockStream = TRANSPORT_TCP == transportType ? SOCK_STREAM : SOCK_DGRAM;
+    const auto sockStream = TRANSPORT_TCP == transportType ? SOCK_STREAM : SOCK_DGRAM;
 
 #if defined(MZ_PLATFORM_WINOWS)
     auto sockId = ::WSASocket(AF_INET, sockStream, IPPROTO_IP, NULL, 0, WSA_FLAG_OVERLAPPED);
@@ -36,7 +36,7 @@ bool SetNonBlock(SockId_t sockId) {
 #endif // MZ_PLATFORM_WINOWS
 
 #if defined(MZ_PLATFORM_LINUX)
-    int oldFlags = ::fcntl(sockId, F_GETFL);
+    auto oldFlags = ::fcntl(sockId, F_GETFL);
     if (oldFlags == -1)  {
         oldFlags = 0;
     }
