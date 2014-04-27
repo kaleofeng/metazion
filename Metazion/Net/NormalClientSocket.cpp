@@ -194,7 +194,7 @@ int NormalClientSocket::CheckConnected() {
     // For examle, when listen socket's backlog queue is full.
     // And also doesn't work on solaris platform.
     int optValue = 0;
-    SockLen_t optLength = sizeof(optValue);
+    auto optLength = static_cast<SockLen_t>(sizeof(optValue));
     GetSockOpt(m_sockId, SOL_SOCKET, SO_ERROR, &optValue, &optLength);
     if (0 != optValue) {
         return -1;

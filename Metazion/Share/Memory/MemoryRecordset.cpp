@@ -65,6 +65,7 @@ MemoryRecordset::Handle MemoryRecordset::ObtainRecord() {
         if (!IsValidRecordIndex(recordIndex)) {
             return Handle(0);
         }
+
         Handle handle = RecordIndexToHandle(recordIndex);
         ++m_activeHeader->m_usedCount;
         return handle;

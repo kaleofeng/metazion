@@ -53,7 +53,7 @@ bool ListenSocket::Listen(int backlog) {
     }
 
     int optValue = 1;
-    SockLen_t optLength = sizeof(optValue);
+    auto optLength = static_cast<SockLen_t>(sizeof(optValue));
     auto ret = SetSockOpt(sockId, SOL_SOCKET, SO_REUSEADDR, &optValue, optLength);
     if (SOCKET_ERROR == ret) {
         DestroySockId(sockId);

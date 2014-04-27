@@ -35,13 +35,13 @@ int PacketSpecific::Decode(int& command, DecodeBuffer& decodeBuffer) {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     PacketHeader header;
-    const auto headerLength = sizeof(header);
+    const auto headerLength = static_cast<int>(sizeof(header));
     const auto peekLength = socketBuffer.m_recvCache.Peek(&header, headerLength);
     if (peekLength != headerLength) {
         return 0;
     }
 
-    const auto packetLength = sizeof(header) + header.m_length;
+    const auto packetLength = static_cast<int>(sizeof(header)+header.m_length);
     if (packetLength > MAXAPPPACKETLENGTH) {
         return -1;
     }
