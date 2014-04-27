@@ -45,19 +45,19 @@ public:
     }
 
     void* Alloc() {
-        UnitNode_t* unitNode = m_freeUnitList.Front();
+        auto unitNode = m_freeUnitList.Front();
         if (!IsNull(unitNode)) {
             m_freeUnitList.PopFront();
             return unitNode;
         }
 
-        PieceNode_t* pieceNode = m_availPieceList.Front();
+        auto pieceNode = m_availPieceList.Front();
         if (IsNull(pieceNode)) {
             pieceNode = CreatePieceNode();
             m_availPieceList.PushBack(pieceNode);
         }
 
-        Piece_t& piece = pieceNode->m_value;
+        auto& piece = pieceNode->m_value;
         void* memory = piece.Obtain();
         if (!piece.IsAvaliable()) {
             m_availPieceList.PopFront();

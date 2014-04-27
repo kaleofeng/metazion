@@ -73,7 +73,7 @@ public:
             return;
         }
 
-        Node_t* node = m_headNode;
+        auto node = m_headNode;
         m_headNode = m_headNode->m_nextNode;
         if (IsNull(m_headNode)) {
             m_tailNode = nullptr;
@@ -118,7 +118,7 @@ public:
         ASSERT_TRUE(IsContain(location));
         ASSERT_TRUE(!IsContain(node));
 
-        Node_t* nextNode = location->m_nextNode;
+        auto nextNode = location->m_nextNode;
         if (IsNull(nextNode)) {
             m_tailNode = node;
         }
@@ -131,10 +131,10 @@ public:
         ASSERT_TRUE(!IsNull(node));
         ASSERT_TRUE(IsContain(node));
 
-        Node_t* prevNode = nullptr;
-        Node_t* curNode = m_headNode;
+        auto prevNode = nullptr;
+        auto curNode = m_headNode;
         while (!IsNull(curNode)) {
-            Node_t* nextNode = curNode->m_nextNode;
+            auto nextNode = curNode->m_nextNode;
             if (node != curNode) {
                 prevNode = curNode;
                 curNode = nextNode;
@@ -178,7 +178,7 @@ public:
     bool IsContain(Node_t* node) const {
         ASSERT_TRUE(!IsNull(node));
 
-        const Node_t* cursor = Front();
+        const auto cursor = Front();
         while (!IsNull(cursor)) {
             if (node == cursor) {
                 return true;

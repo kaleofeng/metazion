@@ -22,14 +22,14 @@ void TransmitSocket::Reset() {
 void TransmitSocket::OnAttached() {
     Socket::OnAttached();
 
-    SocketServer* server = GetSocketServer();
-    BaseSocketServer* baseServer = static_cast<BaseSocketServer*>(server);
+    auto server = GetSocketServer();
+    auto baseServer = static_cast<BaseSocketServer*>(server);
     ASSERT_TRUE(!IsNull(baseServer));
 
-    SocketBuffer::SendCache_t::BufferPool_t& sendBufferPool = baseServer->GetSendCachePool();
+    auto& sendBufferPool = baseServer->GetSendCachePool();
     m_socketBuffer.SetSendCachePool(sendBufferPool);
 
-    SocketBuffer::RecvCache_t::BufferPool_t& recvBufferPool = baseServer->GetRecvCachePool();
+    auto& recvBufferPool = baseServer->GetRecvCachePool();
     m_socketBuffer.SetRecvCachePool(recvBufferPool);
 }
 

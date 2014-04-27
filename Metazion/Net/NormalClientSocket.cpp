@@ -141,15 +141,15 @@ void NormalClientSocket::Reconnect(bool immediately) {
 }
 
 int NormalClientSocket::TryToConnect() {
-    SockId_t sockId = CreateSockId(TRANSPORT_TCP);
+    auto sockId = CreateSockId(TRANSPORT_TCP);
     if (INVALID_SOCKID == sockId) {
         return -1;
     }
 
     AttachSockId(sockId);
 
-    SockAddr_t* sockAddr = m_remoteHost.SockAddr();
-    SockLen_t sockAddrLen = m_remoteHost.SockAddrLen();
+    auto sockAddr = m_remoteHost.SockAddr();
+    auto sockAddrLen = m_remoteHost.SockAddrLen();
     const int ret = ::connect(m_sockId, sockAddr, sockAddrLen);
     if (0 == ret) {
         return 1;

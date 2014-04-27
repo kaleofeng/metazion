@@ -21,11 +21,11 @@ bool EpollListenStrategy::IsBusy() const {
 
 void EpollListenStrategy::Input() {
     Host peerHost;
-    SockAddr_t* sockAddr = peerHost.SockAddr();
-    SockLen_t sockAddrLen = peerHost.SockAddrLen();
-    const SockId_t& listenSockId = m_listenSocket.GetSockId();
+    auto sockAddr = peerHost.SockAddr();
+    auto sockAddrLen = peerHost.SockAddrLen();
+    const auto& listenSockId = m_listenSocket.GetSockId();
     while (true) {
-        SockId_t sockId = ::accept(listenSockId, sockAddr, &sockAddrLen);
+        auto sockId = ::accept(listenSockId, sockAddr, &sockAddrLen);
         if (INVALID_SOCKID == sockId) {
             const int error = GetLastError();
             if (EINTR == error) {

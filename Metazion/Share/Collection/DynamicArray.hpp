@@ -159,7 +159,7 @@ private:
             return;
         }
 
-        Value_t* tValues = new Value_t[m_capacity];
+        auto tValues = new Value_t[m_capacity];
         ::memmove(tValues, m_values, sizeof(Value_t) * m_size);
         SafeDeleteArray(m_values);
         m_values = tValues;

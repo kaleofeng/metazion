@@ -42,7 +42,7 @@ int AppSocketServer::LockSockets(SocketFilter& filter, SocketArray_t& socketArra
     Lock();
     const int socketCapacity = GetSocketCapacity();
     for (int index = 0; index < socketCapacity; ++index) {
-        Socket* socket = GetSocket(index);
+        auto socket = GetSocket(index);
         if (IsNull(socket)) {
             continue;
         }
@@ -61,7 +61,7 @@ int AppSocketServer::LockSockets(SocketFilter& filter, SocketArray_t& socketArra
 void AppSocketServer::UnlockSockets(SocketArray_t& socketArray) {
     const int size = socketArray.GetSize();
     for (int index = 0; index < size; ++index) {
-        Socket* socket = socketArray[index];
+        auto socket = socketArray[index];
         ASSERT_TRUE(!IsNull(socket));
         socket->Release();
     }
@@ -75,7 +75,7 @@ EncodeBuffer& AppSocketServer::GetEncodeBuffer() {
         ASSERT_TRUE(ret);
     }
 
-    ThreadEncodeBuffer* threadBuffer = static_cast<ThreadEncodeBuffer*>(buffer);
+    auto threadBuffer = static_cast<ThreadEncodeBuffer*>(buffer);
     return threadBuffer->m_buffer;
 }
 
@@ -87,7 +87,7 @@ DecodeBuffer& AppSocketServer::GetDecodeBuffer() {
         ASSERT_TRUE(ret);
     }
 
-    ThreadDecodeBuffer* threadBuffer = static_cast<ThreadDecodeBuffer*>(buffer);
+    auto threadBuffer = static_cast<ThreadDecodeBuffer*>(buffer);
     return threadBuffer->m_buffer;
 }
 

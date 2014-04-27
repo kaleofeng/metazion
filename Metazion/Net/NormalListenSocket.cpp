@@ -12,7 +12,7 @@ NormalListenSocket::~NormalListenSocket() {}
 bool NormalListenSocket::OnAccepted(const SockId_t& sockId) {
     ListenSocket::OnAccepted(sockId);
 
-    NormalServerSocket* socket = CreateServerSocket();
+    auto socket = CreateServerSocket();
     ASSERT_TRUE(!IsNull(socket));
 
     socket->Attach(sockId);

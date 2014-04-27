@@ -6,11 +6,11 @@ SockId_t CreateSockId(int transportType) {
     const int sockStream = TRANSPORT_TCP == transportType ? SOCK_STREAM : SOCK_DGRAM;
 
 #if defined(MZ_PLATFORM_WINOWS)
-    SockId_t sockId = ::WSASocket(AF_INET, sockStream, IPPROTO_IP, NULL, 0, WSA_FLAG_OVERLAPPED);
+    auto sockId = ::WSASocket(AF_INET, sockStream, IPPROTO_IP, NULL, 0, WSA_FLAG_OVERLAPPED);
 #endif // MZ_PLATFORM_WINOWS
 
 #if defined(MZ_PLATFORM_LINUX)
-    SockId_t sockId = ::socket(AF_INET, sockStream, IPPROTO_IP);
+    auto sockId = ::socket(AF_INET, sockStream, IPPROTO_IP);
 #endif // MZ_PLATFORM_LINUX
 
     if (INVALID_SOCKID != sockId) {

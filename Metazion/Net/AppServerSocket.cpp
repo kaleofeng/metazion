@@ -10,7 +10,7 @@ AppServerSocket::AppServerSocket()
 AppServerSocket::~AppServerSocket() {}
 
 void AppServerSocket::Dispatch() {
-    DecodeBuffer& decodeBuffer = GetDecodeBuffer();
+    auto& decodeBuffer = GetDecodeBuffer();
 
     while (true) {
         int command = 0;
@@ -31,7 +31,7 @@ void AppServerSocket::Dispatch() {
 }
 
 bool AppServerSocket::SendData(int command, const void* data, int length) {
-    EncodeBuffer& encodeBuffer = GetEncodeBuffer();
+    auto& encodeBuffer = GetEncodeBuffer();
     encodeBuffer.m_resultBuffer.Reset();
 
     const int ret = m_packetSpecific.Encode(command, data, length, encodeBuffer);
@@ -45,15 +45,15 @@ bool AppServerSocket::SendData(int command, const void* data, int length) {
 }
 
 EncodeBuffer& AppServerSocket::GetEncodeBuffer() {
-    SocketServer* server = GetSocketServer();
-    AppSocketServer* appServer = static_cast<AppSocketServer*>(server);
+    auto server = GetSocketServer();
+    auto appServer = static_cast<AppSocketServer*>(server);
     ASSERT_TRUE(!IsNull(appServer));
     return appServer->GetEncodeBuffer();
 }
 
 DecodeBuffer& AppServerSocket::GetDecodeBuffer() {
-    SocketServer* server = GetSocketServer();
-    AppSocketServer* appServer = static_cast<AppSocketServer*>(server);
+    auto server = GetSocketServer();
+    auto appServer = static_cast<AppSocketServer*>(server);
     ASSERT_TRUE(!IsNull(appServer));
     return appServer->GetDecodeBuffer();
 }

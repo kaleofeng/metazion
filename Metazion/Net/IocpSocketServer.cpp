@@ -33,7 +33,7 @@ bool IocpSocketServer::Initialize(int socketCapacity, int ioThreadNumber) {
 
     m_ioThreadList = new IocpIoThread*[m_ioThreadNumber];
     for (int index = 0; index < m_ioThreadNumber; ++index) {
-        IocpIoThread*& ioThread = m_ioThreadList[index];
+        auto& ioThread = m_ioThreadList[index];
         ioThread = new IocpIoThread();
         ioThread->Initialize(this);
         ioThread->Run();
@@ -50,14 +50,14 @@ void IocpSocketServer::Finalize() {
     SafeDelete(m_maintenanceThread);
 
     for (int index = 0; index < m_ioThreadNumber; ++index) {
-        IocpIoThread*& ioThread = m_ioThreadList[index];
+        auto& ioThread = m_ioThreadList[index];
         ioThread->Finalize();
         SafeDelete(ioThread);
     }
     SafeDeleteArray(m_ioThreadList);
 
     for (int index = 0; index < m_socketCapacity; ++index) {
-        SocketCtrl& socketCtrl = m_socketCtrlList[index];
+        auto& socketCtrl = m_socketCtrlList[index];
         if (IsNull(socketCtrl.m_socket)) {
             continue;
         }
@@ -99,10 +99,10 @@ void IocpSocketServer::MarkSocketActive(int index) {
     ASSERT_TRUE(!IsNull(m_socketCtrlList[index].m_socket));
     ASSERT_TRUE(!m_socketCtrlList[index].m_active);
 
-    SocketCtrl& socketCtrl = m_socketCtrlList[index];
+    auto& socketCtrl = m_socketCtrlList[index];
     socketCtrl.m_active = true;
 
-    Socket* socket = m_socketCtrlList[index].m_socket;
+    auto socket = m_socketCtrlList[index].m_socket;
     if (!AssociateWithIocp(socket)) {
         socket->DetachSockId();
         return;
@@ -116,15 +116,15 @@ void IocpSocketServer::MarkSocketClosed(int index) {
     ASSERT_TRUE(!IsNull(m_socketCtrlList[index].m_socket));
     ASSERT_TRUE(m_socketCtrlList[index].m_active);
 
-    SocketCtrl& socketCtrl = m_socketCtrlList[index];
+    auto& socketCtrl = m_socketCtrlList[index];
     socketCtrl.m_active = false;
 }
 
 bool IocpSocketServer::AssociateWithIocp(Socket* socket) {
-    const SockId_t& sockId = socket->GetSockId();
-    HANDLE sockHandle = reinterpret_cast<HANDLE>(sockId);
-    ULONG_PTR compKey = reinterpret_cast<ULONG_PTR>(socket);
-    HANDLE hIocp = ::CreateIoCompletionPort(sockHandle, m_hIocp, compKey, 0);
+    const auto& sockId = socket->GetSockId();
+    auto sockHandle = reinterpret_cast<HANDLE>(sockId);
+    auto compKey = reinterpret_cast<ULONG_PTR>(socket);
+    auto hIocp = ::CreateIoCompletionPort(sockHandle, m_hIocp, compKey, 0);
     if (IsNull(hIocp)) {
         return false;
     }
@@ -180,9 +180,10 @@ void IocpIoThread::Execute() {
     DWORD numberOfBytes = 0;
     ULONG_PTR completionKey = 0;
     LPOVERLAPPED overLapped = nullptr;
-    HANDLE hIocp = m_socketServer->GetIocpHandle();
 
-    HANDLE hThread = ::GetCurrentThread();
+    auto hIocp = m_socketServer->GetIocpHandle();
+
+    auto hThread = ::GetCurrentThread();
     ::SetThreadPriority(hThread, THREAD_PRIORITY_HIGHEST);
 
     while (!m_stopDesired) {
@@ -293,7 +294,7 @@ void IocpMaintenanceThread::Execute() {
 void IocpMaintenanceThread::ProcessSockets() {
     const int socketCapacity = m_socketServer->GetSocketCapacity();
     for (int index = 0; index < socketCapacity; ++index) {
-        IocpSocketServer::SocketCtrl& socketCtrl = m_socketServer->GetSocketCtrl(index);
+        auto& socketCtrl = m_socketServer->GetSocketCtrl(index);
         if (IsNull(socketCtrl.m_socket)) {
             continue;
         }

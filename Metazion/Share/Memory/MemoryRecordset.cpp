@@ -73,7 +73,7 @@ MemoryRecordset::Handle MemoryRecordset::ObtainRecord() {
     const int recordIndex = m_activeHeader->m_firstFree;
     Handle handle = RecordIndexToHandle(recordIndex);
     void* memory = GetMemory(handle);
-    Record* record = static_cast<Record*>(memory);
+    auto record = static_cast<Record*>(memory);
     m_activeHeader->m_firstFree = record->m_data.m_flag;
     return handle;
 }
@@ -84,7 +84,7 @@ bool MemoryRecordset::ReturnRecord(MemoryRecordset::Handle handle) {
     }
 
     void* memory = GetMemory(handle);
-    Record* record = static_cast<Record*>(memory);
+    auto record = static_cast<Record*>(memory);
     record->m_data.m_flag = m_activeHeader->m_firstFree;
     m_activeHeader->m_firstFree = HandleToRecordIndex(handle);
     return true;
@@ -114,7 +114,7 @@ bool MemoryRecordset::IsValidMomory(void* memory) {
 
 int MemoryRecordset::HandleToRecordIndex(MemoryRecordset::Handle handle) {
     const char* memory = reinterpret_cast<const char*>(handle);
-    const intptr_t memoryLength = memory - m_buffer;
+    const auto memoryLength = static_cast<intptr_t>(memory - m_buffer);
     return static_cast<int>(memoryLength / m_activeHeader->m_recordSize);
 }
 

@@ -47,7 +47,7 @@ public:
     }
 
     ListIterator& operator ++(int) {
-        Node_t* node = m_node->m_nextNode;
+        auto node = m_node->m_nextNode;
         return ListIterator(node);
     }
 
@@ -107,7 +107,7 @@ public:
     }
 
     ListConstIterator& operator ++(int) {
-        const Node_t* node = m_node->m_nextNode;
+        const auto node = m_node->m_nextNode;
         return ListConstIterator(node);
     }
 

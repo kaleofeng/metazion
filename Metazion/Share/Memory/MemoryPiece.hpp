@@ -43,14 +43,14 @@ public:
 
     void* Obtain() {
         if (!IsNull(m_freeList)) {
-            Node_t* node = m_freeList;
+            auto node = m_freeList;
             m_freeList = m_freeList->m_nextNode;
             --m_freeCount;
             return node;
         }
 
         if (m_count < MAXSIZE) {
-            Unit_t* unit = &m_units[m_count];
+            auto unit = &m_units[m_count];
             ++m_count;
             return unit;
         }
@@ -61,7 +61,7 @@ public:
     void Return(void* memory) {
         ASSERT_TRUE(IsResponsible(memory));
 
-        Node_t* node = static_cast<Node_t*>(memory);
+        auto node = static_cast<Node_t*>(memory);
         node->m_nextNode = m_freeList;
         m_freeList = node;
         ++m_freeCount;

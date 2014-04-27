@@ -7,16 +7,7 @@ MemoryInputStream::MemoryInputStream()
     , m_length(0)
     , m_position(0) {}
 
-MemoryInputStream::MemoryInputStream(const void* buffer, int length)
-    : m_buffer(nullptr)
-    , m_length(0)
-    , m_position(0) {
-    Attach(buffer, length);
-}
-
-MemoryInputStream::~MemoryInputStream() {
-    Detach();
-}
+MemoryInputStream::~MemoryInputStream() {}
 
 void MemoryInputStream::Seek(int position) {
     m_position = position;

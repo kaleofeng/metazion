@@ -45,19 +45,19 @@ public:
     }
 
     void* Alloc() {
-        UnitNode_t* unitNode = m_freeUnitList.Front();
+        auto unitNode = m_freeUnitList.Front();
         if (!IsNull(unitNode)) {
             m_freeUnitList.PopFront();
             return unitNode;
         }
 
-        PieceNode_t* pieceNode = m_availPieceList.Front();
+        auto pieceNode = m_availPieceList.Front();
         if (IsNull(pieceNode)) {
             pieceNode = CreatePieceNode();
             m_availPieceList.PushBack(pieceNode);
         }
 
-        Piece_t& piece = pieceNode->m_value;
+        auto& piece = pieceNode->m_value;
         void* memory = piece.Obtain();
         if (!piece.IsAvaliable()) {
             m_availPieceList.PopFront();
@@ -68,7 +68,7 @@ public:
     }
 
     void Free(void* memory) {
-        UnitNode_t* unitNode = static_cast<UnitNode_t*>(memory);
+        auto unitNode = static_cast<UnitNode_t*>(memory);
         m_freeUnitList.PushBack(unitNode);
         if (ShouldShrink()) {
             Shrink();
@@ -110,11 +110,11 @@ private:
         PieceList_t emptyPieceList;
 
         tempPieceList.Clear();
-        PieceNode_t* fullPiece = m_fullPieceList.Front();
+        auto fullPiece = m_fullPieceList.Front();
         while (!IsNull(fullPiece)) {
             m_fullPieceList.PopFront();
             ShrinkPiece(fullPiece);
-            Piece_t& piece = fullPiece->m_value;
+            auto& piece = fullPiece->m_value;
             if (piece.IsEmpty()) {
                 emptyPieceList.PushBack(fullPiece);
             }
@@ -134,11 +134,11 @@ private:
         }
 
         tempPieceList.Clear();
-        PieceNode_t* availPiece = m_availPieceList.Front();
+        auto availPiece = m_availPieceList.Front();
         while (!IsNull(availPiece)) {
             m_availPieceList.PopFront();
             ShrinkPiece(availPiece);
-            Piece_t& piece = availPiece->m_value;
+            auto& piece = availPiece->m_value;
             if (piece.IsEmpty()) {
                 emptyPieceList.PushBack(availPiece);
             }
@@ -154,7 +154,7 @@ private:
             availPiece = tempPieceList.Front();
         }
 
-        PieceNode_t* emptyPiece = emptyPieceList.Front();
+        auto emptyPiece = emptyPieceList.Front();
         while (!IsNull(emptyPiece)) {
             emptyPieceList.PopFront();
             if (pieceCount > 3) {
@@ -171,10 +171,10 @@ private:
     void ShrinkPiece(PieceNode_t* pieceNode) {
         ASSERT_TRUE(!IsNull(pieceNode));
 
-        Piece_t& piece = pieceNode->m_value;
+        auto& piece = pieceNode->m_value;
         UnitList_t restUnitList;
 
-        UnitNode_t* unitNode = m_freeUnitList.Front();
+        auto unitNode = m_freeUnitList.Front();
         while (!IsNull(unitNode)) {
             m_freeUnitList.PopFront();
             if (piece.IsResponsible(unitNode)) {
@@ -191,7 +191,7 @@ private:
             unitNode = m_freeUnitList.Front();
         }
 
-        UnitNode_t* restUnitNode = restUnitList.Front();
+        auto restUnitNode = restUnitList.Front();
         while (!IsNull(restUnitNode)) {
             restUnitList.PopFront();
             m_freeUnitList.PushBack(restUnitNode);

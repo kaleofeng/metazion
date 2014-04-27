@@ -32,7 +32,7 @@ int PacketSpecific::Encode(int command, const void* data, int length, EncodeBuff
 }
 
 int PacketSpecific::Decode(int& command, DecodeBuffer& decodeBuffer) {
-    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     PacketHeader header;
     const int headerLength = sizeof(header);

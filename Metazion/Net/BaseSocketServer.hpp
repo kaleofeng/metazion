@@ -43,7 +43,6 @@ inline SocketBuffer::RecvCache_t::BufferPool_t& BaseSocketServer::GetRecvCachePo
     return m_recvCachePool;
 }
 
-
 DECL_NAMESPACE_MZ_NET_END
 
 #endif // _MZ_NET_BASESOCKETSERVER_HPP_

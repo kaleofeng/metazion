@@ -11,8 +11,6 @@ class MemoryInputStream {
 public:
     MemoryInputStream();
 
-    MemoryInputStream(const void* buffer, int length);
-
     ~MemoryInputStream();
 
 public:

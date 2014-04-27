@@ -45,7 +45,7 @@ bool EpollSocketServer::Initialize(int socketCapacity, int ioThreadNumber) {
 
     m_ioThreadList = new EpollIoThread*[m_ioThreadNumber];
     for (int index = 0; index < m_ioThreadNumber; ++index) {
-        EpollIoThread*& ioThread = m_ioThreadList[index];
+        auto& ioThread = m_ioThreadList[index];
         ioThread = new EpollIoThread();
         ioThread->Initialize(this, index);
         ioThread->Run();
@@ -62,14 +62,14 @@ void EpollSocketServer::Finalize() {
     SafeDelete(m_maintenanceThread);
 
     for (int index = 0; index < m_ioThreadNumber; ++index) {
-        EpollIoThread*& ioThread = m_ioThreadList[index];
+        auto& ioThread = m_ioThreadList[index];
         ioThread->Finalize();
         SafeDelete(ioThread);
     }
     SafeDeleteArray(m_ioThreadList);
 
     for (int index = 0; index < m_socketCapacity; ++index) {
-        SocketCtrl& socketCtrl = m_socketCtrlList[index];
+        auto& socketCtrl = m_socketCtrlList[index];
         if (IsNull(socketCtrl.m_socket)) {
             continue;
         }
@@ -119,10 +119,10 @@ void EpollSocketServer::MarkSocketActive(int index) {
     ASSERT_TRUE(!IsNull(m_socketCtrlList[index].m_socket));
     ASSERT_TRUE(!m_socketCtrlList[index].m_active);
 
-    SocketCtrl& socketCtrl = m_socketCtrlList[index];
+    auto& socketCtrl = m_socketCtrlList[index];
     socketCtrl.m_active = true;
 
-    Socket* socket = m_socketCtrlList[index].m_socket;
+    auto socket = m_socketCtrlList[index].m_socket;
     if (!AssociateWithEpoll(socket)) {
         socket->DetachSockId();
         return;
@@ -136,12 +136,12 @@ void EpollSocketServer::MarkSocketClosed(int index) {
     ASSERT_TRUE(!IsNull(m_socketCtrlList[index].m_socket));
     ASSERT_TRUE(m_socketCtrlList[index].m_active);
 
-    SocketCtrl& socketCtrl = m_socketCtrlList[index];
+    auto& socketCtrl = m_socketCtrlList[index];
     socketCtrl.m_active = false;
 }
 
 bool EpollSocketServer::AssociateWithEpoll(Socket* socket) {
-    const SockId_t& sockId = socket->GetSockId();
+    const auto& sockId = socket->GetSockId();
     const int socketIndex = socket->GetIndex();
     const int threadIndex = GetThreadIndex(socketIndex);
 
@@ -243,7 +243,7 @@ void EpollIoThread::Execute() {
 
 void EpollIoThread::ProcessSockets() {
     for (int index = 0; index < m_socketCount; ++index) {
-        EpollSocketServer::SocketCtrl& socketCtrl = m_socketCtrlList[index];
+        auto& socketCtrl = m_socketCtrlList[index];
         if (IsNull(socketCtrl.m_socket)) {
             continue;
         }
@@ -271,8 +271,8 @@ void EpollIoThread::ProcessEvents() {
     }
 
     for (int index = 0; index < count; ++index)  {
-        struct epoll_event& event = m_eventList[index];
-        Socket* socket = static_cast<Socket*>(event.data.ptr);
+        auto& event = m_eventList[index];
+        auto socket = static_cast<Socket*>(event.data.ptr);
 
         if (event.events & EPOLLRDHUP) {
             ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
@@ -336,7 +336,7 @@ void EpollMaintenanceThread::Execute() {
 void EpollMaintenanceThread::ProcessSockets() {
     const int socketCapacity = m_socketServer->GetSocketCapacity();
     for (int index = 0; index < socketCapacity; ++index) {
-        EpollSocketServer::SocketCtrl& socketCtrl = m_socketServer->GetSocketCtrl(index);
+        auto& socketCtrl = m_socketServer->GetSocketCtrl(index);
         if (IsNull(socketCtrl.m_socket)) {
             continue;
         }

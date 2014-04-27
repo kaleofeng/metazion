@@ -44,9 +44,9 @@ bool IocpListenStrategy::HandleSuccessOperation(const IocpOperation* iocpOperati
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_acceptOperation == iocpOperation);
 
-    const SockId_t& acceptSockId = m_acceptOperation.m_sockId;
+    const auto& acceptSockId = m_acceptOperation.m_sockId;
 
-    const SockId_t& listenSockId = m_listenSocket.GetSockId();
+    const auto& listenSockId = m_listenSocket.GetSockId();
     const int ret = ::setsockopt(acceptSockId
         , SOL_SOCKET
         , SO_UPDATE_ACCEPT_CONTEXT
@@ -91,7 +91,7 @@ bool IocpListenStrategy::HandleCloseOperation(const IocpOperation* iocpOperation
 }
 
 bool IocpListenStrategy::_PostAcceptOperation() {
-    const SockId_t sockId = CreateSockId(TRANSPORT_TCP);
+    const auto sockId = CreateSockId(TRANSPORT_TCP);
     if (INVALID_SOCKID == sockId) {
         m_acceptOperation.SetBusy(false);
         return false;
@@ -101,7 +101,7 @@ bool IocpListenStrategy::_PostAcceptOperation() {
     m_acceptOperation.m_sockId = sockId;
 
     DWORD bytesRecvd = 0;
-    const SockId_t& listenSockId = m_listenSocket.GetSockId();
+    const auto& listenSockId = m_listenSocket.GetSockId();
     const BOOL ret = ::AcceptEx(listenSockId
         , m_acceptOperation.m_sockId
         , m_acceptOperation.m_buffer

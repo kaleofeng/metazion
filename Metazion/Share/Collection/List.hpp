@@ -45,27 +45,27 @@ public:
     }
 
     const Value_t& Front() const {
-        Node_t* node = m_list.Front();
+        auto node = m_list.Front();
         return node->m_value;
     }
 
     Value_t& Front() {
-        Node_t* node = m_list.Front();
+        auto node = m_list.Front();
         return node->m_value;
     }
 
     const Value_t& Back() const {
-        Node_t* node = m_list.Back();
+        auto node = m_list.Back();
         return node->m_value;
     }
 
     Value_t& Back() {
-        Node_t* node = m_list.Back();
+        auto node = m_list.Back();
         return node->m_value;
     }
 
     void PopFront() {
-        Node_t* node = m_list.Front();
+        auto node = m_list.Front();
         if (IsNull(node)) {
             ASSERT_TRUE(false);
             return;
@@ -76,7 +76,7 @@ public:
     }
 
     void PopBack() {
-        Node_t* node = m_list.Back();
+        auto node = m_list.Back();
         if (IsNull(node)) {
             ASSERT_TRUE(false);
             return;
@@ -87,14 +87,14 @@ public:
     }
 
     void PushFront(const Value_t& value) {
-        Node_t* node = CreateNode();
+        auto node = CreateNode();
         ASSERT_TRUE(!IsNull(node));
         node->m_value = value;
         m_list.PushFront(node);
     }
 
     void PushBack(const Value_t& value) {
-        Node_t* node = CreateNode();
+        auto node = CreateNode();
         ASSERT_TRUE(!IsNull(node));
         node->m_value = value;
         m_list.PushBack(node);
@@ -102,12 +102,12 @@ public:
 
 public:
     ConstIterator_t Begin() const {
-        const Node_t* node = m_list.Front();
+        const auto node = m_list.Front();
         return ConstIterator_t(node);
     }
 
     Iterator_t Begin() {
-        Node_t* node = m_list.Front();
+        auto node = m_list.Front();
         return Iterator_t(node);
     }
 
@@ -120,7 +120,7 @@ public:
     }
 
     Iterator_t InsertBefore(Iterator_t iter, const Value_t& value) {
-        Node_t* node = CreateNode();
+        auto node = CreateNode();
         ASSERT_TRUE(!IsNull(node));
         node->m_value = value;
         m_list.InsertBefore(iter.Node(), node);
@@ -128,7 +128,7 @@ public:
     }
 
     Iterator_t InsertAfter(Iterator_t iter, const Value_t& value) {
-        Node_t* node = CreateNode();
+        auto node = CreateNode();
         ASSERT_TRUE(!IsNull(node));
         node->m_value = value;
         m_list.InsertAfter(iter.Node(), node);
@@ -136,7 +136,7 @@ public:
     }
 
     Iterator_t Erase(Iterator_t iter) {
-        Node_t* nextNode = m_list.Remove(iter.Node());
+        auto nextNode = m_list.Remove(iter.Node());
         DestoryNode(iter.Node());
         return Iterator_t(nextNode);
     }
@@ -153,7 +153,7 @@ public:
 private:
     Node_t* CreateNode() {
         void* memory = m_allocator.Alloc();
-        Node_t* node = new(memory) Node_t();
+        auto node = new(memory)Node_t();
         return node;
     }
 

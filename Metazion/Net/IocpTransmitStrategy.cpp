@@ -96,7 +96,7 @@ bool IocpTransmitStrategy::HandleCloseOperation(const IocpOperation* iocpOperati
 }
 
 bool IocpTransmitStrategy::_PostInputOperation() {
-    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     char* recvBuffer = socketBuffer.m_recvBuffer.GetPushBuffer();
     const int recvLength = socketBuffer.m_recvBuffer.GetPushLength();
@@ -106,7 +106,7 @@ bool IocpTransmitStrategy::_PostInputOperation() {
 
     DWORD bytesRecvd = 0;
     DWORD flags = 0;
-    const SockId_t& transmitSockId = m_transmitSocket.GetSockId();
+    const auto& transmitSockId = m_transmitSocket.GetSockId();
     const int ret = ::WSARecv(transmitSockId
         , &m_recvOperation.m_wsaBuf
         , 1
@@ -126,7 +126,7 @@ bool IocpTransmitStrategy::_PostInputOperation() {
 }
 
 bool IocpTransmitStrategy::_PostOutputOperation() {
-    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     int sendLength = socketBuffer.m_sendBuffer.GetPullLength();
     if (sendLength <= 0) {
@@ -143,7 +143,7 @@ bool IocpTransmitStrategy::_PostOutputOperation() {
     m_sendOperation.m_wsaBuf.len = sendLength;
 
     DWORD bytesSent = 0;
-    const SockId_t& transmitSockId = m_transmitSocket.GetSockId();
+    const auto& transmitSockId = m_transmitSocket.GetSockId();
     const int ret = ::WSASend(transmitSockId
         , &m_sendOperation.m_wsaBuf
         , 1
@@ -166,7 +166,7 @@ bool IocpTransmitStrategy::HandleInputSuccessOperation(const IocpOperation* iocp
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_recvOperation == iocpOperation);
 
-    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     if (0 == byteNumber) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
@@ -195,7 +195,7 @@ bool IocpTransmitStrategy::HandleOutputSuccessOperation(const IocpOperation* ioc
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_sendOperation == iocpOperation);
 
-    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     if (0 == byteNumber) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);

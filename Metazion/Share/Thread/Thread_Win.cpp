@@ -37,7 +37,7 @@ void Thread::Wait() {
 }
 
 unsigned int __stdcall Thread::ThreadFunc(void* arg) {
-    Thread* thread = static_cast<Thread*>(arg);
+    auto thread = static_cast<Thread*>(arg);
     thread->Execute();
     return 0;
 }

@@ -5,7 +5,7 @@
 
 #include <Metazion/Share/Collection/StaticArray.hpp>
 #include <Metazion/Share/Memory/ObjectPool.hpp>
-#include <Metazion/Share/Memory/PieceBuffer.hpp>
+#include <Metazion/Share/Memory/StepBuffer.hpp>
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 

@@ -38,7 +38,7 @@ public:
     }
 
     void Reset() {
-        BufferNode_t* buffer = m_bufferList.Front();
+        auto buffer = m_bufferList.Front();
         while (!IsNull(buffer)) {
             m_bufferList.PopFront();
             m_bufferPool->Return(buffer);
@@ -53,7 +53,7 @@ public:
         const char* tData = static_cast<const char*>(data);;
         int tLength = length;
         while (tLength > 0) {
-            BufferNode_t* buffer = m_bufferList.Back();
+            auto buffer = m_bufferList.Back();
             const int pushLength = _Push(buffer, tData, tLength);
             if (pushLength <= 0) {
                 if (!Inflate()) {
@@ -70,7 +70,7 @@ public:
         char* tData = static_cast<char*>(data);;
         int tLength = length;
         while (tLength > 0) {
-            BufferNode_t* buffer = m_bufferList.Front();
+            auto buffer = m_bufferList.Front();
             const int pullLength = _Pull(buffer, tData, tLength);
             if (pullLength <= 0) {
                 break;
@@ -85,7 +85,7 @@ public:
     int Peek(void* data, int length) {
         char* tData = static_cast<char*>(data);;
         int tLength = length;
-        BufferNode_t* buffer = m_bufferList.Front();
+        auto buffer = m_bufferList.Front();
         while (tLength > 0) {
             const int peekLength = _Peek(buffer, tData, tLength);
             if (peekLength <= 0) {
@@ -101,7 +101,7 @@ public:
     int Skip(int length) {
         int tLength = length;
         while (tLength > 0) {
-            BufferNode_t* buffer = m_bufferList.Front();
+            auto buffer = m_bufferList.Front();
             const int skipLength = _Skip(buffer, tLength);
             if (skipLength <= 0) {
                 break;
@@ -176,7 +176,7 @@ private:
             return false;
         }
 
-        BufferNode_t* buffer = m_bufferPool->Obtain();
+        auto buffer = m_bufferPool->Obtain();
         if (IsNull(buffer)) {
             return false;
         }
@@ -188,7 +188,7 @@ private:
     }
 
     void Compact() {
-        BufferNode_t* buffer = m_bufferList.Front();
+        auto buffer = m_bufferList.Front();
         if (IsNull(buffer)) {
             return;
         }

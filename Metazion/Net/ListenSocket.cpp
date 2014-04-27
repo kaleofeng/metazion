@@ -47,7 +47,7 @@ void ListenSocket::SetLocalHost(const char* ip, int port) {
 }
 
 bool ListenSocket::Listen(int backlog) {
-    const SockId_t sockId = CreateSockId(TRANSPORT_TCP);
+    const auto sockId = CreateSockId(TRANSPORT_TCP);
     if (INVALID_SOCKID == sockId) {
         return false;
     }
@@ -60,8 +60,8 @@ bool ListenSocket::Listen(int backlog) {
         return false;
     }
 
-    SockAddr_t* sockAddr = m_localHost.SockAddr();
-    SockLen_t sockAddrLen = m_localHost.SockAddrLen();
+    auto sockAddr = m_localHost.SockAddr();
+    auto sockAddrLen = m_localHost.SockAddrLen();
     ret = ::bind(sockId, sockAddr, sockAddrLen);
     if (SOCKET_ERROR == ret) {
         DestroySockId(sockId);

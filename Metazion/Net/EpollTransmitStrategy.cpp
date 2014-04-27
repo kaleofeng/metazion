@@ -21,7 +21,7 @@ bool EpollTransmitStrategy::IsBusy() const {
 }
 
 void EpollTransmitStrategy::Input() {
-    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     const SockId_t& transmitSockId = m_transmitSocket.GetSockId();
     while (true) {
@@ -65,7 +65,7 @@ void EpollTransmitStrategy::Input() {
 }
 
 void EpollTransmitStrategy::Output() {
-    SocketBuffer& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     if (!m_canOutput) {
         return;
@@ -79,7 +79,7 @@ void EpollTransmitStrategy::Output() {
         return;
     }
 
-    const SockId_t& transmitSockId = m_transmitSocket.GetSockId();
+    const auto& transmitSockId = m_transmitSocket.GetSockId();
     while (true) {
         int pullLength = socketBuffer.m_sendBuffer.GetPullLength();
         if (pullLength <= 0) {
