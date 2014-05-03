@@ -66,7 +66,7 @@ private:
 protected:
     Host m_remoteHost;
     int m_stage;
-    int32_t m_connectTime;
+    int64_t m_connectTime;
     int m_reconnectInterval;
 };
 

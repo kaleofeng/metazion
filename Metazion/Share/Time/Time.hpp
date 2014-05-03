@@ -5,7 +5,9 @@
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
-int32_t GetTickMillisecond();
+int64_t GetNowMillisecond();
+
+int64_t GetNowMicrosecond();
 
 DECL_NAMESPACE_MZ_SHARE_END
 

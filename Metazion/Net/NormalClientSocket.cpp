@@ -86,7 +86,7 @@ void NormalClientSocket::ConnectStage() {
 }
 
 void NormalClientSocket::ConnectStageWaiting() {
-    const auto now = NS_SHARE::GetTickMillisecond();
+    const auto now = NS_SHARE::GetNowMillisecond();
     if (now < m_connectTime) {
         return;
     }
@@ -204,7 +204,7 @@ int NormalClientSocket::CheckConnected() {
 }
 
 void NormalClientSocket::ResetConnectTime() {
-    m_connectTime = NS_SHARE::GetTickMillisecond() + m_reconnectInterval;
+    m_connectTime = NS_SHARE::GetNowMillisecond() + m_reconnectInterval;
 }
 
 DECL_NAMESPACE_MZ_NET_END

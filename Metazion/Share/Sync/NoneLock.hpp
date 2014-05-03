@@ -16,6 +16,8 @@ public:
 public:
     void Lock() {}
 
+    bool TryLock() { return true; }
+
     void Unlock() {}
 };
 

@@ -61,14 +61,14 @@ void EpollSocketServer::Finalize() {
     m_maintenanceThread->Finalize();
     SafeDelete(m_maintenanceThread);
 
-    for (int index = 0; index < m_ioThreadNumber; ++index) {
+    for (auto index = 0; index < m_ioThreadNumber; ++index) {
         auto& ioThread = m_ioThreadList[index];
         ioThread->Finalize();
         SafeDelete(ioThread);
     }
     SafeDeleteArray(m_ioThreadList);
 
-    for (int index = 0; index < m_socketCapacity; ++index) {
+    for (auto index = 0; index < m_socketCapacity; ++index) {
         auto& socketCtrl = m_socketCtrlList[index];
         if (IsNull(socketCtrl.m_socket)) {
             continue;
@@ -87,7 +87,7 @@ void EpollSocketServer::Finalize() {
 
     SafeDeleteArray(m_epollEventList);
 
-    for (int index = 0; index < m_ioThreadNumber; ++index) {
+    for (auto index = 0; index < m_ioThreadNumber; ++index) {
         auto& epollfd = m_epollfdList[index];
         if (epollfd >= 0) {
             ::close(epollfd);
@@ -148,7 +148,8 @@ bool EpollSocketServer::AssociateWithEpoll(Socket* socket) {
     struct epoll_event event;
     event.data.ptr = socket;
     event.events = EPOLLIN | EPOLLOUT | EPOLLET | EPOLLRDHUP;
-    const auto ret = epoll_ctl(m_epollfdList[threadIndex], EPOLL_CTL_ADD, sockId, &event);
+    const auto ret = epoll_ctl(m_epollfdList[threadIndex], EPOLL_CTL_ADD
+        , sockId, &event);
     if (ret == -1) {
         return false;
     }
@@ -315,16 +316,16 @@ void EpollMaintenanceThread::Stop() {
 }
 
 void EpollMaintenanceThread::Execute() {
-    int32_t lastTime = NS_SHARE::GetTickMillisecond();
-    int32_t lastTickTime = lastTime;
+    auto lastTime = NS_SHARE::GetNowMillisecond();
+    auto lastTickTime = lastTime;
     while (!m_stopDesired) {
-        const int32_t curTime = NS_SHARE::GetTickMillisecond();
+        const auto curTime = NS_SHARE::GetNowMillisecond();
         if (curTime - lastTime < 10) {
-            MilliSleep(1);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
             continue;
         }
 
-        m_interval = curTime - lastTickTime;
+        m_interval = static_cast<int>(curTime - lastTickTime);
         lastTickTime = curTime;
 
         ProcessSockets();
@@ -334,8 +335,8 @@ void EpollMaintenanceThread::Execute() {
 }
 
 void EpollMaintenanceThread::ProcessSockets() {
-    const int socketCapacity = m_socketServer->GetSocketCapacity();
-    for (int index = 0; index < socketCapacity; ++index) {
+    const auto socketCapacity = m_socketServer->GetSocketCapacity();
+    for (auto index = 0; index < socketCapacity; ++index) {
         auto& socketCtrl = m_socketServer->GetSocketCtrl(index);
         if (IsNull(socketCtrl.m_socket)) {
             continue;

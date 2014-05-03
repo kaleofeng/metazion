@@ -273,16 +273,16 @@ void IocpMaintenanceThread::Stop() {
 }
 
 void IocpMaintenanceThread::Execute() {
-    auto lastTime = NS_SHARE::GetTickMillisecond();
+    auto lastTime = NS_SHARE::GetNowMillisecond();
     auto lastTickTime = lastTime;
     while (!m_stopDesired) {
-        const auto curTime = NS_SHARE::GetTickMillisecond();
+        const auto curTime = NS_SHARE::GetNowMillisecond();
         if (curTime - lastTime < 10) {
-            MilliSleep(1);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
             continue;
         }
 
-        m_interval = curTime - lastTickTime;
+        m_interval = static_cast<int>(curTime - lastTickTime);
         lastTickTime = curTime;
 
         ProcessSockets();

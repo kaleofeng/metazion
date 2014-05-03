@@ -40,8 +40,6 @@ inline bool IsLengthAlign(int length, int align) {
 
 int GetLastError();
 
-void MilliSleep(int milliseconds);
-
 DECL_NAMESPACE_MZ_END
     
 #endif // _MZ_FUNCTION_HPP_

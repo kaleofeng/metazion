@@ -17,8 +17,8 @@ DECL_NAMESPACE_MZ_BEGIN
 #define RELEASE_ASSERT_FALSE(exp)   do { if ((exp)) __asm { int 3 } } while (false)
 
 #define DISALLOW_COPY_AND_ASSIGN(CLASS) \
-    CLASS(const CLASS&); \
-    CLASS& operator =(const CLASS&);
+    CLASS(const CLASS&) = delete; \
+    CLASS& operator =(const CLASS&) = delete;
 
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))

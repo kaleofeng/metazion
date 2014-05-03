@@ -1,23 +1,21 @@
 #include "Metazion/Share/Time/Time.hpp"
 
+#include <chrono>
+
+using namespace std::chrono;
+
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
-int32_t GetTickMillisecond() {
-    int32_t millisecond = 0;
+int64_t GetNowMillisecond() {
+    auto timePoint = system_clock::now();
+    auto timeDuration = timePoint.time_since_epoch();
+    return duration_cast<milliseconds>(timeDuration).count();
+}
 
-#if defined(MZ_PLATFORM_WINOWS)
-    millisecond = ::GetTickCount();
-#endif // MZ_PLATFORM_WINOWS
-
-#if defined(MZ_PLATFORM_LINUX)
-    timeval tv;
-    ::gettimeofday(&tv, NULL);
-    static int32_t last_sec = tv.tv_sec;
-    tv.tv_sec -= last_sec;
-    millisecond = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-#endif // MZ_PLATFORM_LINUX
-
-    return millisecond;
+int64_t GetNowMicrosecond() {
+    auto timePoint = system_clock::now();
+    auto timeDuration = timePoint.time_since_epoch();
+    return duration_cast<microseconds>(timeDuration).count();
 }
 
 DECL_NAMESPACE_MZ_SHARE_END
