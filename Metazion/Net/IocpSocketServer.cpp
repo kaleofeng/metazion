@@ -166,12 +166,8 @@ void IocpIoThread::Initialize(IocpSocketServer* socketServer) {
 }
 
 void IocpIoThread::Finalize() {
-    Stop();
-}
-
-void IocpIoThread::Stop() {
     m_stopDesired = true;
-    Wait();
+    Join();
 }
 
 void IocpIoThread::Execute() {
@@ -264,12 +260,8 @@ void IocpMaintenanceThread::Init(IocpSocketServer* socketServer) {
 }
 
 void IocpMaintenanceThread::Finalize() {
-    Stop();
-}
-
-void IocpMaintenanceThread::Stop() {
     m_stopDesired = true;
-    Wait();
+    Join();
 }
 
 void IocpMaintenanceThread::Execute() {

@@ -227,12 +227,8 @@ void EpollIoThread::Initialize(EpollSocketServer* socketServer, int index) {
 }
 
 void EpollIoThread::Finalize() {
-    Stop();
-}
-
-void EpollIoThread::Stop() {
     m_stopDesired = true;
-    Wait();
+    Join();
 }
 
 void EpollIoThread::Execute() {
@@ -307,12 +303,8 @@ void EpollMaintenanceThread::Init(EpollSocketServer* socketServer) {
 }
 
 void EpollMaintenanceThread::Finalize() {
-    Stop();
-}
-
-void EpollMaintenanceThread::Stop() {
     m_stopDesired = true;
-    Wait();
+    Join();
 }
 
 void EpollMaintenanceThread::Execute() {

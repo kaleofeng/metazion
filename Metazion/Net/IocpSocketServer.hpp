@@ -145,9 +145,7 @@ public:
     void Finalize();
 
 protected:
-    void Stop();
-
-    void Execute();
+    void Execute() override final;
 
 private:
     int AnalyseStatusResult(BOOL ret
@@ -174,9 +172,7 @@ public:
     void Finalize();
 
 protected:
-    void Stop();
-
-    void Execute();
+    void Execute() override final;
 
 private:
     void ProcessSockets();

@@ -18,7 +18,7 @@ public:
 public:
     void Run();
 
-    void Wait();
+    void Join();
 
     void Detach();
 
@@ -28,7 +28,7 @@ protected:
     virtual void Execute() = 0;
 
 private:
-    static void ThreadFunc(void* arg);
+    void ThreadFunc();
 
 private:
     std::thread m_thread;    

@@ -150,9 +150,7 @@ public:
     void Finalize();
 
 protected:
-    void Stop();
-
-    void Execute();
+    void Execute() override final;
 
 private:
     void ProcessSockets();
@@ -183,9 +181,7 @@ public:
     void Finalize();
 
 protected:
-    void Stop();
-
-    void Execute();
+    void Execute() override final;
 
 private:
     void ProcessSockets();
