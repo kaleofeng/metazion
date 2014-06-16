@@ -32,13 +32,13 @@ private:
 
     struct Record {
         Record() {
-            ::memset(&m_data, 0, sizeof(m_data));
+            ::memset(this, 0, sizeof(*this));
         }
 
         union {
             int m_flag;
             char m_record[1];
-        } m_data;
+        };
     };
 
 public:

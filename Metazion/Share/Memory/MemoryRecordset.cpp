@@ -75,7 +75,7 @@ MemoryRecordset::Handle MemoryRecordset::ObtainRecord() {
     Handle handle = RecordIndexToHandle(recordIndex);
     auto memory = GetMemory(handle);
     auto record = static_cast<Record*>(memory);
-    m_activeHeader->m_firstFree = record->m_data.m_flag;
+    m_activeHeader->m_firstFree = record->m_flag;
     return handle;
 }
 
@@ -86,7 +86,7 @@ bool MemoryRecordset::ReturnRecord(MemoryRecordset::Handle handle) {
 
     auto memory = GetMemory(handle);
     auto record = static_cast<Record*>(memory);
-    record->m_data.m_flag = m_activeHeader->m_firstFree;
+    record->m_flag = m_activeHeader->m_firstFree;
     m_activeHeader->m_firstFree = HandleToRecordIndex(handle);
     return true;
 }
