@@ -2,32 +2,28 @@
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
-Random::Random()
-    : m_seed(0) {
-    Seed(static_cast<uint32_t>(time(nullptr)));
+Random::Random() {
+    m_randomEngine = std::mt19937(m_randomDevice());
 }
 
 Random::~Random() {}
 
-void Random::Seed(uint32_t seed) {
-    m_seed = seed;
-}
-
-int Random::GetRandInt() {
-    m_seed = ((m_seed * 214013L + 2531011L) >> 16) & 0x7fff;
-    return m_seed;
-}
-
 int Random::GetRangeInt(int begin, int end) {
-    if (begin == end) {
+    if (begin >= end) {
         return begin;
     }
-	
-    return begin + GetRandInt() % (end - begin + 1);
+
+    std::uniform_int_distribution<int> distribution(begin, end);
+    return distribution(m_randomEngine);
 }
 
-double Random::GetRandRate() {
-    return GetRandInt() / static_cast<double>(RAND_MAX);
+double Random::GetRangeDouble(double begin, double end) {
+    if (begin >= end) {
+        return begin;
+    }
+
+    std::uniform_real_distribution<double> distribution(begin, end);
+    return distribution(m_randomEngine);
 }
 
 DECL_NAMESPACE_MZ_SHARE_END
