@@ -84,7 +84,6 @@ private:
     bool m_ownMemory;
 };
 
-
 DECL_NAMESPACE_MZ_SHARE_END
 
 #endif // _MZ_SHARE_MEMORYRECORDSET_HPP_
