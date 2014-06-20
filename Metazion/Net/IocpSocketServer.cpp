@@ -175,7 +175,7 @@ void IocpIoThread::Execute() {
     IocpOperation* iocpOperation = nullptr;
     DWORD numberOfBytes = 0;
     ULONG_PTR completionKey = 0;
-    LPOVERLAPPED overLapped = nullptr;
+    LPOVERLAPPED overlapped = nullptr;
 
     auto hIocp = m_socketServer->GetIocpHandle();
 
@@ -185,20 +185,20 @@ void IocpIoThread::Execute() {
     while (!m_stopDesired) {
         numberOfBytes = 0;
         completionKey = 0;
-        overLapped = nullptr;
+        overlapped = nullptr;
 
         auto ret = ::GetQueuedCompletionStatus(hIocp
             , &numberOfBytes
             , &completionKey
-            , &overLapped
+            , &overlapped
             , 200);
 
         socket = reinterpret_cast<Socket*>(completionKey);
-        iocpOperation = CONTAINING_RECORD(overLapped, IocpOperation, m_overlapped);
+        iocpOperation = CONTAINING_RECORD(overlapped, IocpOperation, m_overlapped);
 
         const auto error = ::WSAGetLastError();
         const auto result = AnalyseStatusResult(ret
-            , overLapped
+            , overlapped
             , numberOfBytes
             , error);
 
