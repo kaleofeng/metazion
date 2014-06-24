@@ -3,7 +3,7 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
-#include "Metazion/Share/Collection/UnidSelfList.hpp"
+#include "Metazion/Share/Collection/UDSelfList.hpp"
 #include "Metazion/Share/Memory/PieceBuffer.hpp"
 #include "Metazion/Share/Memory/ObjectPool.hpp"
 #include "Metazion/Share/Sync/MutexLock.hpp"
@@ -20,8 +20,8 @@ class StepBuffer {
 
 public:
     using Buffer_t = PieceBuffer<STEPLENGTH>;
-    using BufferNode_t = UnidSelfListNode<Buffer_t>;
-    using BufferList_t = UnidSelfList<BufferNode_t>;
+    using BufferNode_t = UDSelfListNode<Buffer_t>;
+    using BufferList_t = UDSelfList<BufferNode_t>;
     using BufferPool_t = ObjectPool<BufferNode_t, StepAllocator<256>, MutexLock>;
 
 public:

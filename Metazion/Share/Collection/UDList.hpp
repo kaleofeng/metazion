@@ -1,10 +1,10 @@
-#ifndef _MZ_SHARE_UNIDLIST_HPP_
-#define _MZ_SHARE_UNIDLIST_HPP_
+#ifndef _MZ_SHARE_UDLIST_HPP_
+#define _MZ_SHARE_UDLIST_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
 #include "Metazion/Share/Collection/ListIterator.hpp"
-#include "Metazion/Share/Collection/UnidSelfList.hpp"
+#include "Metazion/Share/Collection/UDSelfList.hpp"
 #include "Metazion/Share/Memory/HeapAllocator.hpp"
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
@@ -12,12 +12,12 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 template<typename ValueType
 , typename AllocatorFamily = HeapAllocator<>
 >
-class UnidList {
-    DISALLOW_COPY_AND_ASSIGN(UnidList)
+class UDList {
+    DISALLOW_COPY_AND_ASSIGN(UDList)
 
     using Value_t = ValueType;
-    using Node_t = UnidSelfListNode<Value_t>;
-    using List_t = UnidSelfList<Node_t>;
+    using Node_t = UDSelfListNode<Value_t>;
+    using List_t = UDSelfList<Node_t>;
     using Allocator_t = typename AllocatorFamily::template Rebind<sizeof(Node_t)>;
 
 public:
@@ -25,9 +25,9 @@ public:
     using ConstIterator_t = ListConstIterator<Value_t, Node_t>;
 
 public:
-    UnidList() { m_allocator.Initialize(); }
+    UDList() { m_allocator.Initialize(); }
 
-    ~UnidList() { m_allocator.Finalize(); }
+    ~UDList() { m_allocator.Finalize(); }
 
 public:
     void Clear() {
@@ -134,7 +134,7 @@ public:
 private:
     Node_t* CreateNode() {
         auto memory = m_allocator.Alloc();
-        auto node = new(memory)Node_t();
+        auto node = new(memory) Node_t();
         return node;
     }
 
@@ -150,4 +150,4 @@ private:
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // _MZ_SHARE_UNIDLIST_HPP_
+#endif // _MZ_SHARE_UDLIST_HPP_

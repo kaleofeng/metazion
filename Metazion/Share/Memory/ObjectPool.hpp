@@ -3,8 +3,8 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
-#include "Metazion/Share/Collection/UnidList.hpp"
-#include "Metazion/Share/Collection/UnidSelfList.hpp"
+#include "Metazion/Share/Collection/UDList.hpp"
+#include "Metazion/Share/Collection/UDSelfList.hpp"
 #include "Metazion/Share/Memory/StepAllocator.hpp"
 #include "Metazion/Share/Sync/NoneLock.hpp"
 #include "Metazion/Share/Sync/AutoGuard.hpp"
@@ -43,7 +43,7 @@ public:
 private:
     Object_t* CreateObject() {
         auto memory = m_allocator.Alloc();
-        auto object = new(memory)Object_t();
+        auto object = new(memory) Object_t();
         return object;
     }
 

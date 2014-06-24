@@ -1,40 +1,40 @@
-#ifndef _MZ_SHARE_UNIDSELFLIST_HPP_
-#define _MZ_SHARE_UNIDSELFLIST_HPP_
+#ifndef _MZ_SHARE_UDSELFLIST_HPP_
+#define _MZ_SHARE_UDSELFLIST_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<typename ValueType>
-struct UnidSelfListNode {
-    UnidSelfListNode()
+struct UDSelfListNode {
+    UDSelfListNode()
         : m_nextNode(nullptr) {}
 
     ValueType m_value;
-    UnidSelfListNode* m_nextNode;
+    UDSelfListNode* m_nextNode;
 };
 
 template<>
-struct UnidSelfListNode<void> {
-    UnidSelfListNode()
+struct UDSelfListNode<void> {
+    UDSelfListNode()
         : m_nextNode(nullptr) {}
 
-    UnidSelfListNode* m_nextNode;
+    UDSelfListNode* m_nextNode;
 };
 
 template<typename NodeType>
-class UnidSelfList {
-    DISALLOW_COPY_AND_ASSIGN(UnidSelfList)
+class UDSelfList {
+    DISALLOW_COPY_AND_ASSIGN(UDSelfList)
 
     using Node_t = NodeType;
 
 public:
-    UnidSelfList()
+    UDSelfList()
         : m_headNode(nullptr)
         , m_tailNode(nullptr)
         , m_size(0) {}
 
-    ~UnidSelfList() {}
+    ~UDSelfList() {}
 
 public:
     void Clear() {
@@ -196,4 +196,4 @@ private:
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // _MZ_SHARE_UNIDSELFLIST_HPP_
+#endif // _MZ_SHARE_UDSELFLIST_HPP_

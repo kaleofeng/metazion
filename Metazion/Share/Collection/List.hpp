@@ -153,7 +153,7 @@ public:
 private:
     Node_t* CreateNode() {
         auto memory = m_allocator.Alloc();
-        auto node = new(memory)Node_t();
+        auto node = new(memory) Node_t();
         return node;
     }
 

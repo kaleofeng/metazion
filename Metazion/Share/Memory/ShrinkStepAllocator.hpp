@@ -3,7 +3,7 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
-#include "Metazion/Share/Collection/UnidSelfList.hpp"
+#include "Metazion/Share/Collection/UDSelfList.hpp"
 #include "Metazion/Share/Memory/MemoryPiece.hpp"
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
@@ -14,8 +14,8 @@ template<int STEPSIZE
 class ShrinkStepAllocator {
     DISALLOW_COPY_AND_ASSIGN(ShrinkStepAllocator)
 
-    using UnitNode_t = UnidSelfListNode<void>;
-    using UnitList_t = UnidSelfList<UnitNode_t>;
+    using UnitNode_t = UDSelfListNode<void>;
+    using UnitList_t = UDSelfList<UnitNode_t>;
 
     enum {
         MINLENGTH = MAX(UNITLENGTH, sizeof(UnitNode_t)),
@@ -23,8 +23,8 @@ class ShrinkStepAllocator {
     };
 
     using Piece_t = MemoryPiece<STEPSIZE, ALIGNLENGTH>;
-    using PieceNode_t = UnidSelfListNode<Piece_t>;
-    using PieceList_t = UnidSelfList<PieceNode_t>;
+    using PieceNode_t = UDSelfListNode<Piece_t>;
+    using PieceList_t = UDSelfList<PieceNode_t>;
 
 public:
     template<int OTHERLENGTH>
