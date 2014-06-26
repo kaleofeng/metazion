@@ -7,11 +7,13 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<typename ValueType>
 struct SelfListNode {
+    using Value_t = ValueType;
+
     SelfListNode()
         : m_prevNode(nullptr)
         , m_nextNode(nullptr) {}
 
-    ValueType m_value;
+    Value_t m_value;
     SelfListNode* m_prevNode;
     SelfListNode* m_nextNode;
 };

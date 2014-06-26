@@ -7,10 +7,12 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<typename ValueType>
 struct UDSelfListNode {
+    using Value_t = ValueType;
+
     UDSelfListNode()
         : m_nextNode(nullptr) {}
 
-    ValueType m_value;
+    Value_t m_value;
     UDSelfListNode* m_nextNode;
 };
 

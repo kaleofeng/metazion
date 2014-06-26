@@ -3,12 +3,10 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
-template<typename ValueType
-, typename NodeType
->
+template<typename NodeType>
 class ListIterator {
-    using Value_t = ValueType;
     using Node_t = NodeType;
+    using Value_t = typename Node_t::Value_t;
     
 public:
     ListIterator()
@@ -63,12 +61,10 @@ private:
     Node_t* m_node;
 };
 
-template<typename ValueType
-, typename NodeType
->
+template<typename NodeType>
 class ListConstIterator {
-    using Value_t = ValueType;
     using Node_t = NodeType;
+    using Value_t = typename Node_t::Value_t;
 
 public:
     ListConstIterator()

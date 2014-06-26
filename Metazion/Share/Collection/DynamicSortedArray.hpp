@@ -22,12 +22,12 @@ public:
 
     ~DynamicSortedArray() {}
 
-    DynamicSortedArray(DynamicSortedArray& other)
+    DynamicSortedArray(const DynamicSortedArray& other)
         : DynamicSortedArray() {
         *this = other;
     }
 
-    DynamicSortedArray& operator =(DynamicSortedArray& other) {
+    DynamicSortedArray& operator =(const DynamicSortedArray& other) {
         if (&other != this) {
             Clear();
             m_array = other.m_array;

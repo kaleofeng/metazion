@@ -21,8 +21,8 @@ class UDList {
     using Allocator_t = typename AllocatorFamily::template Rebind<sizeof(Node_t)>;
 
 public:
-    using Iterator_t = ListIterator<Value_t, Node_t>;
-    using ConstIterator_t = ListConstIterator<Value_t, Node_t>;
+    using Iterator_t = ListIterator<Node_t>;
+    using ConstIterator_t = ListConstIterator<Node_t>;
 
 public:
     UDList() { m_allocator.Initialize(); }

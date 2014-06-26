@@ -22,12 +22,12 @@ public:
         Clear();
     }
 
-    DynamicArray(DynamicArray& other)
+    DynamicArray(const DynamicArray& other)
         : DynamicArray() {
         *this = other;
     }
 
-    DynamicArray& operator =(DynamicArray& other) {
+    DynamicArray& operator =(const DynamicArray& other) {
         if (&other != this) {
             Clear();
             m_values = new Value_t[other.m_capacity];
