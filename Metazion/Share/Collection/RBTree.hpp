@@ -5,10 +5,8 @@
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
-template<typename KeyType
-, typename ValueType>
+template<typename ValueType>
 struct RBTreeNode {
-    using Key_t = KeyType;
     using Value_t = ValueType;
 
     enum Color{
@@ -21,7 +19,6 @@ struct RBTreeNode {
     RBTreeNode* m_left = nullptr;
     Color m_color = RED;
     
-    Key_t m_key;
     Value_t m_value;
 
     bool IsRed() const {
@@ -39,6 +36,54 @@ struct RBTreeNode {
     void SetBlack() {
         m_color = BLACK;
     }
+
+    RBTreeNode* Backward() {
+        auto node = this;
+        if (node->m_parent == node) {
+            return nullptr;
+        }
+
+        if (!IsNull(node->m_left)) {
+            node = node->m_left;
+            while (!IsNull(node->m_right)) {
+                node = node->m_right;
+            }
+
+            return node;
+        }
+
+        auto parent = node->m_parent;
+        while (!IsNull(parent) && node == parent->m_left) {
+            node = parent;
+            parent = node->m_parent;
+        }
+
+        return parent;
+    }
+
+    RBTreeNode* Forward() {
+        auto node = this;
+        if (node->m_parent == node) {
+            return nullptr;
+        }
+
+        if (node->m_right) {
+            node = node->m_right;
+            while (node->m_left) {
+                node = node->m_left;
+            }
+
+            return node;
+        }
+
+        auto parent = node->m_parent;
+        while (!IsNull(parent) && node == parent->m_right) {
+            node = parent;
+            parent = node->m_parent;
+        }
+
+        return parent;
+    }
 };
 
 template<typename NodeType
@@ -48,14 +93,55 @@ class RBTree {
 
     using Node_t = NodeType;
     using Compare_t = CompareType;
+    using Value_t = typename Node_t::Value_t;
 
 public:
     RBTree()
-        : m_root(nullptr) {}
+        : m_root(nullptr)
+        , m_size(0) {}
 
     ~RBTree() {}
 
 public:
+    void Clear() {
+        m_root = nullptr;
+        m_size = 0;
+    }
+
+    bool IsEmpty() const {
+        return nullptr == m_root;
+    }
+
+    int GetSize() const {
+        return m_size;
+    }
+
+    Node_t* First() {
+        auto next = m_root;
+        if (IsNull(next)) {
+            return nullptr;
+        }
+
+        while (!IsNull(next->m_left)) {
+            next = next->m_left;
+        }
+
+        return next;
+    }
+
+    Node_t* Last() {
+        auto next = m_root;
+        if (IsNull(next)) {
+            return nullptr;
+        }
+
+        while (!IsNull(next->m_right)) {
+            next = next->m_right;
+        }
+
+        return next;
+    }
+
     Node_t* Insert(Node_t* node) {
         ASSERT_TRUE(!IsNull(node));
 
@@ -65,7 +151,7 @@ public:
         while (!IsNull(*temp)) {
             parent = *temp;
 
-            const auto ret = m_compare(node->m_key, parent->m_key);
+            const auto ret = m_compare(node->m_value, parent->m_value);
             if (ret < 0) {
                 temp = &(*temp)->m_left;
             }
@@ -79,6 +165,7 @@ public:
 
         Link(node, parent, *temp);
         InsertColor(node);
+        ++m_size;
         return node;
     }
 
@@ -167,12 +254,14 @@ public:
         if (color == Node_t::BLACK) {
             RemoveColor(child, parent);
         }
+
+        --m_size;
     }
 
-    Node_t* Search(typename Node_t::Key_t key) {
+    Node_t* Search(const Value_t& value) {
         auto node = m_root;
         while (!IsNull(node)) {
-            const auto ret = m_compare(key, node->m_key);
+            const auto ret = m_compare(value, node->m_value);
             if (ret < 0) {
                 node = node->m_left;
             }
@@ -215,73 +304,19 @@ public:
         *replacement = *victim;
     }
 
-    Node_t* First() {
-        auto next = m_root;
-        while (!IsNull(next->m_left)) {
-            next = next->m_left;
-        }
-            
-        return next;
-    }
-
-    Node_t* Last() {
-        auto next = m_root;
-        while (!IsNull(next->m_right)) {
-            next = next->m_right;
-        }
-
-        return next;
-    }
-
     Node_t* Backward(Node_t* node) {
         ASSERT_TRUE(!IsNull(node));
 
-        if (node->m_parent == node) {
-            return nullptr;
-        }
-
-        if (!IsNull(node->m_left)) {
-            node = node->m_left;
-            while (!IsNull(node->m_right)) {
-                node = node->m_right;
-            }
-
-            return node;
-        }
-
-        auto parent = node->m_parent;
-        while (!IsNull(parent) && node == parent->m_left) {
-            node = parent;
-            parent = node->m_parent;
-        }
-
-        return parent;
+        return node->Backward();
     }
 
     Node_t* Forward(Node_t* node) {
         ASSERT_TRUE(!IsNull(node));
 
-        if (node->m_parent == node) {
-            return nullptr;
-        }
-
-        if (node->m_right) {
-            node = node->m_right;
-            while (node->m_left) {
-                node = node->m_left;
-            }
-
-            return node;
-        }
-
-        auto parent = node->m_parent;
-        while (!IsNull(parent) && node == parent->m_right) {
-            node = parent;
-            parent = node->m_parent;
-        }
-
-        return parent;
+        return node->Forward();
     }
+
+private:
 
     void Link(Node_t* node, Node_t* parent, Node_t*& link) {
         node->m_parent = parent;
@@ -469,6 +504,7 @@ public:
 
 private:
     Node_t* m_root;
+    int m_size;
     Compare_t m_compare;
 };
 
