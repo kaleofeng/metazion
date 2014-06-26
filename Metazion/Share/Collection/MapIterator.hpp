@@ -3,6 +3,8 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
+DECL_NAMESPACE_MZ_SHARE_BEGIN
+
 template<typename NodeType>
 class MapIterator {
     using Node_t = NodeType;
@@ -118,5 +120,7 @@ public:
 private:
     const Node_t* m_node;
 };
+
+DECL_NAMESPACE_MZ_SHARE_END
 
 #endif // _MZ_SHARE_MAPITERATOR_HPP_
