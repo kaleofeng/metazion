@@ -75,8 +75,12 @@ public:
         ASSERT_TRUE(!IsNull(node));
         node->m_value.first = key;
         node->m_value.second = value;
-        m_tree.Insert(node);
-        return Iterator_t(node);
+        const auto ret = m_tree.InsertUnique(node);
+        if (IsNull(ret)) {
+            DestoryNode(node);
+        }
+
+        return Iterator_t(ret);
     }
 
     void Erase(Iterator_t iter) {

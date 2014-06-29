@@ -142,7 +142,7 @@ public:
         return next;
     }
 
-    Node_t* Insert(Node_t* node) {
+    Node_t* InsertUnique(Node_t* node) {
         ASSERT_TRUE(!IsNull(node));
 
         Node_t* parent = nullptr;
@@ -160,6 +160,30 @@ public:
             }
             else  {
                 return nullptr;
+            }
+        }
+
+        Link(node, parent, *temp);
+        InsertColor(node);
+        ++m_size;
+        return node;
+    }
+
+    Node_t* InsertRepeat(Node_t* node) {
+        ASSERT_TRUE(!IsNull(node));
+
+        Node_t* parent = nullptr;
+        auto temp = &m_root;
+
+        while (!IsNull(*temp)) {
+            parent = *temp;
+
+            const auto ret = m_compare(node->m_value, parent->m_value);
+            if (ret < 0) {
+                temp = &(*temp)->m_left;
+            }
+            else {
+                temp = &(*temp)->m_right;
             }
         }
 
@@ -326,14 +350,11 @@ private:
     }
 
     void InsertColor(Node_t* node) {
-        Node_t* parent = nullptr;
-        Node_t* gparent = nullptr;
-
-        while (!IsNull(parent = node->m_parent) && parent->IsRed()) {
-            gparent = parent->m_parent;
-
+        auto parent = node->m_parent;
+        while (!IsNull(parent) && parent->IsRed()) {
+            auto gparent = parent->m_parent;
             if (parent == gparent->m_left) {
-                Node_t* uncle = gparent->m_right;
+                auto uncle = gparent->m_right;
                 if (uncle && uncle->IsRed()) {
                     uncle->SetBlack();
                     parent->SetBlack();
@@ -344,9 +365,9 @@ private:
 
                 if (parent->m_right == node) {
                     RotateLeft(parent);
-                    Node_t* tmp = parent;
+                    auto temp = parent;
                     parent = node;
-                    node = tmp;
+                    node = temp;
                 }
 
                 parent->SetBlack();
@@ -365,15 +386,17 @@ private:
 
                 if (parent->m_left == node) {
                     RotateRight(parent);
-                    Node_t* tmp = parent;
+                    auto temp = parent;
                     parent = node;
-                    node = tmp;
+                    node = temp;
                 }
 
                 parent->SetBlack();
                 gparent->SetRed();
                 RotateLeft(gparent);
             }
+
+            parent = node->m_parent;
         }
 
         m_root->SetBlack();
@@ -421,14 +444,14 @@ private:
                     other = parent->m_left;
                 }
 
-                if ((!other->m_left || other->m_left->IsBlack()) &&
-                    (!other->m_right || other->m_right->IsBlack())) {
+                if ((IsNull(other->m_left) || other->m_left->IsBlack()) &&
+                    (IsNull(other->m_right) || other->m_right->IsBlack())) {
                     other->SetRed();
                     node = parent;
                     parent = node->m_parent;
                 }
                 else {
-                    if (!other->m_left || other->m_left->IsBlack()) {
+                    if (IsNull(other->m_left) || other->m_left->IsBlack()) {
                         other->m_right->SetBlack();
                         other->SetRed();
                         RotateLeft(other);
@@ -453,8 +476,9 @@ private:
     void RotateLeft(Node_t* node) {
         auto right = node->m_right;
         auto parent = node->m_parent;
+        node->m_right = right->m_left;
 
-        if ((node->m_right = right->m_left)) {
+        if (!IsNull(right->m_left)) {
             right->m_left->m_parent = node;
         }
 
@@ -479,8 +503,9 @@ private:
     void RotateRight(Node_t* node) {
         auto left = node->m_left;
         auto parent = node->m_parent;
+        node->m_left = left->m_right;
 
-        if (!IsNull(node->m_left = left->m_right)) {
+        if (!IsNull(left->m_right)) {
             left->m_right->m_parent = node;
         }
 
