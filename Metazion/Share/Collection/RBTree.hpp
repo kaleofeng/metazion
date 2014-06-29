@@ -87,7 +87,8 @@ struct RBTreeNode {
 };
 
 template<typename NodeType
-, typename CompareType>
+, typename CompareType = LessCompare<typename NodeType::Value_t>
+>
 class RBTree {
     DISALLOW_COPY_AND_ASSIGN(RBTree)
 

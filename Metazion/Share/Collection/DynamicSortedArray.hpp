@@ -8,7 +8,7 @@
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<typename ValueType
-, typename CompareType
+, typename CompareType = LessCompare<ValueType>
 , int INITSIZE = 16
 , int STEPSIZE = 16
 >
@@ -102,10 +102,11 @@ private:
         bool found = false;
         while (low <= high) {
             middle = low + ((high - low) >> 1);
-            if (m_compare(value, m_array[middle]) > 0) {
+            const auto ret = m_compare(value, m_array[middle]);
+            if (ret > 0) {
                 low = middle + 1;
             }
-            else if (m_compare(value, m_array[middle]) < 0) {
+            else if (ret < 0) {
                 high = middle - 1;
             }
             else {

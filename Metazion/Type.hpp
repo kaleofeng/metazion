@@ -5,6 +5,36 @@
 
 DECL_NAMESPACE_MZ_BEGIN
 
+template<typename T>
+struct LessCompare {
+    int operator ()(const T& left, const T& right) const {
+        if (left < right) {
+            return -1;
+        }
+        else if (left > right) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+};
+
+template<typename T>
+struct GreaterCompare {
+    int operator ()(const T& left, const T& right) const {
+        if (left > right) {
+            return -1;
+        }
+        else if (left < right) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+};
+
 template<typename FirstType
 , typename SecondType
 >
@@ -35,7 +65,8 @@ struct Pair {
 };
 
 template<typename PairType
-, typename CompareType>
+, typename CompareType = LessCompare<PairType>
+>
 struct PairCompare {
     using Pair_t = PairType;
     using Compare_t = CompareType;

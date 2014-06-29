@@ -11,7 +11,7 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<typename KeyType
 , typename ValueType
-, typename CompareType
+, typename CompareType = LessCompare<KeyType>
 , typename AllocatorFamily = HeapAllocator<>
 >
 class Map {
