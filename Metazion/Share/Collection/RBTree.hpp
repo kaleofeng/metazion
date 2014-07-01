@@ -67,9 +67,9 @@ struct RBTreeNode {
             return nullptr;
         }
 
-        if (node->m_right) {
+        if (!IsNull(node->m_right)) {
             node = node->m_right;
-            while (node->m_left) {
+            while (!IsNull(node->m_left)) {
                 node = node->m_left;
             }
 
