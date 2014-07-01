@@ -38,7 +38,8 @@ public:
 public:
     void Clear() {
         while (!IsEmpty()) {
-            
+            Iterator_t iter = Begin();
+            Erase(iter);
         }
     }
 
