@@ -17,51 +17,48 @@ class PriorityQueue {
 
     using Value_t = ValueType;
     using Compare_t = CompareType;
-    using Array_t = DynamicArray<Value_t, INITSIZE + 1, STEPSIZE>;
+    using Array_t = DynamicArray<Value_t, INITSIZE, STEPSIZE>;
 
 public:
-    PriorityQueue() {
-        m_array.Add(Value_t());
-    }
+    PriorityQueue() {}
 
     ~PriorityQueue() {}
 
 public:
     void Clear() {
         m_array.Clear();
-        m_array.Add(Value_t());
     }
 
     const Value_t& Top() const {
         ASSERT_TRUE(GetSize() > 0);
 
-        return m_array[1];
+        return m_array[0];
     }
 
     Value_t& Top() {
         ASSERT_TRUE(GetSize() > 0);
 
-        return m_array[1];
+        return m_array[0];
     }
 
     void Push(const Value_t& value) {
         m_array.Add(value);
 
         const auto size = GetSize();
-        SiftUp(size);
+        SiftUp(size - 1);
     }
 
     void Pop() {
         const auto size = GetSize();
         ASSERT_TRUE(size > 0);
+        m_array[0] = m_array[size - 1];
+        m_array.Remove(size - 1);
 
-        m_array[1] = m_array[size];
-        m_array.Remove(size);
-        SiftDown(1);
+        SiftDown(0);
     }
 
     int GetSize() const {
-        return m_array.GetSize() - 1;
+        return m_array.GetSize();
     }
 
     bool IsEmpty() const {
@@ -69,41 +66,51 @@ public:
     }
 
 private:
-    void SiftUp(int index) {
+    void SiftUp(int localIndex) {
+        auto index = ToLogicIndex(localIndex);
         while (index > 1) {
             const auto parent = index >> 1;
-            if (m_compare(m_array[parent], m_array[index]) < 0) {
+            if (m_compare(Data(parent), Data(index)) < 0) {
                 break;
             }
 
-            const auto temp = m_array[index];
-            m_array[index] = m_array[parent];
-            m_array[parent] = temp;
+            std::swap(Data(index), Data(parent));
 
             index = parent;
         }
     }
 
-    void SiftDown(int index){
+    void SiftDown(int localIndex){
+        auto index = ToLogicIndex(localIndex);
         const auto size = GetSize();
         auto next = index << 1;
         while (next <= size) {
             const auto right = next + 1;
-            if (right <= size && m_compare(m_array[right], m_array[next]) < 0) {
+            if (right <= size && m_compare(Data(right), Data(next)) < 0) {
                 next = right;
             }
 
-            if (m_compare(m_array[index], m_array[next]) < 0) {
+            if (m_compare(Data(index), Data(next)) < 0) {
                 break;
             }
-            
-            const auto temp = m_array[next];
-            m_array[next] = m_array[index];
-            m_array[index] = temp;
+
+            std::swap(Data(next), Data(index));
 
             index = next;
             next = index << 1;
         }
+    }
+
+    Value_t& Data(int logicIndex) {
+        return m_array[ToLocalIndex(logicIndex)];
+    }
+
+    int ToLogicIndex(int localIndex) const {
+        return localIndex + 1;
+    }
+
+    int ToLocalIndex(int logicIndex) const {
+        return logicIndex - 1;
     }
 
 private:
