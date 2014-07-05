@@ -15,11 +15,24 @@ void EpollListenStrategy::Reset() {
     // Nothing to do.
 }
 
+void EpollListenStrategy::OnStarted() {
+    Reset();
+    Input();
+}
+
 bool EpollListenStrategy::IsBusy() const {
     return false;
 }
 
 void EpollListenStrategy::Input() {
+    // Nothing to do.
+}
+
+void EpollListenStrategy::Output() {
+    // Nothing to do.
+}
+
+void EpollListenStrategy::ExecuteInput() {
     Host peerHost;
     auto sockAddr = peerHost.SockAddr();
     auto sockAddrLen = peerHost.SockAddrLen();
@@ -60,7 +73,7 @@ void EpollListenStrategy::Input() {
     }
 }
 
-void EpollListenStrategy::Output() {
+void EpollListenStrategy::ExecuteOutput() {
     // Nothing to do.
 }
 

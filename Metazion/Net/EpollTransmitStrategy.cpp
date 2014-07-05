@@ -16,11 +16,24 @@ void EpollTransmitStrategy::Reset() {
     m_canOutput = false;
 }
 
+void EpollListenStrategy::OnStarted() {
+    Reset();
+    Input();
+}
+
 bool EpollTransmitStrategy::IsBusy() const {
     return false;
 }
 
 void EpollTransmitStrategy::Input() {
+    // Nothing to do.
+}
+
+void EpollTransmitStrategy::Output() {
+    // Nothing to do.
+}
+
+void EpollTransmitStrategy::ExecuteInput() {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     const auto& transmitSockId = m_transmitSocket.GetSockId();
@@ -64,7 +77,7 @@ void EpollTransmitStrategy::Input() {
     }
 }
 
-void EpollTransmitStrategy::Output() {
+void EpollTransmitStrategy::ExecuteOutput() {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     if (!m_canOutput) {

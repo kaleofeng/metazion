@@ -3,11 +3,11 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include "Metazion/Net/BaseSocketServer.hpp"
+#include "Metazion/Net/GenericSocketServer.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class NormalSocketServer : public BaseSocketServer {
+class NormalSocketServer : public GenericSocketServer {
     DISALLOW_COPY_AND_ASSIGN(NormalSocketServer)
     
 public:

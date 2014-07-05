@@ -22,42 +22,44 @@ public:
 public:
     void Reset() override;
 
+    void OnStarted() override;
+
     bool IsBusy() const override;
 
-    bool PostInputOperation() override;
+    bool Input() override;
 
-    bool PostOutputOperation() override;
+    bool Output() override;
 
-    bool HandleSuccessOperation(const IocpOperation* iocpOperation
+    bool OnSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber) override;
 
-    bool HandleFailureOperation(const IocpOperation* iocpOperation
+    bool OnFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error) override;
 
-    bool HandleCloseOperation(const IocpOperation* iocpOperation
+    bool OnClose(const IocpOperation* iocpOperation
         , DWORD byteNumber) override;
 
 private:
-    bool _PostInputOperation();
+    bool PostInput();
 
-    bool _PostOutputOperation();
+    bool PostOutput();
 
-    bool HandleInputSuccessOperation(const IocpOperation* iocpOperation
+    bool OnInputSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
-    bool HandleOutputSuccessOperation(const IocpOperation* iocpOperation
+    bool OnOutputSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
-    bool HandleInputFailureOperation(const IocpOperation* iocpOperation
+    bool OnInputFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error);
 
-    bool HandleOutputFailureOperation(const IocpOperation* iocpOperation
+    bool OnOutputFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error);
 
-    bool HandleInputCloseOperation(const IocpOperation* iocpOperation
+    bool OnInputClose(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
-    bool HandleOutputCloseOperation(const IocpOperation* iocpOperation
+    bool OnOutputClose(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
 private:

@@ -18,11 +18,16 @@ void IocpListenStrategy::Reset() {
     ::memset(m_acceptBuffer, 0, sizeof(m_acceptBuffer));
 }
 
+void IocpListenStrategy::OnStarted() {
+    Reset();
+    Input();
+}
+
 bool IocpListenStrategy::IsBusy() const {
     return m_acceptOperation.IsBusy();
 }
 
-bool IocpListenStrategy::PostInputOperation() {
+bool IocpListenStrategy::Input() {
     if (!m_listenSocket.IsReady()) {
         return false;
     }
@@ -33,14 +38,14 @@ bool IocpListenStrategy::PostInputOperation() {
 
     m_acceptOperation.SetBusy(true);
 
-    return _PostAcceptOperation();
+    return PostAccept();
 }
 
-bool IocpListenStrategy::PostOutputOperation() {
+bool IocpListenStrategy::Output() {
     return true;
 }
 
-bool IocpListenStrategy::HandleSuccessOperation(const IocpOperation* iocpOperation
+bool IocpListenStrategy::OnSuccess(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_acceptOperation == iocpOperation);
 
@@ -60,10 +65,10 @@ bool IocpListenStrategy::HandleSuccessOperation(const IocpOperation* iocpOperati
         DestroySockId(acceptSockId);
     }
 
-    return _PostAcceptOperation();
+    return PostAccept();
 }
 
-bool IocpListenStrategy::HandleFailureOperation(const IocpOperation* iocpOperation
+bool IocpListenStrategy::OnFailure(const IocpOperation* iocpOperation
     , DWORD byteNumber, int error) {
     ASSERT_TRUE(&m_acceptOperation == iocpOperation);
 
@@ -77,7 +82,7 @@ bool IocpListenStrategy::HandleFailureOperation(const IocpOperation* iocpOperati
     return true;
 }
 
-bool IocpListenStrategy::HandleCloseOperation(const IocpOperation* iocpOperation
+bool IocpListenStrategy::OnClose(const IocpOperation* iocpOperation
     , DWORD byteNumber){
     ASSERT_TRUE(&m_acceptOperation == iocpOperation);
 
@@ -90,7 +95,7 @@ bool IocpListenStrategy::HandleCloseOperation(const IocpOperation* iocpOperation
     return true;
 }
 
-bool IocpListenStrategy::_PostAcceptOperation() {
+bool IocpListenStrategy::PostAccept() {
     const auto sockId = CreateSockId(TRANSPORT_TCP);
     if (INVALID_SOCKID == sockId) {
         m_acceptOperation.SetBusy(false);
@@ -113,7 +118,7 @@ bool IocpListenStrategy::_PostAcceptOperation() {
     if (FALSE == ret) {
         const DWORD error = ::WSAGetLastError();
         if (ERROR_IO_PENDING != error) {
-            HandleFailureOperation(&m_acceptOperation, 0, error);
+            OnFailure(&m_acceptOperation, 0, error);
             return false;
         }
     }

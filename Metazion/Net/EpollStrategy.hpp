@@ -18,11 +18,17 @@ public:
 public:
     virtual void Reset() = 0;
 
+    virtual void OnStarted() = 0;
+
     virtual bool IsBusy() const = 0;
 
     virtual void Input() = 0;
 
     virtual void Output() = 0;
+
+    virtual void ExecuteInput() = 0;
+
+    virtual void ExecuteOutput() = 0;
 
     virtual void EnableOutput() = 0;
 };

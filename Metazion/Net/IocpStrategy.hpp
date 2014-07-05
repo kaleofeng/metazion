@@ -20,19 +20,21 @@ public:
 public:
     virtual void Reset() = 0;
 
+    virtual void OnStarted() = 0;
+
     virtual bool IsBusy() const = 0;
 
-    virtual bool PostInputOperation() = 0;
+    virtual bool Input() = 0;
 
-    virtual bool PostOutputOperation() = 0;
+    virtual bool Output() = 0;
 
-    virtual bool HandleSuccessOperation(const IocpOperation* iocpOperation
+    virtual bool OnSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber) = 0;
 
-    virtual bool HandleFailureOperation(const IocpOperation* iocpOperation
+    virtual bool OnFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error) = 0;
 
-    virtual bool HandleCloseOperation(const IocpOperation* iocpOperation
+    virtual bool OnClose(const IocpOperation* iocpOperation
         , DWORD byteNumber) = 0;
 };
 

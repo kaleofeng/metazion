@@ -1,6 +1,6 @@
 #include "Metazion/Net/TransmitSocket.hpp"
 
-#include "Metazion/Net/BaseSocketServer.hpp"
+#include "Metazion/Net/GenericSocketServer.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
@@ -23,20 +23,20 @@ void TransmitSocket::OnAttached() {
     Socket::OnAttached();
 
     auto server = GetSocketServer();
-    auto baseServer = static_cast<BaseSocketServer*>(server);
-    ASSERT_TRUE(!IsNull(baseServer));
+    auto genericServer = static_cast<GenericSocketServer*>(server);
+    ASSERT_TRUE(!IsNull(genericServer));
 
-    auto& sendBufferPool = baseServer->GetSendCachePool();
+    auto& sendBufferPool = genericServer->GetSendCachePool();
     m_socketBuffer.SetSendCachePool(sendBufferPool);
 
-    auto& recvBufferPool = baseServer->GetRecvCachePool();
+    auto& recvBufferPool = genericServer->GetRecvCachePool();
     m_socketBuffer.SetRecvCachePool(recvBufferPool);
 }
 
 void TransmitSocket::OnStarted() {
     Socket::OnStarted();
     m_socketBuffer.Rework();
-    m_transmitStrategy.Reset();
+    m_transmitStrategy.OnStarted();
     OnConnected();
 }
 

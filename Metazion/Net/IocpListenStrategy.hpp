@@ -24,24 +24,26 @@ public:
 
 public:
     void Reset() override;
+    
+    void OnStarted() override;
 
     bool IsBusy() const override;
 
-    bool PostInputOperation() override;
+    bool Input() override;
 
-    bool PostOutputOperation() override;
+    bool Output() override;
 
-    bool HandleSuccessOperation(const IocpOperation* iocpOperation
+    bool OnSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber) override;
 
-    bool HandleFailureOperation(const IocpOperation* iocpOperation
+    bool OnFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error) override;
 
-    bool HandleCloseOperation(const IocpOperation* iocpOperation
+    bool OnClose(const IocpOperation* iocpOperation
         , DWORD byteNumber) override;
 
 private:
-    bool _PostAcceptOperation();
+    bool PostAccept();
 
 private:
     ListenSocket& m_listenSocket;

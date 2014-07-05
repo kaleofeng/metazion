@@ -22,11 +22,17 @@ public:
 public:
     void Reset() override;
 
+    void OnStarted() override;
+
     bool IsBusy() const override;
 
     void Input() override;
 
     void Output() override;
+    
+    void ExecuteInput() override;
+
+    void ExecuteOutput() override;
 
     void EnableOutput() override;
 

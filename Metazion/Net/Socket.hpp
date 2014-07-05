@@ -6,8 +6,8 @@
 #include <Metazion/Share/Sync/AutoGuard.hpp>
 #include <Metazion/Share/Sync/MutexLock.hpp>
 
+#include "Metazion/Net/AlternativeStrategy.hpp"
 #include "Metazion/Net/Host.hpp"
-#include "Metazion/Net/IoStrategy.hpp"
 #include "Metazion/Net/SocketDefine.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN

@@ -3,8 +3,8 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include "Metazion/Net/SocketDefine.hpp"
 #include "Metazion/Net/Address.hpp"
+#include "Metazion/Net/SocketDefine.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
