@@ -73,29 +73,29 @@ void Socket::Close() {
         return;
     }
 
-    m_lock.Lock();
+    m_lock.lock();
     if (INVALID_SOCKID == m_sockId) {
-        m_lock.Unlock();
+        m_lock.unlock();
         return;
     }
 
     m_working = false;
     DetachSockId();
-    m_lock.Unlock();
+    m_lock.unlock();
 
     OnClosed();
 }
 
 void Socket::Retain() {
-    m_lock.Lock();
+    m_lock.lock();
     ++m_reference;
-    m_lock.Unlock();
+    m_lock.unlock();
 }
 
 void Socket::Release() {
-    m_lock.Lock();
+    m_lock.lock();
     --m_reference;
-    m_lock.Unlock();
+    m_lock.unlock();
 }
 
 void Socket::AttachSockId(const SockId_t& sockId) {

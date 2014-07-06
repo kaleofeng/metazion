@@ -3,8 +3,7 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include <Metazion/Share/Sync/AutoGuard.hpp>
-#include <Metazion/Share/Sync/MutexLock.hpp>
+#include <mutex>
 
 #include "Metazion/Net/AlternativeStrategy.hpp"
 #include "Metazion/Net/Host.hpp"
@@ -81,7 +80,7 @@ public:
     void SetSocketServer(SocketServer* socketServer);
 
 protected:
-    NS_SHARE::MutexLock m_lock;
+    std::mutex m_lock;
     volatile int m_reference;
     volatile bool m_working;
     SockId_t m_sockId;

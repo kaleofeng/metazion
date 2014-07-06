@@ -76,9 +76,9 @@ int TransmitSocket::Send(const void* data, int length) {
         return 0;
     }
 
-    m_socketBuffer.m_sendLock.Lock();
+    m_socketBuffer.m_sendLock.lock();
     const auto pushLength = m_socketBuffer.m_sendCache.Push(data, length);
-    m_socketBuffer.m_sendLock.Unlock();
+    m_socketBuffer.m_sendLock.unlock();
 
     if (pushLength < length) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);

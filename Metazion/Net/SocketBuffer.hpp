@@ -3,9 +3,10 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
+#include <mutex>
+
 #include <Metazion/Share/Memory/PieceBuffer.hpp>
 #include <Metazion/Share/Memory/StepBuffer.hpp>
-#include <Metazion/Share/Sync/MutexLock.hpp>
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
@@ -39,8 +40,8 @@ public:
     bool HasDataToSend() const;
 
 public:
-    NS_SHARE::MutexLock m_sendLock;
-    NS_SHARE::MutexLock m_recvLock;
+    std::mutex m_sendLock;
+    std::mutex m_recvLock;
     SendCache_t m_sendCache;
     SendCache_t::BufferPool_t* m_sendCachePool;
     RecvCache_t m_recvCache;

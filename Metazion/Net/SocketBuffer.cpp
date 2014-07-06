@@ -42,9 +42,9 @@ int SocketBuffer::PrepareSendBuffer() {
     auto pushBuffer = m_sendBuffer.GetPushBuffer();
     const auto pushLength = m_sendBuffer.GetPushLength();
 
-    m_sendLock.Lock();
+    m_sendLock.lock();
     const auto pullLength = m_sendCache.Pull(pushBuffer, pushLength);
-    m_sendLock.Unlock();
+    m_sendLock.unlock();
     
     m_sendBuffer.SetPushIndex(pullLength);
     return pullLength;
@@ -54,9 +54,9 @@ int SocketBuffer::PreserveRecvBuffer() {
     const auto pullLength = m_recvBuffer.GetPullLength();
     const auto pullBuffer = m_recvBuffer.GetPullBuffer();
 
-    m_recvLock.Lock();
+    m_recvLock.lock();
     const auto pushLength = m_recvCache.Push(pullBuffer, pullLength);
-    m_recvLock.Unlock();
+    m_recvLock.unlock();
 
     m_recvBuffer.JumpPullIndex(pushLength);
     m_recvBuffer.Compact();

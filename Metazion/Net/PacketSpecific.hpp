@@ -4,7 +4,6 @@
 #include "Metazion/Net/NetInclude.hpp"
 
 #include <Metazion/Share/Memory/StepBuffer.hpp>
-#include <Metazion/Share/Sync/MutexLock.hpp>
 
 #include "Metazion/Net/PacketDefine.hpp"
 

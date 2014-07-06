@@ -14,11 +14,11 @@ public:
     ~NoneLock() {}
 
 public:
-    void Lock() {}
+    void lock() {}
 
-    bool TryLock() { return true; }
+    bool try_lock() { return true; }
 
-    void Unlock() {}
+    void unlock() {}
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

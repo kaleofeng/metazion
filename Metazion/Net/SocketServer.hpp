@@ -3,8 +3,8 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include <Metazion/Share/Sync/AutoGuard.hpp>
-#include <Metazion/Share/Sync/MutexLock.hpp>
+#include <mutex>
+
 #include <Metazion/Share/Thread/Thread.hpp>
 
 #include "Metazion/Net/AlternativeService.hpp"
@@ -62,7 +62,7 @@ private:
     void MarkSocketClosed(int index);
 
 private:
-    NS_SHARE::MutexLock m_lock;
+    std::mutex m_lock;
     SocketService m_socketService;
     int m_socketCapacity;
     int m_socketNumber;
@@ -77,11 +77,11 @@ inline bool SocketServer::CanAttachMore() const {
 }
 
 inline void SocketServer::Lock() {
-    m_lock.Lock();
+    m_lock.lock();
 }
 
 inline void SocketServer::Unlock() {
-    m_lock.Unlock();
+    m_lock.unlock();
 }
 
 inline int SocketServer::GetSocketCapacity() const {

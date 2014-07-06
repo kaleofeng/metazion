@@ -1,7 +1,5 @@
 #include "Metazion/Net/PacketSpecific.hpp"
 
-#include <Metazion/Share/Sync/AutoGuard.hpp>
-
 #include "Metazion/Net/TransmitSocket.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
@@ -55,7 +53,7 @@ int PacketSpecific::Decode(int& command, DecodeBuffer& decodeBuffer) {
     const auto pushLength = decodeBuffer.m_resultBuffer.GetPushLength();
     ASSERT_TRUE(pushLength >= packetLength);
 
-    socketBuffer.m_recvLock.Lock();
+    socketBuffer.m_recvLock.lock();
 
     const auto pullHeaderLength = socketBuffer.m_recvCache.Pull(&header, headerLength);
     ASSERT_TRUE(pullHeaderLength == headerLength);
@@ -63,7 +61,7 @@ int PacketSpecific::Decode(int& command, DecodeBuffer& decodeBuffer) {
     const auto pullDataLength = socketBuffer.m_recvCache.Pull(pushBuffer, packetLength);
     ASSERT_TRUE(pullDataLength == header.m_length);
 
-    socketBuffer.m_recvLock.Unlock();
+    socketBuffer.m_recvLock.unlock();
 
     command = header.m_command;
     decodeBuffer.m_resultBuffer.SetPushIndex(pullDataLength);

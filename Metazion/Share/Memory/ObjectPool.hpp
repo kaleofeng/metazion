@@ -7,7 +7,6 @@
 #include "Metazion/Share/Collection/UDSelfList.hpp"
 #include "Metazion/Share/Memory/StepAllocator.hpp"
 #include "Metazion/Share/Sync/NoneLock.hpp"
-#include "Metazion/Share/Sync/AutoGuard.hpp"
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
@@ -29,13 +28,13 @@ public:
 
 public:
     Object_t* Obtain() {
-        AutoGuard<Lock_t> autoGuard(m_lock);
+        std::lock_guard<Lock_t> lockGuard(m_lock);
         
         return CreateObject();
     }
 
     void Return(Object_t* object) {
-        AutoGuard<Lock_t> autoGuard(m_lock);
+        std::lock_guard<Lock_t> lockGuard(m_lock);
 
         DestoryObject(object);
     }
