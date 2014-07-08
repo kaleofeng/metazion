@@ -21,6 +21,8 @@ public:
 
     void Reset() override;
 
+    void Prepare() override;
+
     void OnAttached() override;
 
     void OnStarted() override;

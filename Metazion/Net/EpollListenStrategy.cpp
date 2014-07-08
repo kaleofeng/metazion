@@ -15,8 +15,11 @@ void EpollListenStrategy::Reset() {
     // Nothing to do.
 }
 
-void EpollListenStrategy::OnStarted() {
+void EpollListenStrategy::Prepare() {
     Reset();
+}
+
+void EpollListenStrategy::Start() {
     Input();
 }
 

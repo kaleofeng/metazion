@@ -16,8 +16,11 @@ void EpollTransmitStrategy::Reset() {
     m_canOutput = false;
 }
 
-void EpollListenStrategy::OnStarted() {
+void EpollTransmitStrategy::Prepare() {
     Reset();
+}
+
+void EpollTransmitStrategy::Start() {
     Input();
 }
 

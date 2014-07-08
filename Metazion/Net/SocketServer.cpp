@@ -118,6 +118,8 @@ void SocketServer::MarkSocketActive(int index) {
     socketCtrl.m_active = true;
 
     auto socket = m_socketCtrlList[index].m_socket;
+    socket->Prepare();
+
     if (!m_socketService.Associate(socket)) {
         socket->DetachSockId();
         return;

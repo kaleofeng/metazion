@@ -24,8 +24,10 @@ public:
 
 public:
     void Reset() override;
+
+    void Prepare() override;
     
-    void OnStarted() override;
+    void Start() override;
 
     bool IsBusy() const override;
 

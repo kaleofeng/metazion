@@ -16,8 +16,11 @@ void IocpTransmitStrategy::Reset() {
     m_recvOperation.Reset();
 }
 
-void IocpTransmitStrategy::OnStarted() {
+void IocpTransmitStrategy::Prepare() {
     Reset();
+}
+
+void IocpTransmitStrategy::Start() {
     Input();
 }
 

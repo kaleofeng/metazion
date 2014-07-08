@@ -28,6 +28,8 @@ public:
 
     virtual void Reset();
 
+    virtual void Prepare();
+
     virtual void Destory();
 
     virtual void Tick(int interval);

@@ -23,6 +23,8 @@ public:
 
     void Reset() override;
 
+    void Prepare() override;
+
     void OnStarted() override;
 
     bool IsAlive() const override;

@@ -19,6 +19,12 @@ void TransmitSocket::Reset() {
     m_transmitStrategy.Reset();
 }
 
+void TransmitSocket::Prepare() {
+    Socket::Prepare();
+    m_socketBuffer.Prepare();
+    m_transmitStrategy.Prepare();
+}
+
 void TransmitSocket::OnAttached() {
     Socket::OnAttached();
 
@@ -35,8 +41,7 @@ void TransmitSocket::OnAttached() {
 
 void TransmitSocket::OnStarted() {
     Socket::OnStarted();
-    m_socketBuffer.Rework();
-    m_transmitStrategy.OnStarted();
+    m_transmitStrategy.Start();
     OnConnected();
 }
 

@@ -18,8 +18,11 @@ void IocpListenStrategy::Reset() {
     ::memset(m_acceptBuffer, 0, sizeof(m_acceptBuffer));
 }
 
-void IocpListenStrategy::OnStarted() {
+void IocpListenStrategy::Prepare() {
     Reset();
+}
+
+void IocpListenStrategy::Start() {
     Input();
 }
 

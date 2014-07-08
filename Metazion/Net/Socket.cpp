@@ -19,6 +19,10 @@ void Socket::Reset() {
     m_socketServer = nullptr;
 }
 
+void Socket::Prepare() {
+     m_working = false;
+}
+
 void Socket::Destory() {
     delete this;
 }

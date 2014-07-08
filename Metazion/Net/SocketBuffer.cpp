@@ -27,7 +27,7 @@ void SocketBuffer::Reset() {
     m_recvBuffer.Reset();
 }
 
-void SocketBuffer::Rework() {
+void SocketBuffer::Prepare() {
     m_sendCache.Reset();
     m_sendCache.SetBufferPool(m_sendCachePool);
     m_recvCache.Reset();

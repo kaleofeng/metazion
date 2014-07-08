@@ -17,9 +17,14 @@ void ListenSocket::Reset() {
     m_listenStrategy.Reset();
 }
 
+void ListenSocket::Prepare() {
+    Socket::Prepare();
+    m_listenStrategy.Prepare();
+}
+
 void ListenSocket::OnStarted() {
     Socket::OnStarted();
-    m_listenStrategy.OnStarted();
+    m_listenStrategy.Start();
 }
 
 bool ListenSocket::IsAlive() const {

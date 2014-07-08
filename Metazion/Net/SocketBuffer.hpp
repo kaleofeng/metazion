@@ -31,7 +31,7 @@ public:
 
     void Reset();
 
-    void Rework();
+    void Prepare();
 
     int PrepareSendBuffer();
 
