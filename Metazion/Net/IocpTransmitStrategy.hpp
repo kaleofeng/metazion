@@ -28,9 +28,9 @@ public:
 
     bool IsBusy() const override;
 
-    bool Input() override;
+    bool PostInput() override;
 
-    bool Output() override;
+    bool PostOutput() override;
 
     bool OnSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber) override;
@@ -42,26 +42,26 @@ public:
         , DWORD byteNumber) override;
 
 private:
-    bool PostInput();
+    bool PostRecv();
 
-    bool PostOutput();
+    bool PostSend();
 
-    bool OnInputSuccess(const IocpOperation* iocpOperation
+    bool OnRecvSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
-    bool OnOutputSuccess(const IocpOperation* iocpOperation
+    bool OnSendSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
-    bool OnInputFailure(const IocpOperation* iocpOperation
+    bool OnRecvFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error);
 
-    bool OnOutputFailure(const IocpOperation* iocpOperation
+    bool OnSendFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error);
 
-    bool OnInputClose(const IocpOperation* iocpOperation
+    bool OnRecvClose(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
-    bool OnOutputClose(const IocpOperation* iocpOperation
+    bool OnSendClose(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
 private:

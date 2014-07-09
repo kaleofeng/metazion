@@ -36,23 +36,8 @@ void EpollIoThread::Finalize() {
 
 void EpollIoThread::Execute() {
     while (!m_stopDesired) {
-        ProcessSockets();
         ProcessEvents();
-    }
-}
-
-void EpollIoThread::ProcessSockets() {
-    for (auto index = 0; index < m_socketCount; ++index) {
-        auto& socketCtrl = m_socketCtrlList[index];
-        if (IsNull(socketCtrl.m_socket)) {
-            continue;
-        }
-
-        if (!socketCtrl.m_active) {
-            continue;
-        }
-
-        socketCtrl.m_socket->GetIoStrategy().ExecuteOutput();
+        ProcessSockets();
     }
 }
 
@@ -87,6 +72,21 @@ void EpollIoThread::ProcessEvents() {
         if (event.events & EPOLLOUT) {
             socket->GetIoStrategy().EnableOutput();
         }
+    }
+}
+
+void EpollIoThread::ProcessSockets() {
+    for (auto index = 0; index < m_socketCount; ++index) {
+        auto& socketCtrl = m_socketCtrlList[index];
+        if (IsNull(socketCtrl.m_socket)) {
+            continue;
+        }
+
+        if (!socketCtrl.m_active) {
+            continue;
+        }
+
+        socketCtrl.m_socket->GetIoStrategy().ExecuteOutput();
     }
 }
 

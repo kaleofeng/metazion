@@ -21,18 +21,18 @@ void EpollTransmitStrategy::Prepare() {
 }
 
 void EpollTransmitStrategy::Start() {
-    Input();
+    PostInput();
 }
 
 bool EpollTransmitStrategy::IsBusy() const {
     return false;
 }
 
-void EpollTransmitStrategy::Input() {
+void EpollTransmitStrategy::PostInput() {
     // Nothing to do.
 }
 
-void EpollTransmitStrategy::Output() {
+void EpollTransmitStrategy::PostOutput() {
     // Nothing to do.
 }
 

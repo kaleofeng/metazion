@@ -31,9 +31,9 @@ protected:
     void Execute() override final;
 
 private:
-    void ProcessSockets();
-
     void ProcessEvents();
+
+    void ProcessSockets();
 
 private:
     SocketServer* m_socketServer;

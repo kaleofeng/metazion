@@ -21,7 +21,7 @@ void IocpTransmitStrategy::Prepare() {
 }
 
 void IocpTransmitStrategy::Start() {
-    Input();
+    PostInput();
 }
 
 bool IocpTransmitStrategy::IsBusy() const {
@@ -38,7 +38,7 @@ bool IocpTransmitStrategy::IsBusy() const {
     return false;
 }
 
-bool IocpTransmitStrategy::Input() {
+bool IocpTransmitStrategy::PostInput() {
     if (!m_transmitSocket.IsReady()) {
         return false;
     }
@@ -49,10 +49,10 @@ bool IocpTransmitStrategy::Input() {
 
     m_recvOperation.SetBusy(true);
 
-   return PostInput();
+   return PostRecv();
 }
 
-bool IocpTransmitStrategy::Output() {
+bool IocpTransmitStrategy::PostOutput() {
     if (!m_transmitSocket.IsReady()) {
         return false;
     }
@@ -67,16 +67,16 @@ bool IocpTransmitStrategy::Output() {
 
     m_sendOperation.SetBusy(true);
 
-    return PostOutput();
+    return PostSend();
 }
 
 bool IocpTransmitStrategy::OnSuccess(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     switch (iocpOperation->m_type) {
     case IocpOperation::TYPE_RECV:
-        return OnInputSuccess(iocpOperation, byteNumber);
+        return OnRecvSuccess(iocpOperation, byteNumber);
     case IocpOperation::TYPE_SEND:
-        return OnOutputSuccess(iocpOperation, byteNumber);
+        return OnSendSuccess(iocpOperation, byteNumber);
     default: ASSERT_TRUE(false); return false;
     }
 }
@@ -85,9 +85,9 @@ bool IocpTransmitStrategy::OnFailure(const IocpOperation* iocpOperation
     , DWORD byteNumber, int error) {
     switch (iocpOperation->m_type) {
     case IocpOperation::TYPE_RECV:
-        return OnInputFailure(iocpOperation, byteNumber, error);
+        return OnRecvFailure(iocpOperation, byteNumber, error);
     case IocpOperation::TYPE_SEND:
-        return OnOutputFailure(iocpOperation, byteNumber, error);
+        return OnSendFailure(iocpOperation, byteNumber, error);
     default: ASSERT_TRUE(false); return false;
     }
 }
@@ -96,14 +96,14 @@ bool IocpTransmitStrategy::OnClose(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     switch (iocpOperation->m_type) {
     case IocpOperation::TYPE_RECV:
-        return OnInputClose(iocpOperation, byteNumber);
+        return OnRecvClose(iocpOperation, byteNumber);
     case IocpOperation::TYPE_SEND:
-        return OnOutputClose(iocpOperation, byteNumber);
+        return OnSendClose(iocpOperation, byteNumber);
     default: ASSERT_TRUE(false); return false;
     }
 }
 
-bool IocpTransmitStrategy::PostInput() {
+bool IocpTransmitStrategy::PostRecv() {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     auto recvBuffer = socketBuffer.m_recvBuffer.GetPushBuffer();
@@ -133,7 +133,7 @@ bool IocpTransmitStrategy::PostInput() {
     return true;
 }
 
-bool IocpTransmitStrategy::PostOutput() {
+bool IocpTransmitStrategy::PostSend() {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     auto sendLength = socketBuffer.m_sendBuffer.GetPullLength();
@@ -170,7 +170,7 @@ bool IocpTransmitStrategy::PostOutput() {
     return true;
 }
 
-bool IocpTransmitStrategy::OnInputSuccess(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::OnRecvSuccess(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_recvOperation == iocpOperation);
 
@@ -196,10 +196,10 @@ bool IocpTransmitStrategy::OnInputSuccess(const IocpOperation* iocpOperation
         return false;
     }
 
-    return PostInput();
+    return PostRecv();
 }
 
-bool IocpTransmitStrategy::OnOutputSuccess(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::OnSendSuccess(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_sendOperation == iocpOperation);
 
@@ -219,10 +219,10 @@ bool IocpTransmitStrategy::OnOutputSuccess(const IocpOperation* iocpOperation
     socketBuffer.m_sendBuffer.JumpPullIndex(sendLength);
     socketBuffer.m_sendBuffer.Compact();
 
-    return PostOutput();
+    return PostSend();
 }
 
-bool IocpTransmitStrategy::OnInputFailure(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::OnRecvFailure(const IocpOperation* iocpOperation
     , DWORD byteNumber, int error) {
     ASSERT_TRUE(&m_recvOperation == iocpOperation);
 
@@ -234,7 +234,7 @@ bool IocpTransmitStrategy::OnInputFailure(const IocpOperation* iocpOperation
     return true;
 }
 
-bool IocpTransmitStrategy::OnOutputFailure(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::OnSendFailure(const IocpOperation* iocpOperation
     , DWORD byteNumber, int error) {
     ASSERT_TRUE(&m_sendOperation == iocpOperation);
 
@@ -246,7 +246,7 @@ bool IocpTransmitStrategy::OnOutputFailure(const IocpOperation* iocpOperation
     return true;
 }
 
-bool IocpTransmitStrategy::OnInputClose(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::OnRecvClose(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_recvOperation == iocpOperation);
 
@@ -257,7 +257,7 @@ bool IocpTransmitStrategy::OnInputClose(const IocpOperation* iocpOperation
     return true;
 }
 
-bool IocpTransmitStrategy::OnOutputClose(const IocpOperation* iocpOperation
+bool IocpTransmitStrategy::OnSendClose(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_sendOperation == iocpOperation);
 

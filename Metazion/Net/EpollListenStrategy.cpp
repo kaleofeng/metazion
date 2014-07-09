@@ -20,18 +20,18 @@ void EpollListenStrategy::Prepare() {
 }
 
 void EpollListenStrategy::Start() {
-    Input();
+    PostInput();
 }
 
 bool EpollListenStrategy::IsBusy() const {
     return false;
 }
 
-void EpollListenStrategy::Input() {
+void EpollListenStrategy::PostInput() {
     // Nothing to do.
 }
 
-void EpollListenStrategy::Output() {
+void EpollListenStrategy::PostOutput() {
     // Nothing to do.
 }
 

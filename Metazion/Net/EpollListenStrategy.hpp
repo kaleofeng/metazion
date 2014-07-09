@@ -28,9 +28,9 @@ public:
 
     bool IsBusy() const override;
 
-    void Input() override;
+    void PostInput() override;
 
-    void Output() override;
+    void PostOutput() override;
 
     void ExecuteInput() override;
 

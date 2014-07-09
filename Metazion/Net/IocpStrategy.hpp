@@ -26,9 +26,9 @@ public:
 
     virtual bool IsBusy() const = 0;
 
-    virtual bool Input() = 0;
+    virtual bool PostInput() = 0;
 
-    virtual bool Output() = 0;
+    virtual bool PostOutput() = 0;
 
     virtual bool OnSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber) = 0;

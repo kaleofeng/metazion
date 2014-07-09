@@ -71,7 +71,7 @@ void MaintenanceThread::ProcessActiveSocket(Socket* socket, int index) {
 
     socket->Tick(m_interval);
 
-    socket->GetIoStrategy().Output();
+    socket->GetIoStrategy().PostOutput();
 }
 
 void MaintenanceThread::ProcessClosedSocket(Socket* socket, int index) {

@@ -24,9 +24,9 @@ public:
 
     virtual bool IsBusy() const = 0;
 
-    virtual void Input() = 0;
+    virtual void PostInput() = 0;
 
-    virtual void Output() = 0;
+    virtual void PostOutput() = 0;
 
     virtual void ExecuteInput() = 0;
 

@@ -31,9 +31,9 @@ public:
 
     bool IsBusy() const override;
 
-    bool Input() override;
+    bool PostInput() override;
 
-    bool Output() override;
+    bool PostOutput() override;
 
     bool OnSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber) override;

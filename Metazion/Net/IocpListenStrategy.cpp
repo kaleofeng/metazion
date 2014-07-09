@@ -23,14 +23,14 @@ void IocpListenStrategy::Prepare() {
 }
 
 void IocpListenStrategy::Start() {
-    Input();
+    PostInput();
 }
 
 bool IocpListenStrategy::IsBusy() const {
     return m_acceptOperation.IsBusy();
 }
 
-bool IocpListenStrategy::Input() {
+bool IocpListenStrategy::PostInput() {
     if (!m_listenSocket.IsReady()) {
         return false;
     }
@@ -44,7 +44,7 @@ bool IocpListenStrategy::Input() {
     return PostAccept();
 }
 
-bool IocpListenStrategy::Output() {
+bool IocpListenStrategy::PostOutput() {
     return true;
 }
 
