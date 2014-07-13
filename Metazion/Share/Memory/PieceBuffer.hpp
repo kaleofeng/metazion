@@ -146,10 +146,10 @@ public:
 
 private:
     char m_buffer[MAXLENGTH];
-    int m_pullIndex;
     int m_pushIndex;
+    int m_pullIndex;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // _MZ_SHARE_PIECE_BUFFER_HPP_
+#endif // _MZ_SHARE_PIECEBUFFER_HPP_

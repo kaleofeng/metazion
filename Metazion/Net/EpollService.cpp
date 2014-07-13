@@ -34,6 +34,7 @@ bool EpollService::Initialize(int socketCapacity, int ioThreadNumber) {
 
     m_epollEventList = new epoll_event[m_socketCapacity];
     ::memset(m_epollEventList, 0, sizeof(epoll_event) * m_socketCapacity);
+    return true;
 }
 
 void EpollService::Finalize() {
