@@ -48,7 +48,7 @@ bool IocpListenStrategy::PostOutput() {
     return true;
 }
 
-bool IocpListenStrategy::OnSuccess(const IocpOperation* iocpOperation
+bool IocpListenStrategy::HandleSuccess(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     ASSERT_TRUE(&m_acceptOperation == iocpOperation);
 
@@ -71,7 +71,7 @@ bool IocpListenStrategy::OnSuccess(const IocpOperation* iocpOperation
     return PostAccept();
 }
 
-bool IocpListenStrategy::OnFailure(const IocpOperation* iocpOperation
+bool IocpListenStrategy::HandleFailure(const IocpOperation* iocpOperation
     , DWORD byteNumber, int error) {
     ASSERT_TRUE(&m_acceptOperation == iocpOperation);
 
@@ -85,7 +85,7 @@ bool IocpListenStrategy::OnFailure(const IocpOperation* iocpOperation
     return true;
 }
 
-bool IocpListenStrategy::OnClose(const IocpOperation* iocpOperation
+bool IocpListenStrategy::HandleClose(const IocpOperation* iocpOperation
     , DWORD byteNumber){
     ASSERT_TRUE(&m_acceptOperation == iocpOperation);
 
@@ -121,7 +121,7 @@ bool IocpListenStrategy::PostAccept() {
     if (FALSE == ret) {
         const DWORD error = ::WSAGetLastError();
         if (ERROR_IO_PENDING != error) {
-            OnFailure(&m_acceptOperation, 0, error);
+            HandleFailure(&m_acceptOperation, 0, error);
             return false;
         }
     }

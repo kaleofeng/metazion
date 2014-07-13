@@ -32,13 +32,13 @@ public:
 
     bool PostOutput() override;
 
-    bool OnSuccess(const IocpOperation* iocpOperation
+    bool HandleSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber) override;
 
-    bool OnFailure(const IocpOperation* iocpOperation
+    bool HandleFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error) override;
 
-    bool OnClose(const IocpOperation* iocpOperation
+    bool HandleClose(const IocpOperation* iocpOperation
         , DWORD byteNumber) override;
 
 private:
@@ -46,22 +46,22 @@ private:
 
     bool PostSend();
 
-    bool OnRecvSuccess(const IocpOperation* iocpOperation
+    bool HandleRecvSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
-    bool OnSendSuccess(const IocpOperation* iocpOperation
+    bool HandleSendSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
-    bool OnRecvFailure(const IocpOperation* iocpOperation
+    bool HandleRecvFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error);
 
-    bool OnSendFailure(const IocpOperation* iocpOperation
+    bool HandleSendFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error);
 
-    bool OnRecvClose(const IocpOperation* iocpOperation
+    bool HandleRecvClose(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
-    bool OnSendClose(const IocpOperation* iocpOperation
+    bool HandleSendClose(const IocpOperation* iocpOperation
         , DWORD byteNumber);
 
 private:

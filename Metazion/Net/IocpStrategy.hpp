@@ -30,13 +30,13 @@ public:
 
     virtual bool PostOutput() = 0;
 
-    virtual bool OnSuccess(const IocpOperation* iocpOperation
+    virtual bool HandleSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber) = 0;
 
-    virtual bool OnFailure(const IocpOperation* iocpOperation
+    virtual bool HandleFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error) = 0;
 
-    virtual bool OnClose(const IocpOperation* iocpOperation
+    virtual bool HandleClose(const IocpOperation* iocpOperation
         , DWORD byteNumber) = 0;
 };
 

@@ -1,5 +1,7 @@
 #include "Metazion/Net/SocketServer.hpp"
 
+#include <Metazion/Share/Utility/Random.hpp>
+
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 SocketServer::SocketServer()
@@ -99,6 +101,15 @@ void SocketServer::RemoveSocketCtrl(int index) {
 }
 
 int SocketServer::GetVacantIndex() const {
+    static NS_SHARE::Random s_random;
+    auto count = 0;
+    while (count < 3) {
+        auto index = s_random.GetRangeInt(0, m_socketCapacity);
+        if (IsNull(m_socketCtrlList[index].m_socket)) {
+            return index;
+        }
+    }
+
     for (auto index = 0; index < m_socketCapacity; ++index) {
         if (IsNull(m_socketCtrlList[index].m_socket)) {
             return index;

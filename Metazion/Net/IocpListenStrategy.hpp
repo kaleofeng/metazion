@@ -35,13 +35,13 @@ public:
 
     bool PostOutput() override;
 
-    bool OnSuccess(const IocpOperation* iocpOperation
+    bool HandleSuccess(const IocpOperation* iocpOperation
         , DWORD byteNumber) override;
 
-    bool OnFailure(const IocpOperation* iocpOperation
+    bool HandleFailure(const IocpOperation* iocpOperation
         , DWORD byteNumber, int error) override;
 
-    bool OnClose(const IocpOperation* iocpOperation
+    bool HandleClose(const IocpOperation* iocpOperation
         , DWORD byteNumber) override;
 
 private:
