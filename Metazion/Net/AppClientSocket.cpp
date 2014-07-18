@@ -5,7 +5,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 AppClientSocket::AppClientSocket()
-    : m_packetSpecific(*this) {}
+    : m_packetCodec(*this) {}
 
 AppClientSocket::~AppClientSocket() {}
 
@@ -15,7 +15,7 @@ void AppClientSocket::Dispatch() {
     while (true) {
         int command = 0;
         decodeBuffer.m_resultBuffer.Reset();
-        const auto ret = m_packetSpecific.Decode(command, decodeBuffer);
+        const auto ret = m_packetCodec.Decode(command, decodeBuffer);
         if (0 == ret) {
             break;
         }
@@ -34,7 +34,7 @@ bool AppClientSocket::SendData(int command, const void* data, int length) {
     auto& encodeBuffer = GetEncodeBuffer();
     encodeBuffer.m_resultBuffer.Reset();
 
-    const auto ret = m_packetSpecific.Encode(command, data, length, encodeBuffer);
+    const auto ret = m_packetCodec.Encode(command, data, length, encodeBuffer);
     if (ret <= 0) {
         return false;
     }

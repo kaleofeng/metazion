@@ -19,6 +19,7 @@ public:
 public:
     struct SocketFilter {
         SocketFilter() {}
+
         virtual ~SocketFilter() {}
 
         virtual bool Filter(Socket* socket) { 

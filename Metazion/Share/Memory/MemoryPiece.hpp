@@ -12,8 +12,7 @@ class MemoryPiece {
     DISALLOW_COPY_AND_ASSIGN(MemoryPiece)
 
     typedef struct Node {
-        Node() : m_nextNode(nullptr) {}
-        Node* m_nextNode;
+        Node* m_nextNode = nullptr;
     } Node_t;
     
     enum { 
@@ -23,6 +22,7 @@ class MemoryPiece {
     
     typedef struct Unit {
         Unit() { ::memset(m_buffer, 0, sizeof(m_buffer)); }
+
         char m_buffer[ALIGNLENGTH];
     } Unit_t;
 

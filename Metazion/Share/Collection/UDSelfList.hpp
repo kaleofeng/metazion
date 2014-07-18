@@ -9,19 +9,13 @@ template<typename ValueType>
 struct UDSelfListNode {
     using Value_t = ValueType;
 
-    UDSelfListNode()
-        : m_nextNode(nullptr) {}
-
     Value_t m_value;
-    UDSelfListNode* m_nextNode;
+    UDSelfListNode* m_nextNode = nullptr;
 };
 
 template<>
 struct UDSelfListNode<void> {
-    UDSelfListNode()
-        : m_nextNode(nullptr) {}
-
-    UDSelfListNode* m_nextNode;
+    UDSelfListNode* m_nextNode = nullptr;
 };
 
 template<typename NodeType>

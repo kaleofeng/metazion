@@ -17,8 +17,7 @@ struct IocpOperation {
     };
 
     IocpOperation(Type type)
-        : m_type(type)
-        , m_busy(false) { ::memset(&m_overlapped, 0, sizeof(m_overlapped)); }
+        : m_type(type) { ::memset(&m_overlapped, 0, sizeof(m_overlapped)); }
 
     void Reset() {
         ::memset(&m_overlapped, 0, sizeof(m_overlapped));
@@ -35,14 +34,12 @@ struct IocpOperation {
 
     Type m_type;
     OVERLAPPED m_overlapped;
-    volatile bool m_busy;
+    volatile bool m_busy = false;
 };
 
 struct AcceptOperation final : public IocpOperation {
     AcceptOperation()
-        : IocpOperation(TYPE_ACCEPT)
-        , m_buffer(nullptr)
-        , m_sockId(INVALID_SOCKID) {}
+        : IocpOperation(TYPE_ACCEPT) {}
 
     void Reset() {
         IocpOperation::Reset();
@@ -50,8 +47,8 @@ struct AcceptOperation final : public IocpOperation {
         m_sockId = INVALID_SOCKID;
     }
 
-    char* m_buffer;
-    SockId_t m_sockId;
+    char* m_buffer = nullptr;
+    SockId_t m_sockId = INVALID_SOCKID;
 };
 
 struct SendOperation final : public IocpOperation {

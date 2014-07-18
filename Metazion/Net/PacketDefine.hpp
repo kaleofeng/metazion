@@ -10,18 +10,8 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 struct PacketHeader {
-    enum {
-        MULTIPLEBEGIN = -1,
-        MULTIPLE = -2,
-        MULTIPLEEND = -3,
-    };
-
-    PacketHeader()
-        : m_command(0)
-        , m_length(0) {}
-
-    int16_t m_command;
-    int16_t m_length;
+    int16_t m_command = 0;
+    int16_t m_length = 0;
 };
 
 enum PacketValue {
@@ -37,8 +27,6 @@ struct EncodeBuffer {
 
     using Buffer_t = NS_SHARE::PieceBuffer<LENGTH>;
     
-    EncodeBuffer() {}
-    
     Buffer_t m_resultBuffer;
 };
 
@@ -47,28 +35,20 @@ struct DecodeBuffer {
 
     using Buffer_t = NS_SHARE::PieceBuffer<LENGTH>;
 
-    DecodeBuffer() {}
-
     Buffer_t m_resultBuffer;
 };
 
 struct ThreadEncodeBuffer {
     enum { TAG = 0xFFEEDDCC };
 
-    ThreadEncodeBuffer()
-        : m_tag(TAG) {}
-
-    uint32_t m_tag;
+    uint32_t m_tag = TAG;
     EncodeBuffer m_buffer;
 };
 
 struct ThreadDecodeBuffer {
     enum { TAG = 0xFFEEDDCC };
 
-    ThreadDecodeBuffer()
-        : m_tag(TAG) {}
-
-    uint32_t m_tag;
+    uint32_t m_tag = TAG;
     DecodeBuffer m_buffer;
 };
 

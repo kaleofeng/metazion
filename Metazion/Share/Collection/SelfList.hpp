@@ -9,23 +9,15 @@ template<typename ValueType>
 struct SelfListNode {
     using Value_t = ValueType;
 
-    SelfListNode()
-        : m_prevNode(nullptr)
-        , m_nextNode(nullptr) {}
-
     Value_t m_value;
-    SelfListNode* m_prevNode;
-    SelfListNode* m_nextNode;
+    SelfListNode* m_prevNode = nullptr;
+    SelfListNode* m_nextNode = nullptr;
 };
 
 template<>
 struct SelfListNode<void> {
-    SelfListNode()
-        : m_prevNode(nullptr)
-        , m_nextNode(nullptr) {}
-
-    SelfListNode* m_prevNode;
-    SelfListNode* m_nextNode;
+    SelfListNode* m_prevNode = nullptr;
+    SelfListNode* m_nextNode = nullptr;
 };
 
 template<typename NodeType>

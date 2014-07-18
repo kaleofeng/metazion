@@ -4,7 +4,7 @@
 #include "Metazion/Net/NetInclude.hpp"
 
 #include "Metazion/Net/NormalClientSocket.hpp"
-#include "Metazion/Net/PacketSpecific.hpp"
+#include "Metazion/Net/PacketCodec.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
@@ -32,7 +32,7 @@ private:
     DecodeBuffer& GetDecodeBuffer();
 
 private:
-    PacketSpecific m_packetSpecific;
+    PacketCodec m_packetCodec;
 };
 
 DECL_NAMESPACE_MZ_NET_END

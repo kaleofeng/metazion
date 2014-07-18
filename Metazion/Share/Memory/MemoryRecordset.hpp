@@ -12,16 +12,10 @@ public:
     using Handle = void*;
 
     struct Header {
-        Header()
-            : m_usedCount(0)
-            , m_firstFree(0)
-            , m_recordSize(0)
-            , m_capacity(0) {}
-
-        volatile int m_usedCount;
-        int m_firstFree;
-        int m_recordSize;
-        int m_capacity;
+        volatile int m_usedCount = 0;
+        int m_firstFree = 0;
+        int m_recordSize = 0;
+        int m_capacity = 0;
     };
 
 private:
@@ -31,9 +25,7 @@ private:
     };
 
     struct Record {
-        Record() {
-            ::memset(this, 0, sizeof(*this));
-        }
+        Record() { ::memset(this, 0, sizeof(*this)); }
 
         union {
             int m_flag;
