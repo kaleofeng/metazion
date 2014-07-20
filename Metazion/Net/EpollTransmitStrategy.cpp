@@ -20,20 +20,16 @@ void EpollTransmitStrategy::Prepare() {
     Reset();
 }
 
+void EpollTransmitStrategy::Tick(int interval) {
+    // Nothing to do.
+}
+
 void EpollTransmitStrategy::Start() {
-    PostInput();
+    // Nothing to do.
 }
 
 bool EpollTransmitStrategy::IsBusy() const {
     return false;
-}
-
-void EpollTransmitStrategy::PostInput() {
-    // Nothing to do.
-}
-
-void EpollTransmitStrategy::PostOutput() {
-    // Nothing to do.
 }
 
 void EpollTransmitStrategy::ExecuteInput() {

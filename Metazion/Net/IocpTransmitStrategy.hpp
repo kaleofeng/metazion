@@ -24,6 +24,8 @@ public:
 
     void Prepare() override;
 
+    void Tick(int interval) override;
+
     void Start() override;
 
     bool IsBusy() const override;

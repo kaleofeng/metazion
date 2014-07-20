@@ -54,6 +54,8 @@ void MaintenanceThread::ProcessSockets() {
             continue;
         }
 
+        socketCtrl.m_socket->Tick(m_interval);
+
         if (socketCtrl.m_active) {
             ProcessActiveSocket(socketCtrl.m_socket, index);
         }
@@ -66,12 +68,7 @@ void MaintenanceThread::ProcessSockets() {
 void MaintenanceThread::ProcessActiveSocket(Socket* socket, int index) {
     if (socket->IsClosed()) {
         m_socketServer->MarkSocketClosed(index);
-        return;
     }
-
-    socket->Tick(m_interval);
-
-    socket->GetIoStrategy().PostOutput();
 }
 
 void MaintenanceThread::ProcessClosedSocket(Socket* socket, int index) {
@@ -79,8 +76,6 @@ void MaintenanceThread::ProcessClosedSocket(Socket* socket, int index) {
         m_socketServer->MarkSocketActive(index);
         return;
     }
-
-    socket->Tick(m_interval);
 
     if (!socket->IsAlive()) {
         m_socketServer->Lock();

@@ -19,20 +19,16 @@ void EpollListenStrategy::Prepare() {
     Reset();
 }
 
+void EpollListenStrategy::Tick(int interval) {
+    // Nothing to do.
+}
+
 void EpollListenStrategy::Start() {
-    PostInput();
+    // Nothing to do.
 }
 
 bool EpollListenStrategy::IsBusy() const {
     return false;
-}
-
-void EpollListenStrategy::PostInput() {
-    // Nothing to do.
-}
-
-void EpollListenStrategy::PostOutput() {
-    // Nothing to do.
 }
 
 void EpollListenStrategy::ExecuteInput() {

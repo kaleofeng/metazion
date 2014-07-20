@@ -22,6 +22,11 @@ void ListenSocket::Prepare() {
     m_listenStrategy.Prepare();
 }
 
+void ListenSocket::Tick(int interval) {
+    Socket::Tick(interval);
+    m_listenStrategy.Tick(interval);
+}
+
 void ListenSocket::OnStarted() {
     Socket::OnStarted();
     m_listenStrategy.Start();

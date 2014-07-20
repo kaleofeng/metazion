@@ -23,6 +23,8 @@ public:
 
     void Prepare() override;
 
+    void Tick(int interval) override;
+
     void OnAttached() override;
 
     void OnStarted() override;

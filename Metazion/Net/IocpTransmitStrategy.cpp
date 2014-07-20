@@ -20,6 +20,10 @@ void IocpTransmitStrategy::Prepare() {
     Reset();
 }
 
+void IocpTransmitStrategy::Tick(int interval) {
+    PostOutput();
+}
+
 void IocpTransmitStrategy::Start() {
     PostInput();
 }

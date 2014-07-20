@@ -26,6 +26,8 @@ public:
     void Reset() override;
 
     void Prepare() override;
+
+    void Tick(int interval) override;
     
     void Start() override;
 

@@ -22,6 +22,10 @@ void IocpListenStrategy::Prepare() {
     Reset();
 }
 
+void IocpListenStrategy::Tick(int interval) {
+    PostOutput();
+}
+
 void IocpListenStrategy::Start() {
     PostInput();
 }

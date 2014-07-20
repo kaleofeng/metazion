@@ -25,6 +25,8 @@ public:
 
     void Prepare() override;
 
+    void Tick(int interval) override;
+
     void OnStarted() override;
 
     bool IsAlive() const override;

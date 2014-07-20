@@ -25,6 +25,11 @@ void TransmitSocket::Prepare() {
     m_transmitStrategy.Prepare();
 }
 
+void TransmitSocket::Tick(int interval) {
+    Socket::Tick(interval);
+    m_transmitStrategy.Tick(interval);
+}
+
 void TransmitSocket::OnAttached() {
     Socket::OnAttached();
 
