@@ -44,9 +44,13 @@ void TransmitSocket::OnAttached() {
     m_socketBuffer.SetRecvCachePool(recvBufferPool);
 }
 
+void TransmitSocket::OnStart() {
+    Socket::OnStart();
+    m_transmitStrategy.Start();
+}
+
 void TransmitSocket::OnStarted() {
     Socket::OnStarted();
-    m_transmitStrategy.Start();
     OnConnected();
 }
 

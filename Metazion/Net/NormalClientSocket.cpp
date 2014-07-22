@@ -9,7 +9,8 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 NormalClientSocket::NormalClientSocket()
     : m_stage(STAGE_NONE)
     , m_connectTime(0)
-    , m_reconnectInterval(0) {}
+    , m_reconnectInterval(0)
+    , m_tempSockId(INVALID_SOCKID) {}
 
 NormalClientSocket::~NormalClientSocket() {}
 
@@ -19,37 +20,12 @@ void NormalClientSocket::Reset() {
     m_stage = STAGE_NONE;
     m_connectTime = 0;
     m_reconnectInterval = 0;
+    m_tempSockId = INVALID_SOCKID;
 }
 
 void NormalClientSocket::Tick(int interval) {
     TransmitSocket::Tick(interval);
     ConnectStage();
-}
-
-bool NormalClientSocket::IsActive() const {
-    auto ret = TransmitSocket::IsActive();
-    if (!ret) {
-        return false;
-    }
-
-    if (!IsStage(STAGE_CONNECTED)) {
-        return false;
-    }
-
-    return true;
-}
-
-bool NormalClientSocket::IsAlive() const {
-    auto ret = TransmitSocket::IsAlive();
-    if (ret) {
-        return true;
-    }
-
-    if (!IsStage(STAGE_CLOSED)) {
-        return true;
-    }
-
-    return false;
 }
 
 void NormalClientSocket::SetRemoteHost(const char* ip, int port) {
@@ -96,6 +72,7 @@ void NormalClientSocket::ConnectStageWaiting() {
         SetStage(STAGE_CONNECTING);
     }
     else if (ret > 0) {
+        AttachSockId(m_tempSockId);
         SetStage(STAGE_CONNECTED);
     }
     else {
@@ -109,22 +86,23 @@ void NormalClientSocket::ConnectStageConnecting() {
         // Keep connecting.
     }
     else if (ret > 0) {
+        AttachSockId(m_tempSockId);
         SetStage(STAGE_CONNECTED);
     }
     else {
-        DetachSockId();
+        DetachTempSockId();
         Reconnect(false);
     }
 }
 
 void NormalClientSocket::ConnectStageConnected() {
-    if (!IsReady()) {
+    if (!IsActive()) {
         Reconnect(true);
     }
 }
 
 void NormalClientSocket::ConnectStageClosed() {
-    ASSERT_TRUE(!IsReady());
+    ASSERT_TRUE(!IsActive());
 }
 
 void NormalClientSocket::Reconnect(bool immediately) {
@@ -146,17 +124,17 @@ int NormalClientSocket::TryToConnect() {
         return -1;
     }
 
-    AttachSockId(sockId);
+    AttachTempSockId(sockId);
 
     auto sockAddr = m_remoteHost.SockAddr();
     auto sockAddrLen = m_remoteHost.SockAddrLen();
-    const auto ret = ::connect(m_sockId, sockAddr, sockAddrLen);
+    const auto ret = ::connect(m_tempSockId, sockAddr, sockAddrLen);
     if (0 == ret) {
         return 1;
     }
 
     if (!IsWouldBlock()) {
-        DetachSockId();
+        DetachTempSockId();
         return -1;
     }
 
@@ -166,14 +144,14 @@ int NormalClientSocket::TryToConnect() {
 int NormalClientSocket::CheckConnected() {
     fd_set wfds;
     FD_ZERO(&wfds);
-    FD_SET(m_sockId, &wfds);
+    FD_SET(m_tempSockId, &wfds);
 
     fd_set efds;
     FD_ZERO(&efds);
-    FD_SET(m_sockId, &efds);
+    FD_SET(m_tempSockId, &efds);
 
     struct timeval timeout = { 0, 0 };
-    const auto nfds = static_cast<int>(m_sockId + 1);
+    const auto nfds = static_cast<int>(m_tempSockId + 1);
     const auto ret = ::select(nfds, nullptr, &wfds, &efds, &timeout);
     if (0 == ret) {
         return 0;
@@ -182,11 +160,11 @@ int NormalClientSocket::CheckConnected() {
         return -1;
     }
 
-    if (FD_ISSET(m_sockId, &efds)) {
+    if (FD_ISSET(m_tempSockId, &efds)) {
         return -1;
     }
 
-    if (!FD_ISSET(m_sockId, &wfds)) {
+    if (!FD_ISSET(m_tempSockId, &wfds)) {
         return -1;
     }
 
@@ -195,7 +173,7 @@ int NormalClientSocket::CheckConnected() {
     // And also doesn't work on solaris platform.
     int optValue = 0;
     auto optLength = static_cast<SockLen_t>(sizeof(optValue));
-    GetSockOpt(m_sockId, SOL_SOCKET, SO_ERROR, &optValue, &optLength);
+    GetSockOpt(m_tempSockId, SOL_SOCKET, SO_ERROR, &optValue, &optLength);
     if (0 != optValue) {
         return -1;
     }

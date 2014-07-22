@@ -30,9 +30,9 @@ public:
 
     bool IsBusy() const override;
 
-    void ExecuteInput() override;
+    void DoInput() override;
 
-    void ExecuteOutput() override;
+    void DoOutput() override;
 
     void EnableOutput() override;
 

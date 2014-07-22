@@ -66,7 +66,7 @@ void EpollIoThread::ProcessEvents() {
         }
 
         if (event.events & EPOLLIN) {
-            socket->GetIoStrategy().ExecuteInput();
+            socket->GetIoStrategy().DoInput();
         }
 
         if (event.events & EPOLLOUT) {
@@ -86,7 +86,7 @@ void EpollIoThread::ProcessSockets() {
             continue;
         }
 
-        socketCtrl.m_socket->GetIoStrategy().ExecuteOutput();
+        socketCtrl.m_socket->GetIoStrategy().DoOutput();
     }
 }
 

@@ -12,7 +12,10 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 
 class SocketBuffer {
     DISALLOW_COPY_AND_ASSIGN(SocketBuffer)
-    
+
+    using Lock_t = std::mutex;
+    using LockGuard_t = std::lock_guard<Lock_t>;
+
 public:
     using SendCache_t = NS_SHARE::StepBuffer<1024 * 4, 1024 * 256>;
     using RecvCache_t = NS_SHARE::StepBuffer<1024 * 4, 1024 * 256>;
@@ -25,13 +28,13 @@ public:
     ~SocketBuffer();
 
 public:
-    void SetSendCachePool(SendCache_t::BufferPool_t& bufferPool);
-
-    void SetRecvCachePool(SendCache_t::BufferPool_t& bufferPool);
-
     void Reset();
 
     void Prepare();
+
+    void SetSendCachePool(SendCache_t::BufferPool_t& bufferPool);
+
+    void SetRecvCachePool(SendCache_t::BufferPool_t& bufferPool);
 
     int PrepareSendBuffer();
 

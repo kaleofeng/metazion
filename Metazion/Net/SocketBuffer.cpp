@@ -8,16 +8,6 @@ SocketBuffer::SocketBuffer()
 
 SocketBuffer::~SocketBuffer() {}
 
-void SocketBuffer::SetSendCachePool(SendCache_t::BufferPool_t& bufferPool) {
-    m_sendCachePool = &bufferPool;
-    m_sendCache.SetBufferPool(m_sendCachePool);
-}
-
-void SocketBuffer::SetRecvCachePool(RecvCache_t::BufferPool_t& bufferPool) {
-    m_recvCachePool = &bufferPool;
-    m_recvCache.SetBufferPool(m_recvCachePool);
-}
-
 void SocketBuffer::Reset() {
     m_sendCache.Reset();
     m_sendCachePool = nullptr;
@@ -34,6 +24,16 @@ void SocketBuffer::Prepare() {
     m_recvCache.SetBufferPool(m_recvCachePool);
     m_sendBuffer.Reset();
     m_recvBuffer.Reset();
+}
+
+void SocketBuffer::SetSendCachePool(SendCache_t::BufferPool_t& bufferPool) {
+    m_sendCachePool = &bufferPool;
+    m_sendCache.SetBufferPool(m_sendCachePool);
+}
+
+void SocketBuffer::SetRecvCachePool(RecvCache_t::BufferPool_t& bufferPool) {
+    m_recvCachePool = &bufferPool;
+    m_recvCache.SetBufferPool(m_recvCachePool);
 }
 
 int SocketBuffer::PrepareSendBuffer() {

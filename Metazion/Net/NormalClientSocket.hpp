@@ -30,10 +30,6 @@ public:
 
     void Tick(int interval) override;
 
-    bool IsActive() const override;
-
-    bool IsAlive() const override;
-
     void SetRemoteHost(const char* ip, int port);
 
     void SetReconnectInterval(int milliseconds);
@@ -63,11 +59,16 @@ private:
     
     void SetStage(int stage);
 
+    void AttachTempSockId(const SockId_t& sockId);
+
+    void DetachTempSockId();
+
 protected:
     Host m_remoteHost;
     int m_stage;
     int64_t m_connectTime;
     int m_reconnectInterval;
+    SockId_t m_tempSockId;
 };
 
 inline int NormalClientSocket::GetType() const {
@@ -80,6 +81,17 @@ inline bool NormalClientSocket::IsStage(int stage) const {
 
 inline void NormalClientSocket::SetStage(int stage) {
     m_stage = stage;
+}
+
+inline void NormalClientSocket::AttachTempSockId(const SockId_t& sockId) {
+    m_tempSockId = sockId;
+}
+
+inline void NormalClientSocket::DetachTempSockId() {
+    if (m_tempSockId != INVALID_SOCKID) {
+        DestroySockId(m_tempSockId);
+        m_tempSockId = INVALID_SOCKID;
+    }
 }
 
 DECL_NAMESPACE_MZ_NET_END

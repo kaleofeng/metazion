@@ -26,9 +26,9 @@ public:
 
     virtual bool IsBusy() const = 0;
 
-    virtual void ExecuteInput() = 0;
+    virtual void DoInput() = 0;
 
-    virtual void ExecuteOutput() = 0;
+    virtual void DoOutput() = 0;
 
     virtual void EnableOutput() = 0;
 };

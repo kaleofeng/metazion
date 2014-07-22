@@ -20,6 +20,9 @@ class SocketServer {
     friend class IoThread;
     friend class MaintenanceThread;
 
+    using Lock_t = std::mutex;
+    using LockGuard_t = std::lock_guard<Lock_t>;
+
 public:
     SocketServer();
 
@@ -62,7 +65,7 @@ private:
     void MarkSocketClosed(int index);
 
 private:
-    std::mutex m_lock;
+    Lock_t m_lock;
     SocketService m_socketService;
     int m_socketCapacity;
     int m_socketNumber;

@@ -13,7 +13,7 @@ SockId_t CreateSockId(int transportType) {
     auto sockId = ::socket(AF_INET, sockStream, IPPROTO_IP);
 #endif // MZ_PLATFORM_LINUX
 
-    if (INVALID_SOCKID != sockId) {
+    if (sockId != INVALID_SOCKID) {
         SetNonBlock(sockId);
     }
     return sockId;

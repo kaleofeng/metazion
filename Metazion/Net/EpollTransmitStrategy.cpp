@@ -32,7 +32,7 @@ bool EpollTransmitStrategy::IsBusy() const {
     return false;
 }
 
-void EpollTransmitStrategy::ExecuteInput() {
+void EpollTransmitStrategy::DoInput() {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     const auto& transmitSockId = m_transmitSocket.GetSockId();
@@ -76,14 +76,14 @@ void EpollTransmitStrategy::ExecuteInput() {
     }
 }
 
-void EpollTransmitStrategy::ExecuteOutput() {
+void EpollTransmitStrategy::DoOutput() {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
     if (!m_canOutput) {
         return;
     }
     
-    if (!m_transmitSocket.IsReady()) {
+    if (!m_transmitSocket.IsActive()) {
         return;
     }
 

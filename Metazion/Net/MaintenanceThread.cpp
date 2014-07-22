@@ -66,7 +66,11 @@ void MaintenanceThread::ProcessSockets() {
 }
 
 void MaintenanceThread::ProcessActiveSocket(Socket* socket, int index) {
-    if (socket->IsClosed()) {
+    if (socket->IsWannaClose()) {
+        socket->DoClose();
+    }
+
+    if (!socket->IsActive()) {
         m_socketServer->MarkSocketClosed(index);
     }
 }

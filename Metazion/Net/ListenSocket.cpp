@@ -27,13 +27,13 @@ void ListenSocket::Tick(int interval) {
     m_listenStrategy.Tick(interval);
 }
 
-void ListenSocket::OnStarted() {
-    Socket::OnStarted();
+void ListenSocket::OnStart() {
+    Socket::OnStart();
     m_listenStrategy.Start();
 }
 
 bool ListenSocket::IsAlive() const {
-    auto ret = Socket::IsActive();
+    auto ret = Socket::IsAlive();
     if (ret) {
         return true;
     }

@@ -27,6 +27,8 @@ public:
 
     void OnAttached() override;
 
+    void OnStart() override;
+
     void OnStarted() override;
 
     void OnClosed() override;

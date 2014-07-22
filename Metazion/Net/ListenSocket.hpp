@@ -27,7 +27,7 @@ public:
 
     void Tick(int interval) override;
 
-    void OnStarted() override;
+    void OnStart() override;
 
     bool IsAlive() const override;
 

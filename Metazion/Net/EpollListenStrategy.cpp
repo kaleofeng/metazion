@@ -31,7 +31,7 @@ bool EpollListenStrategy::IsBusy() const {
     return false;
 }
 
-void EpollListenStrategy::ExecuteInput() {
+void EpollListenStrategy::DoInput() {
     Host peerHost;
     auto sockAddr = peerHost.SockAddr();
     auto sockAddrLen = peerHost.SockAddrLen();
@@ -72,7 +72,7 @@ void EpollListenStrategy::ExecuteInput() {
     }
 }
 
-void EpollListenStrategy::ExecuteOutput() {
+void EpollListenStrategy::DoOutput() {
     // Nothing to do.
 }
 

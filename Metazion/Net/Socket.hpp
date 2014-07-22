@@ -16,6 +16,9 @@ class SocketServer;
 class Socket {
     DISALLOW_COPY_AND_ASSIGN(Socket)
 
+    using Lock_t = std::mutex;
+    using LockGuard_t = std::lock_guard<Lock_t>;
+
 public:
     Socket();
 
@@ -40,6 +43,10 @@ public:
 
     virtual void OnDetached();
 
+    virtual void OnStart();
+
+    virtual void OnClose();
+
     virtual void OnStarted();
 
     virtual void OnClosed();
@@ -48,24 +55,24 @@ public:
 
     virtual bool IsAlive() const;
 
-    virtual bool IsActive() const;
-    
-    virtual bool IsClosed() const;
-
 public:
-    bool IsValid() const;
+    void Retain();
 
-    bool IsReady() const;
-
-    bool IsWorking() const;
+    void Release();
 
     void Start();
     
     void Close();
 
-    void Retain();
+    void DoClose();
 
-    void Release();
+    bool IsValid() const;
+
+    bool IsActive() const;
+
+    bool IsWorking() const;
+
+    bool IsWannaClose() const;
 
     const SockId_t& GetSockId() const;
 
@@ -82,9 +89,10 @@ public:
     void SetSocketServer(SocketServer* socketServer);
 
 protected:
-    std::mutex m_lock;
+    Lock_t m_lock;
     volatile int m_reference;
     volatile bool m_working;
+    volatile bool m_wannaClose;
     SockId_t m_sockId;
     int m_index;
     SocketServer* m_socketServer;
@@ -94,16 +102,31 @@ inline bool Socket::IsValid() const {
     return m_reference > 0;
 }
 
-inline bool Socket::IsReady() const {
-    return INVALID_SOCKID != m_sockId;
+inline bool Socket::IsActive() const {
+    return m_sockId != INVALID_SOCKID;
 }
 
 inline bool Socket::IsWorking() const {
     return m_working;
 }
 
+inline bool Socket::IsWannaClose() const {
+    return m_wannaClose;
+}
+
 inline const SockId_t& Socket::GetSockId() const {
     return m_sockId;
+}
+
+inline void Socket::AttachSockId(const SockId_t& sockId) {
+    m_sockId = sockId;
+}
+
+inline void Socket::DetachSockId() {
+    if (m_sockId != INVALID_SOCKID) {
+        DestroySockId(m_sockId);
+        m_sockId = INVALID_SOCKID;
+    }
 }
 
 inline int Socket::GetIndex() const {
