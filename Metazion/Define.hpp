@@ -25,7 +25,7 @@ DECL_NAMESPACE_MZ_BEGIN
 
 #define DEFAULT_ALIGNMENT (sizeof(void*))
 #define ALIGN_LENGTH(length, align) (((length) + (align) - 1) & ~((align) - 1))
-#define IS_LENGTH_ALIGN(length, align) (0 == ((length) & ((align) -1)))
+#define IS_LENGTH_ALIGN(length, align) (((length) & ((align) -1)) == 0)
 
 DECL_NAMESPACE_MZ_END
 

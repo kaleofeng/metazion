@@ -3,7 +3,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 SockId_t CreateSockId(int transportType) {
-    const auto sockStream = TRANSPORT_TCP == transportType ? SOCK_STREAM : SOCK_DGRAM;
+    const auto sockStream = transportType == TRANSPORT_TCP ? SOCK_STREAM : SOCK_DGRAM;
 
 #if defined(MZ_PLATFORM_WINOWS)
     auto sockId = ::WSASocket(AF_INET, sockStream, IPPROTO_IP, NULL, 0, WSA_FLAG_OVERLAPPED);

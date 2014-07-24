@@ -16,7 +16,7 @@ void AppClientSocket::Dispatch() {
         int command = 0;
         decodeBuffer.m_resultBuffer.Reset();
         const auto ret = m_packetCodec.Decode(command, decodeBuffer);
-        if (0 == ret) {
+        if (ret == 0) {
             break;
         }
         else if (ret < 0) {

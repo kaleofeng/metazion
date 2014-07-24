@@ -126,9 +126,9 @@ bool IocpTransmitStrategy::PostRecv() {
         , &flags
         , &m_recvOperation.m_overlapped
         , NULL);
-    if (0 != ret) {
+    if (ret != 0) {
         const auto error = ::WSAGetLastError();
-        if (ERROR_IO_PENDING != error) {
+        if (error != ERROR_IO_PENDING) {
             HandleFailure(&m_recvOperation, 0, error);
             return false;
         }
@@ -163,9 +163,9 @@ bool IocpTransmitStrategy::PostSend() {
         , 0
         , &m_sendOperation.m_overlapped
         , NULL);
-    if (0 != ret) {
+    if (ret != 0) {
         const auto error = ::WSAGetLastError();
-        if (ERROR_IO_PENDING != error) {
+        if (error != ERROR_IO_PENDING) {
             HandleFailure(&m_sendOperation, 0, error);
             return false;
         }
@@ -180,7 +180,7 @@ bool IocpTransmitStrategy::HandleRecvSuccess(const IocpOperation* iocpOperation
 
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
-    if (0 == byteNumber) {
+    if (byteNumber == 0) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
         m_transmitSocket.Close();
         return true;
@@ -209,7 +209,7 @@ bool IocpTransmitStrategy::HandleSendSuccess(const IocpOperation* iocpOperation
 
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
-    if (0 == byteNumber) {
+    if (byteNumber == 0) {
         ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
         m_transmitSocket.Close();
         return true;

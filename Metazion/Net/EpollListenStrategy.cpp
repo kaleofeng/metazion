@@ -38,12 +38,12 @@ void EpollListenStrategy::DoInput() {
     const auto& listenSockId = m_listenSocket.GetSockId();
     while (true) {
         auto sockId = ::accept(listenSockId, sockAddr, &sockAddrLen);
-        if (INVALID_SOCKID == sockId) {
+        if (sockId == INVALID_SOCKID) {
             const auto error = GetLastError();
-            if (EINTR == error) {
+            if (error == EINTR) {
                 continue;
             }
-            if (EAGAIN == error) {
+            if (error == EAGAIN) {
                break;
             }
 

@@ -76,7 +76,7 @@ inline int NormalClientSocket::GetType() const {
 }
 
 inline bool NormalClientSocket::IsStage(int stage) const {
-    return stage == m_stage;
+    return m_stage == stage;
 }
 
 inline void NormalClientSocket::SetStage(int stage) {

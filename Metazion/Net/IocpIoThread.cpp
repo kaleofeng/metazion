@@ -80,8 +80,8 @@ int IocpIoThread::AnalyseStatusResult(BOOL ret
     , OVERLAPPED* overlapped
     , DWORD numberOfBytes
     , DWORD error) {
-    if (TRUE == ret) {
-        if (0xFFFFFFFF == numberOfBytes) {
+    if (ret == TRUE) {
+        if (numberOfBytes == 0xFFFFFFFF) {
             return RESULT_CLOSE;
         }
 
@@ -92,7 +92,7 @@ int IocpIoThread::AnalyseStatusResult(BOOL ret
         return RESULT_FAILURE;
     }
 
-    if (WAIT_TIMEOUT == error) {
+    if (error == WAIT_TIMEOUT) {
         return RESULT_TIMEOUT;
     }
 

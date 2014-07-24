@@ -62,7 +62,7 @@ bool MemoryOutputStream::WriteDouble(double value) {
 }
 
 bool MemoryOutputStream::WriteString(const char* buffer, int32_t length) {
-    if (0 == length) {
+    if (length == 0) {
         length = static_cast<int32_t>(strlen(buffer));
     }
 
@@ -70,7 +70,7 @@ bool MemoryOutputStream::WriteString(const char* buffer, int32_t length) {
         return true;
     }
 
-    if (0 == length) {
+    if (length == 0) {
         return true;
     }
 

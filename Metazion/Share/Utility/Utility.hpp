@@ -5,8 +5,6 @@
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
-/* functions */
-
 char* NormalizeFilePath(char* filePath);
 
 DECL_NAMESPACE_MZ_SHARE_END

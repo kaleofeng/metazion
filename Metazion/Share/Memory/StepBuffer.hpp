@@ -114,7 +114,7 @@ public:
     }
 
     bool IsEmpty() const {
-        return 0 == m_length;
+        return m_length == 0;
     }
 
     bool IsFull() const {

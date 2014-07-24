@@ -107,7 +107,7 @@ public:
         return properLength;
     }
 
-    bool IsEmpty() const { return 0 == m_length; }
+    bool IsEmpty() const { return m_length == 0; }
 
     bool IsFull() const { return m_length == MAXLENGTH; }
 

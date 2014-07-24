@@ -41,17 +41,17 @@ void EpollTransmitStrategy::DoInput() {
         const auto pushLength = socketBuffer.m_recvBuffer.GetPushLength();
 
         const auto recvLength = ::recv(transmitSockId, pushBuffer, pushLength, 0);
-        if (0 == recvLength) {
+        if (recvLength == 0) {
             ::printf("Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
             m_transmitSocket.Close();
             break;
         }
         else if (recvLength < 0) {
             const auto error = GetLastError();
-            if (EINTR == error) {
+            if (error == EINTR) {
                 continue;
             }
-            if (EAGAIN == error || EWOULDBLOCK == error) {
+            if (error == EAGAIN || error == EWOULDBLOCK) {
                 break;
             }
 
@@ -106,10 +106,10 @@ void EpollTransmitStrategy::DoOutput() {
         const auto sendLength = ::send(transmitSockId, pullBuffer, pullLength, MSG_NOSIGNAL);
         if (sendLength < 0) {
             const auto error = GetLastError();
-            if (EINTR == error) {
+            if (error == EINTR) {
                 continue;
             }
-            if (EAGAIN == error || EWOULDBLOCK == error) {
+            if (error == EAGAIN || error == EWOULDBLOCK) {
                 m_canOutput = false;
                 break;
             }

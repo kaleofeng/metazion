@@ -43,13 +43,13 @@ void EpollIoThread::Execute() {
 
 void EpollIoThread::ProcessEvents() {
     const auto count = ::epoll_wait(m_epollfd, m_eventList, m_socketCount, 10);
-    if (0 == count) {
+    if (count == 0) {
         return;
     }
 
     if (count < 0) {
         const auto error = GetLastError();
-        if (EINTR != error) {
+        if (error != EINTR) {
             ::printf("Socket Warning: epoll wait, error[%d]. [%s:%d]\n", error, __FILE__, __LINE__);
         }
         return;

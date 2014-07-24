@@ -60,7 +60,7 @@ void MemoryRecordset::Reset() {
 }
 
 MemoryRecordset::Handle MemoryRecordset::ObtainRecord() {
-    if (INVALIDRECORDINDEX  == m_activeHeader->m_firstFree) {
+    if (m_activeHeader->m_firstFree == INVALIDRECORDINDEX) {
         auto recordIndex = m_activeHeader->m_usedCount;
         if (!IsValidRecordIndex(recordIndex)) {
             return Handle(0);

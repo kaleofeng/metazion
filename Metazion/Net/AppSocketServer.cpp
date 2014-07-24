@@ -12,12 +12,12 @@ AppSocketServer::~AppSocketServer() {}
 
 bool AppSocketServer::Initialize(int socketCapacity, int ioThreadNumber) {
     m_encodeBufferKey = NS_SHARE::ThreadLocalStorage::Alloc();
-    if (-1 == m_encodeBufferKey) {
+    if (m_encodeBufferKey == -1) {
         return false;
     }
 
     m_decodeBufferKey = NS_SHARE::ThreadLocalStorage::Alloc();
-    if (-1 == m_decodeBufferKey) {
+    if (m_decodeBufferKey == -1) {
         return false;
     }
 
@@ -27,11 +27,11 @@ bool AppSocketServer::Initialize(int socketCapacity, int ioThreadNumber) {
 void AppSocketServer::Finalize() {
     NormalSocketServer::Finalize();
 
-    if (-1 != m_decodeBufferKey) {
+    if (m_decodeBufferKey != -1) {
         NS_SHARE::ThreadLocalStorage::Free(m_decodeBufferKey);
     }
     
-    if (-1 != m_encodeBufferKey) {
+    if (m_encodeBufferKey != -1) {
         NS_SHARE::ThreadLocalStorage::Free(m_encodeBufferKey);
     }
 }

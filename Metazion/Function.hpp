@@ -36,7 +36,7 @@ inline int AlignLength(int length, int align) {
 }
 
 inline bool IsLengthAlign(int length, int align) {
-    return 0 == (length & (align - 1));
+    return (length & (align - 1)) == 0;
 }
 
 int GetLastError();

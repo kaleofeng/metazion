@@ -9,7 +9,7 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 int ThreadLocalStorage::Alloc() {
 #if defined(MZ_PLATFORM_WINOWS)
     const auto key = ::TlsAlloc();
-    if (TLS_OUT_OF_INDEXES == key) {
+    if (key == TLS_OUT_OF_INDEXES) {
         return -1;
     }
     return static_cast<int>(key);

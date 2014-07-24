@@ -78,7 +78,7 @@ public:
     }
 
     void Compact() {
-        if (0 == m_pullIndex) {
+        if (m_pullIndex == 0) {
             return;
         }
 

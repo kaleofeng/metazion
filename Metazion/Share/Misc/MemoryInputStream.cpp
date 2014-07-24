@@ -75,7 +75,7 @@ bool MemoryInputStream::ReadString(char* buffer, int32_t length) {
         return false;
     }
 
-    if (0 == strLength) {
+    if (strLength == 0) {
         buffer[0] = '\0';
         return true;
     }

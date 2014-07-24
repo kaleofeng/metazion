@@ -64,7 +64,7 @@ bool IocpListenStrategy::HandleSuccess(const IocpOperation* iocpOperation
         , SO_UPDATE_ACCEPT_CONTEXT
         , reinterpret_cast<const char*>(&listenSockId)
         , sizeof(listenSockId));
-    if (0 != ret) {
+    if (ret != 0) {
         DestroySockId(acceptSockId);
     }
 
@@ -104,7 +104,7 @@ bool IocpListenStrategy::HandleClose(const IocpOperation* iocpOperation
 
 bool IocpListenStrategy::PostAccept() {
     const auto sockId = CreateSockId(TRANSPORT_TCP);
-    if (INVALID_SOCKID == sockId) {
+    if (sockId == INVALID_SOCKID) {
         m_acceptOperation.SetBusy(false);
         return false;
     }
@@ -122,9 +122,9 @@ bool IocpListenStrategy::PostAccept() {
         , sizeof(SockAddrIn_t) + 16
         , &bytesRecvd
         , &m_acceptOperation.m_overlapped);
-    if (FALSE == ret) {
+    if (ret == FALSE) {
         const DWORD error = ::WSAGetLastError();
-        if (ERROR_IO_PENDING != error) {
+        if (error != ERROR_IO_PENDING) {
             HandleFailure(&m_acceptOperation, 0, error);
             return false;
         }

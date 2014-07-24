@@ -120,7 +120,7 @@ void NormalClientSocket::Reconnect(bool immediately) {
 
 int NormalClientSocket::TryToConnect() {
     auto sockId = CreateSockId(TRANSPORT_TCP);
-    if (INVALID_SOCKID == sockId) {
+    if (sockId == INVALID_SOCKID) {
         return -1;
     }
 
@@ -129,16 +129,16 @@ int NormalClientSocket::TryToConnect() {
     auto sockAddr = m_remoteHost.SockAddr();
     auto sockAddrLen = m_remoteHost.SockAddrLen();
     const auto ret = ::connect(m_tempSockId, sockAddr, sockAddrLen);
-    if (0 == ret) {
-        return 1;
+    if (ret < 0) {
+        if (!IsWouldBlock()) {
+            DetachTempSockId();
+            return -1;
+        }
+
+        return 0;
     }
 
-    if (!IsWouldBlock()) {
-        DetachTempSockId();
-        return -1;
-    }
-
-    return 0;
+    return 1;
 }
 
 int NormalClientSocket::CheckConnected() {
@@ -153,7 +153,7 @@ int NormalClientSocket::CheckConnected() {
     struct timeval timeout = { 0, 0 };
     const auto nfds = static_cast<int>(m_tempSockId + 1);
     const auto ret = ::select(nfds, nullptr, &wfds, &efds, &timeout);
-    if (0 == ret) {
+    if (ret == 0) {
         return 0;
     }
     else if (ret < 0) {
@@ -174,7 +174,7 @@ int NormalClientSocket::CheckConnected() {
     int optValue = 0;
     auto optLength = static_cast<SockLen_t>(sizeof(optValue));
     GetSockOpt(m_tempSockId, SOL_SOCKET, SO_ERROR, &optValue, &optLength);
-    if (0 != optValue) {
+    if (optValue != 0) {
         return -1;
     }
 
