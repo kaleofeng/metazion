@@ -43,7 +43,7 @@ bool IocpTransmitStrategy::IsBusy() const {
 }
 
 bool IocpTransmitStrategy::PostInput() {
-    if (!m_transmitSocket.IsActive()) {
+    if (!m_transmitSocket.IsWorking()) {
         return false;
     }
 
@@ -57,7 +57,7 @@ bool IocpTransmitStrategy::PostInput() {
 }
 
 bool IocpTransmitStrategy::PostOutput() {
-    if (!m_transmitSocket.IsActive()) {
+    if (!m_transmitSocket.IsWorking()) {
         return false;
     }
 

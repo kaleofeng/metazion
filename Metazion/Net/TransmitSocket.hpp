@@ -29,9 +29,7 @@ public:
 
     void OnStart() override;
 
-    void OnStarted() override;
-
-    void OnClosed() override;
+    void OnClose() override;
 
     bool IsAlive() const override;
 

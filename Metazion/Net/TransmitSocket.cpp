@@ -47,15 +47,11 @@ void TransmitSocket::OnAttached() {
 void TransmitSocket::OnStart() {
     Socket::OnStart();
     m_transmitStrategy.Start();
-}
-
-void TransmitSocket::OnStarted() {
-    Socket::OnStarted();
     OnConnected();
 }
 
-void TransmitSocket::OnClosed() {
-    Socket::OnClosed();
+void TransmitSocket::OnClose() {
+    Socket::OnClose();
     OnDisconnected();
 }
 

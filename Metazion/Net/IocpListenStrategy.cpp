@@ -35,7 +35,7 @@ bool IocpListenStrategy::IsBusy() const {
 }
 
 bool IocpListenStrategy::PostInput() {
-    if (!m_listenSocket.IsActive()) {
+    if (!m_listenSocket.IsWorking()) {
         return false;
     }
 

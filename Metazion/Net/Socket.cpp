@@ -42,10 +42,6 @@ void Socket::OnStart() {}
 
 void Socket::OnClose() {}
 
-void Socket::OnStarted() {}
-
-void Socket::OnClosed() {}
-
 bool Socket::OnError(int error) {
     return true;
 }
@@ -67,11 +63,9 @@ void Socket::Release() {
 }
 
 void Socket::Start() {
-    OnStart();
-
     m_working = true;
-
-    OnStarted();
+    
+    OnStart();
 }
 
 void Socket::Close() {
@@ -84,8 +78,6 @@ void Socket::DoClose() {
 
     DetachSockId();
     m_wannaClose = false;
-
-    OnClosed();
 }
 
 DECL_NAMESPACE_MZ_NET_END

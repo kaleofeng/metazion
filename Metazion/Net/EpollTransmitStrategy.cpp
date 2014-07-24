@@ -83,7 +83,7 @@ void EpollTransmitStrategy::DoOutput() {
         return;
     }
     
-    if (!m_transmitSocket.IsActive()) {
+    if (!m_transmitSocket.IsWorking()) {
         return;
     }
 

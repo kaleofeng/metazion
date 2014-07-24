@@ -47,10 +47,6 @@ public:
 
     virtual void OnClose();
 
-    virtual void OnStarted();
-
-    virtual void OnClosed();
-
     virtual bool OnError(int error);
 
     virtual bool IsAlive() const;
