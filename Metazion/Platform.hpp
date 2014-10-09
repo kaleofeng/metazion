@@ -34,26 +34,18 @@
 #if defined(MZ_PLATFORM_WINOWS)
 #   define WIN32_LEAN_AND_MEAN 
 #   include <Windows.h>
-// Check vc version.
-#   if _MSC_VER >= 1600
-
-#   else
-#       define nullptr 0
-#       define override
-#       define final
-#   endif // _MSC_VER >= 1600
 #endif // MZ_PLATFORM_WINOWS
 
 #if defined(MZ_PLATFORM_LINUX)
-#   include <unistd.h>
+#   include <errno.h>
 #   include <error.h>
-#   include <errno.h> 
-#   include <sys/types.h>
+#   include <unistd.h>
 #   include <sys/time.h>
+#   include <sys/types.h>
 #endif // MZ_PLATFORM_LINUX
 
-#include <new>
 #include <algorithm>
+#include <new>
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>

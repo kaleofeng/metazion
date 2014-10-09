@@ -10,7 +10,7 @@ AppClientSocket::AppClientSocket()
 AppClientSocket::~AppClientSocket() {}
 
 void AppClientSocket::Dispatch() {
-    DecodeBuffer& decodeBuffer = GetDecodeBuffer();
+    auto& decodeBuffer = GetDecodeBuffer();
     
     while (true) {
         int command = 0;

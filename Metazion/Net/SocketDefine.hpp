@@ -6,6 +6,7 @@
 #if defined(MZ_PLATFORM_WINOWS)
 #include <winsock2.h>
 #include <mswsock.h>
+#include <WS2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "mswsock.lib")
 #endif // MZ_PLATFORM_WINOWS
