@@ -10,15 +10,23 @@ DECL_NAMESPACE_MZ_BEGIN
 #define DECL_BLOCK_BEGIN    {
 #define DECL_BLOCK_END      }
 
+#define DISALLOW_COPY_AND_ASSIGN(CLASS) \
+    CLASS(const CLASS&) = delete; \
+    CLASS& operator =(const CLASS&) = delete;
+
+#define ADAPT_FOR_RANGE_TRAVERSAL() \
+    Iterator_t begin() { \
+        return Begin(); \
+    } \
+    Iterator_t end() { \
+        return End(); \
+    }
+
 #define ASSERT_TRUE(exp)    assert( (exp) )
 #define ASSERT_FALSE(exp)   assert( !(exp) )
 
 #define RELEASE_ASSERT_TRUE(exp)    do { if (!(exp)) __asm { int 3 } } while (false)
 #define RELEASE_ASSERT_FALSE(exp)   do { if ((exp)) __asm { int 3 } } while (false)
-
-#define DISALLOW_COPY_AND_ASSIGN(CLASS) \
-    CLASS(const CLASS&) = delete; \
-    CLASS& operator =(const CLASS&) = delete;
 
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))

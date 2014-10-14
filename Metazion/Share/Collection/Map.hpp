@@ -52,6 +52,8 @@ public:
     }
 
 public:
+    ADAPT_FOR_RANGE_TRAVERSAL()
+
     ConstIterator_t Begin() const {
         const auto node = m_tree.First();
         return ConstIterator_t(node);

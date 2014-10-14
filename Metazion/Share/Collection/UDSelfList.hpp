@@ -174,7 +174,7 @@ public:
     bool IsContain(Node_t* node) const {
         ASSERT_TRUE(!IsNull(node));
 
-        const auto cursor = Front();
+        auto cursor = Front();
         while (!IsNull(cursor)) {
             if (node == cursor) {
                 return true;

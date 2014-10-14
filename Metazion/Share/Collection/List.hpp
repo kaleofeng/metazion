@@ -101,6 +101,8 @@ public:
     }
 
 public:
+    ADAPT_FOR_RANGE_TRAVERSAL()
+
     ConstIterator_t Begin() const {
         const auto node = m_list.Front();
         return ConstIterator_t(node);
