@@ -19,19 +19,31 @@ public:
     virtual ~ListenSocket();
 
 public:
-    IoStrategy& GetIoStrategy() override final;
-
     void Reset() override;
 
     void Prepare() override;
 
     void Tick(int interval) override;
 
-    void OnStart() override;
+    IoStrategy& GetIoStrategy() override final;
 
-    bool IsAlive() const override;
+    bool IsAlive() const override final;
 
-    virtual bool OnAccepted(const SockId_t& sockId);
+    void OnAttached() override final;
+
+    void OnDetached() override final;
+
+    void OnStart() override final;
+
+    void OnClose() override final;
+
+    bool OnError(int error) override final;
+
+    virtual void OnWatched() = 0;
+
+    virtual void OnUnwatched() = 0;
+
+    virtual bool OnAccepted(const SockId_t& sockId) = 0;
 
     void SetLocalHost(const char* ip, int port);
 

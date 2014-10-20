@@ -25,10 +25,6 @@ public:
     virtual ~Socket();
 
 public:
-    virtual int GetType() const = 0;
-
-    virtual IoStrategy& GetIoStrategy() = 0;
-
     virtual void Reset();
 
     virtual void Prepare();
@@ -39,17 +35,21 @@ public:
 
     virtual void Dispatch();
 
-    virtual void OnAttached();
+    virtual int GetType() const = 0;
 
-    virtual void OnDetached();
+    virtual IoStrategy& GetIoStrategy() = 0;
 
-    virtual void OnStart();
+    virtual bool IsAlive() const = 0;
 
-    virtual void OnClose();
+    virtual void OnAttached() = 0;
 
-    virtual bool OnError(int error);
+    virtual void OnDetached() = 0;
 
-    virtual bool IsAlive() const;
+    virtual void OnStart() = 0;
+
+    virtual void OnClose() = 0;
+
+    virtual bool OnError(int error) = 0;
 
 public:
     void Retain();

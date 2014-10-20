@@ -34,22 +34,6 @@ void Socket::Tick(int interval) {}
 
 void Socket::Dispatch() {}
 
-void Socket::OnAttached() {}
-
-void Socket::OnDetached() {}
-
-void Socket::OnStart() {}
-
-void Socket::OnClose() {}
-
-bool Socket::OnError(int error) {
-    return true;
-}
-
-bool Socket::IsAlive() const {
-    return IsValid();
-}
-
 void Socket::Retain() {
     LockGuard_t lockGuard(m_lock);
     

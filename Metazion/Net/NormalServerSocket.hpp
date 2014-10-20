@@ -18,6 +18,14 @@ public:
 public:
     int GetType() const override final;
 
+    void OnConnected() override;
+
+    void OnDisconnected() override;
+
+    int OnSended(const void* data, int length) override;
+
+    int OnRecved(const void* data, int length) override;
+
     void Attach(const SockId_t& sockId);
 };
 

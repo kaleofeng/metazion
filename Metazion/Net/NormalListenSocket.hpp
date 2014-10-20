@@ -20,6 +20,10 @@ public:
 public:
     int GetType() const override final;
 
+    void OnWatched() override;
+
+    void OnUnwatched() override;
+
     bool OnAccepted(const SockId_t& sockId) override;
 
 protected:

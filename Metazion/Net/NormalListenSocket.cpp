@@ -9,9 +9,11 @@ NormalListenSocket::NormalListenSocket() {}
 
 NormalListenSocket::~NormalListenSocket() {}
 
-bool NormalListenSocket::OnAccepted(const SockId_t& sockId) {
-    ListenSocket::OnAccepted(sockId);
+void NormalListenSocket::OnWatched() {}
 
+void NormalListenSocket::OnUnwatched() {}
+
+bool NormalListenSocket::OnAccepted(const SockId_t& sockId) {
     auto socket = CreateServerSocket();
     ASSERT_TRUE(!IsNull(socket));
 

@@ -7,10 +7,6 @@ ListenSocket::ListenSocket()
 
 ListenSocket::~ListenSocket() {}
 
-IoStrategy& ListenSocket::GetIoStrategy() {
-    return m_listenStrategy;
-}
-
 void ListenSocket::Reset() {
     Socket::Reset();
     m_localHost.Reset();
@@ -27,13 +23,12 @@ void ListenSocket::Tick(int interval) {
     m_listenStrategy.Tick(interval);
 }
 
-void ListenSocket::OnStart() {
-    Socket::OnStart();
-    m_listenStrategy.Start();
+IoStrategy& ListenSocket::GetIoStrategy() {
+    return m_listenStrategy;
 }
 
 bool ListenSocket::IsAlive() const {
-    auto ret = Socket::IsAlive();
+    auto ret = IsValid();
     if (ret) {
         return true;
     }
@@ -46,7 +41,20 @@ bool ListenSocket::IsAlive() const {
     return false;
 }
 
-bool ListenSocket::OnAccepted(const SockId_t& sockId) {
+void ListenSocket::OnAttached() {}
+
+void ListenSocket::OnDetached() {}
+
+void ListenSocket::OnStart() {
+    m_listenStrategy.Start();
+    OnWatched();
+}
+
+void ListenSocket::OnClose() {
+    OnUnwatched();
+}
+
+bool ListenSocket::OnError(int error) {
     return true;
 }
 

@@ -9,10 +9,6 @@ TransmitSocket::TransmitSocket()
 
 TransmitSocket::~TransmitSocket() {}
 
-IoStrategy& TransmitSocket::GetIoStrategy() {
-    return m_transmitStrategy;
-}
-
 void TransmitSocket::Reset() {
     Socket::Reset();
     m_socketBuffer.Reset();
@@ -30,33 +26,12 @@ void TransmitSocket::Tick(int interval) {
     m_transmitStrategy.Tick(interval);
 }
 
-void TransmitSocket::OnAttached() {
-    Socket::OnAttached();
-
-    auto server = GetSocketServer();
-    auto genericServer = static_cast<GenericSocketServer*>(server);
-    ASSERT_TRUE(!IsNull(genericServer));
-
-    auto& sendBufferPool = genericServer->GetSendCachePool();
-    m_socketBuffer.SetSendCachePool(sendBufferPool);
-
-    auto& recvBufferPool = genericServer->GetRecvCachePool();
-    m_socketBuffer.SetRecvCachePool(recvBufferPool);
-}
-
-void TransmitSocket::OnStart() {
-    Socket::OnStart();
-    m_transmitStrategy.Start();
-    OnConnected();
-}
-
-void TransmitSocket::OnClose() {
-    Socket::OnClose();
-    OnDisconnected();
+IoStrategy& TransmitSocket::GetIoStrategy() {
+    return m_transmitStrategy;
 }
 
 bool TransmitSocket::IsAlive() const {
-    auto ret = Socket::IsAlive();
+    auto ret = IsValid();
     if (ret) {
         return true;
     }
@@ -69,16 +44,31 @@ bool TransmitSocket::IsAlive() const {
     return false;
 }
 
-void TransmitSocket::OnConnected() {}
+void TransmitSocket::OnAttached() {
+    auto server = GetSocketServer();
+    auto genericServer = static_cast<GenericSocketServer*>(server);
+    ASSERT_TRUE(!IsNull(genericServer));
 
-void TransmitSocket::OnDisconnected() {}
+    auto& sendBufferPool = genericServer->GetSendCachePool();
+    m_socketBuffer.SetSendCachePool(sendBufferPool);
 
-int TransmitSocket::OnSended(const void* data, int length) {
-    return length;
+    auto& recvBufferPool = genericServer->GetRecvCachePool();
+    m_socketBuffer.SetRecvCachePool(recvBufferPool);
 }
 
-int TransmitSocket::OnRecved(const void* data, int length) {
-    return length;
+void TransmitSocket::OnDetached() {}
+
+void TransmitSocket::OnStart() {
+    m_transmitStrategy.Start();
+    OnConnected();
+}
+
+void TransmitSocket::OnClose() {
+    OnDisconnected();
+}
+
+bool TransmitSocket::OnError(int error) {
+    return true;
 }
 
 int TransmitSocket::Send(const void* data, int length) {

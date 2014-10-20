@@ -17,29 +17,33 @@ public:
     virtual ~TransmitSocket();
 
 public:
-    IoStrategy& GetIoStrategy() override final;
-
     void Reset() override;
 
     void Prepare() override;
 
     void Tick(int interval) override;
 
-    void OnAttached() override;
+    IoStrategy& GetIoStrategy() override final;
 
-    void OnStart() override;
+    bool IsAlive() const override final;
 
-    void OnClose() override;
+    void OnAttached() override final;
 
-    bool IsAlive() const override;
+    void OnDetached() override final;
 
-    virtual void OnConnected();
+    void OnStart() override final;
 
-    virtual void OnDisconnected();
+    void OnClose() override final;
 
-    virtual int OnSended(const void* data, int length);
+    bool OnError(int error) override final;
 
-    virtual int OnRecved(const void* data, int length);
+    virtual void OnConnected() = 0;
+
+    virtual void OnDisconnected() = 0;
+
+    virtual int OnSended(const void* data, int length) = 0;
+
+    virtual int OnRecved(const void* data, int length) = 0;
 
     int Send(const void* data, int length);
 

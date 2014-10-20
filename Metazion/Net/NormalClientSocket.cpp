@@ -28,6 +28,18 @@ void NormalClientSocket::Tick(int interval) {
     ConnectStage();
 }
 
+void NormalClientSocket::OnConnected() {}
+
+void NormalClientSocket::OnDisconnected() {}
+
+int NormalClientSocket::OnSended(const void* data, int length) {
+    return length;
+}
+
+int NormalClientSocket::OnRecved(const void* data, int length) {
+    return length;
+}
+
 void NormalClientSocket::SetRemoteHost(const char* ip, int port) {
     m_remoteHost.SetFamily(AF_INET);
     m_remoteHost.SetIp(ip);
