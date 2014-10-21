@@ -44,6 +44,10 @@ bool AppServerSocket::SendData(int command, const void* data, int length) {
     return Send(pullBuffer, pullLength) == pullLength;
 }
 
+void AppServerSocket::PostData(int command, const void* data, int length) {
+    OnValidPacket(command, data, length);
+}
+
 EncodeBuffer& AppServerSocket::GetEncodeBuffer() {
     auto server = GetSocketServer();
     auto appServer = static_cast<AppSocketServer*>(server);

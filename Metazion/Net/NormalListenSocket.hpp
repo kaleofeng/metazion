@@ -20,6 +20,7 @@ public:
 public:
     int GetType() const override final;
 
+protected:
     void OnWatched() override;
 
     void OnUnwatched() override;

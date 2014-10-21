@@ -11,6 +11,8 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class TransmitSocket : public Socket {
     DISALLOW_COPY_AND_ASSIGN(TransmitSocket)
 
+    friend class TransmitStrategy;
+
 public:
     TransmitSocket();
 
@@ -37,6 +39,11 @@ public:
 
     bool OnError(int error) override final;
 
+    int Send(const void* data, int length);
+
+    SocketBuffer& GetSocketBuffer();
+
+protected:
     virtual void OnConnected() = 0;
 
     virtual void OnDisconnected() = 0;
@@ -44,10 +51,6 @@ public:
     virtual int OnSended(const void* data, int length) = 0;
 
     virtual int OnRecved(const void* data, int length) = 0;
-
-    int Send(const void* data, int length);
-
-    SocketBuffer& GetSocketBuffer();
 
 protected:
     SocketBuffer m_socketBuffer;

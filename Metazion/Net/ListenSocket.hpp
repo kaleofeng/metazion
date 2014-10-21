@@ -13,6 +13,8 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class ListenSocket : public Socket {
     DISALLOW_COPY_AND_ASSIGN(ListenSocket)
 
+    friend class ListenStrategy;
+
 public:
     ListenSocket();
 
@@ -39,15 +41,16 @@ public:
 
     bool OnError(int error) override final;
 
+    void SetLocalHost(const char* ip, int port);
+
+    bool Listen(int backlog);
+
+protected:
     virtual void OnWatched() = 0;
 
     virtual void OnUnwatched() = 0;
 
     virtual bool OnAccepted(const SockId_t& sockId) = 0;
-
-    void SetLocalHost(const char* ip, int port);
-
-    bool Listen(int backlog);
 
 protected:
     Host m_localHost;

@@ -30,6 +30,13 @@ public:
 
     int GetType() const override final;
 
+    void SetRemoteHost(const char* ip, int port);
+
+    void SetReconnectInterval(int milliseconds);
+
+    bool Connect();
+
+protected:
     void OnConnected() override;
 
     void OnDisconnected() override;
@@ -37,12 +44,6 @@ public:
     int OnSended(const void* data, int length) override;
 
     int OnRecved(const void* data, int length) override;
-
-    void SetRemoteHost(const char* ip, int port);
-
-    void SetReconnectInterval(int milliseconds);
-
-    bool Connect();
 
 private:
     void ConnectStage();

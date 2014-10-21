@@ -18,6 +18,9 @@ public:
 public:
     int GetType() const override final;
 
+    void Attach(const SockId_t& sockId);
+
+protected:
     void OnConnected() override;
 
     void OnDisconnected() override;
@@ -25,8 +28,6 @@ public:
     int OnSended(const void* data, int length) override;
 
     int OnRecved(const void* data, int length) override;
-
-    void Attach(const SockId_t& sockId);
 };
 
 inline int NormalServerSocket::GetType() const {

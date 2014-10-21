@@ -8,6 +8,10 @@ NormalServerSocket::NormalServerSocket() {}
 
 NormalServerSocket::~NormalServerSocket() {}
 
+void NormalServerSocket::Attach(const SockId_t& sockId) {
+    AttachSockId(sockId);
+}
+
 void NormalServerSocket::OnConnected() {}
 
 void NormalServerSocket::OnDisconnected() {}
@@ -20,8 +24,5 @@ int NormalServerSocket::OnRecved(const void* data, int length) {
     return length;
 }
 
-void NormalServerSocket::Attach(const SockId_t& sockId) {
-    AttachSockId(sockId);
-}
 
 DECL_NAMESPACE_MZ_NET_END

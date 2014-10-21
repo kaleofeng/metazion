@@ -20,11 +20,14 @@ public:
 public:
     void Dispatch() override;
 
+    bool SendData(int command, const void* data, int length);
+
+    void PostData(int command, const void* data, int length);
+
+protected:
     virtual void OnValidPacket(int command, const void* data, int length) = 0;
 
     virtual void OnInvalidPacket() = 0;
-
-    bool SendData(int command, const void* data, int length);
 
 private:
     EncodeBuffer& GetEncodeBuffer();
