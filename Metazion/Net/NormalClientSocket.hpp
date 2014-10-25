@@ -30,7 +30,7 @@ public:
 
     int GetType() const override final;
 
-    void SetRemoteHost(const char* ip, int port);
+    void SetRemoteHost(const Host& host);
 
     void SetReconnectInterval(int milliseconds);
 

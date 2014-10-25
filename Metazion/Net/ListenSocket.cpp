@@ -58,10 +58,8 @@ bool ListenSocket::OnError(int error) {
     return true;
 }
 
-void ListenSocket::SetLocalHost(const char* ip, int port) {
-    m_localHost.SetFamily(AF_INET);
-    m_localHost.SetIp(ip);
-    m_localHost.SetPort(port);
+void ListenSocket::SetLocalHost(const Host& host) {
+    m_localHost = host;
 }
 
 bool ListenSocket::Listen(int backlog) {

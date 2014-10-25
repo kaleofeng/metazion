@@ -41,7 +41,7 @@ public:
 
     bool OnError(int error) override final;
 
-    void SetLocalHost(const char* ip, int port);
+    void SetLocalHost(const Host& host);
 
     bool Listen(int backlog);
 

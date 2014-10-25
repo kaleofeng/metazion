@@ -28,10 +28,8 @@ void NormalClientSocket::Tick(int interval) {
     ConnectStage();
 }
 
-void NormalClientSocket::SetRemoteHost(const char* ip, int port) {
-    m_remoteHost.SetFamily(AF_INET);
-    m_remoteHost.SetIp(ip);
-    m_remoteHost.SetPort(port);
+void NormalClientSocket::SetRemoteHost(const Host& host) {
+    m_remoteHost = host;
 }
 
 void NormalClientSocket::SetReconnectInterval(int milliseconds) {
