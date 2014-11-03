@@ -35,7 +35,6 @@ public:
             m_capacity = other.m_capacity;
             m_size = other.m_size;
         }
-
         return *this;
     }
 
@@ -54,7 +53,6 @@ public:
             other.m_capacity = 0;
             other.m_size = 0;
         }
-
         return *this;
     }
 

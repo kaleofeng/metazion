@@ -32,7 +32,6 @@ public:
             Clear();
             m_array = other.m_array;
         }
-
         return *this;
     }
 
@@ -45,7 +44,6 @@ public:
         if (&other != this) {
             m_array = std::move(other.m_array);
         }
-
         return *this;
     }
 
@@ -121,8 +119,8 @@ private:
     }
 
 private:
-    Array_t m_array;
     Compare_t m_compare;
+    Array_t m_array;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

@@ -114,8 +114,8 @@ private:
     }
 
 private:
-    Array_t m_array;
     Compare_t m_compare;
+    Array_t m_array;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

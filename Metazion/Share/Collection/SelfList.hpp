@@ -65,47 +65,7 @@ public:
         return m_tailNode;
     }
 
-    void PopFront() {
-        if (IsNull(m_headNode)) {
-            ASSERT_TRUE(false);
-            return;
-        }
-
-        auto nextNode = m_headNode->m_nextNode;
-        if (IsNull(nextNode)) {
-            m_tailNode = nullptr;
-        }
-        else {
-            nextNode->m_prevNode = nullptr;
-        }
-        auto node = m_headNode;
-        node->m_prevNode = nullptr;
-        node->m_nextNode = nullptr;
-        m_headNode = nextNode;
-        --m_size;
-    }
-
-    void PopBack() {
-        if (IsNull(m_tailNode)) {
-            ASSERT_TRUE(false);
-            return;
-        }
-
-        auto prevNode = m_tailNode->m_prevNode;
-        if (IsNull(prevNode)) {
-            m_headNode = nullptr;
-        }
-        else {
-            prevNode->m_nextNode = nullptr;
-        }
-        auto node = m_tailNode;
-        node->m_prevNode = nullptr;
-        node->m_nextNode = nullptr;
-        m_tailNode = prevNode;
-        --m_size;
-    }
-
-    void PushFront(Node_t* node) {
+    Node_t* PushFront(Node_t* node) {
         ASSERT_TRUE(!IsNull(node));
 
         node->m_prevNode = nullptr;
@@ -120,9 +80,10 @@ public:
             m_headNode = node;
         }
         ++m_size;
+        return node;
     }
 
-    void PushBack(Node_t* node) {
+    Node_t* PushBack(Node_t* node) {
         ASSERT_TRUE(!IsNull(node));
 
         node->m_prevNode = nullptr;
@@ -137,9 +98,48 @@ public:
             m_tailNode = node;
         }
         ++m_size;
+        return node;
     }
 
-    void InsertBefore(Node_t* location, Node_t* node) {
+    Node_t* PopFront() {
+        if (IsNull(m_headNode)) {
+            return nullptr;
+        }
+
+        auto node = m_headNode;
+        m_headNode = m_headNode->m_nextNode;
+        if (IsNull(m_headNode)) {
+            m_tailNode = nullptr;
+        }
+        else {
+            m_headNode->m_prevNode = nullptr;
+        }
+        node->m_prevNode = nullptr;
+        node->m_nextNode = nullptr;
+        --m_size;
+        return node;
+    }
+
+    Node_t* PopBack() {
+        if (IsNull(m_tailNode)) {
+            return nullptr;
+        }
+
+        auto node = m_tailNode;
+        m_tailNode = m_tailNode->m_prevNode;
+        if (IsNull(m_tailNode)) {
+            m_headNode = nullptr;
+        }
+        else {
+            m_tailNode->m_nextNode = nullptr;
+        }
+        node->m_prevNode = nullptr;
+        node->m_nextNode = nullptr;
+        --m_size;
+        return node;
+    }
+
+    Node_t* InsertBefore(Node_t* location, Node_t* node) {
         ASSERT_TRUE(!IsNull(location));
         ASSERT_TRUE(!IsNull(node));
         ASSERT_TRUE(IsContain(location));
@@ -156,9 +156,10 @@ public:
         node->m_prevNode = prevNode;
         node->m_nextNode = location;
         ++m_size;
+        return node;
     }
 
-    void InsertAfter(Node_t* location, Node_t* node) {
+    Node_t* InsertAfter(Node_t* location, Node_t* node) {
         ASSERT_TRUE(!IsNull(location));
         ASSERT_TRUE(!IsNull(node));
         ASSERT_TRUE(IsContain(location));
@@ -175,6 +176,7 @@ public:
         node->m_prevNode = location;
         node->m_nextNode = nextNode;
         ++m_size;
+        return node;
     }
 
     Node_t* Remove(Node_t* node) {
@@ -237,6 +239,7 @@ public:
             }
             cursor = Forward(cursor);
         }
+
         return false;
     }
 

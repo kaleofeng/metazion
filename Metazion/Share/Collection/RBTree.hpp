@@ -194,8 +194,10 @@ public:
         return node;
     }
 
-    void Remove(Node_t* node) {
+    Node_t* Remove(Node_t* node) {
         ASSERT_TRUE(!IsNull(node));
+
+        auto forward = node->Forward();
 
         Node_t* child = nullptr;
         Node_t* parent = nullptr;
@@ -281,6 +283,7 @@ public:
         }
 
         --m_size;
+        return forward;
     }
 
     Node_t* Search(const Value_t& value) {
@@ -301,7 +304,7 @@ public:
         return nullptr;
     }
 
-    void Replace(Node_t* victim, Node_t* replacement) {
+    Node_t* Replace(Node_t* victim, Node_t* replacement) {
         ASSERT_TRUE(!IsNull(victim));
         ASSERT_TRUE(!IsNull(replacement));
 
@@ -327,6 +330,7 @@ public:
         }
 
         *replacement = *victim;
+        return victim;
     }
 
     Node_t* Backward(Node_t* node) {
@@ -529,9 +533,9 @@ private:
     }
 
 private:
+    Compare_t m_compare;
     Node_t* m_root;
     int m_size;
-    Compare_t m_compare;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

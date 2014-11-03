@@ -3,7 +3,6 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
-#include "Metazion/Share/Collection/MapIterator.hpp"
 #include "Metazion/Share/Collection/RBTree.hpp"
 #include "Metazion/Share/Memory/HeapAllocator.hpp"
 
@@ -20,15 +19,67 @@ class Map {
     using Key_t = KeyType;
     using Value_t = ValueType;
     using Compare_t = CompareType;
-    using Data_t = Pair<Key_t, Value_t>;
-    using DataCompare_t = PairCompare<Data_t, Compare_t>;
-    using Node_t = RBTreeNode<Data_t>;
-    using Tree_t = RBTree<Node_t, DataCompare_t>;
+    using Entry_t = Pair<Key_t, Value_t>;
+    using EntryCompare_t = PairCompare<Entry_t, Compare_t>;
+    using Node_t = RBTreeNode<Entry_t>;
+    using Tree_t = RBTree<Node_t, EntryCompare_t>;
     using Allocator_t = typename AllocatorFamily::template Rebind<sizeof(Node_t)>;
 
+    class Iterator {
+        friend class Map;
+
+    public:
+        Iterator()
+            : m_node(nullptr) {}
+
+        Iterator(const Iterator& other)
+            : m_node(other.m_node) {}
+
+        Iterator(Node_t* node)
+            : m_node(node) {}
+
+        ~Iterator() {}
+
+        Iterator& operator =(const Iterator& other) {
+            if (&other != this) {
+                m_node = other.m_node;
+            }
+            return *this;
+        }
+
+        Entry_t& operator *() {
+            return m_node->m_value;
+        }
+
+        Entry_t* operator ->() {
+            return &m_node->m_value;
+        }
+
+        Iterator& operator ++() {
+            m_node = m_node->Forward();
+            return *this;
+        }
+
+        Iterator operator ++(int) {
+            auto temp = *this;
+            m_node = m_node->Forward();
+            return temp;
+        }
+
+        bool operator ==(const Iterator& other) const {
+            return m_node == other.m_node;
+        }
+
+        bool operator !=(const Iterator& other) const {
+            return !operator ==(other);
+        }
+
+    private:
+        Node_t* m_node;
+    };
+
 public:
-    using Iterator_t = MapIterator<Node_t>;
-    using ConstIterator_t = MapConstIterator<Node_t>;
+    using Iterator_t = Iterator;
 
 public:
     Map() { m_allocator.Initialize(); }
@@ -54,18 +105,9 @@ public:
 public:
     ADAPT_FOR_RANGE_TRAVERSAL()
 
-    ConstIterator_t Begin() const {
-        const auto node = m_tree.First();
-        return ConstIterator_t(node);
-    }
-
     Iterator_t Begin() {
         auto node = m_tree.First();
         return Iterator_t(node);
-    }
-
-    ConstIterator_t End() const {
-        return ConstIterator_t();
     }
 
     Iterator_t End() {
@@ -77,32 +119,26 @@ public:
         ASSERT_TRUE(!IsNull(node));
         node->m_value.first = key;
         node->m_value.second = value;
-        const auto ret = m_tree.InsertUnique(node);
-        if (IsNull(ret)) {
+        auto curNode = m_tree.InsertUnique(node);
+        if (IsNull(curNode)) {
             DestoryNode(node);
         }
 
-        return Iterator_t(ret);
+        return Iterator_t(curNode);
     }
 
-    void Erase(Iterator_t iter) {
+    Iterator_t Erase(Iterator_t iter) {
         ASSERT_TRUE(iter != End());
 
-        m_tree.Remove(iter.Node());
-        DestoryNode(iter.Node());
-    }
-
-    void Erase(const Key_t& key) {
-        auto iter = Find(key);
-        if (iter != End()) {
-            Erase(iter);
-        }
+        auto nextNode = m_tree.Remove(iter.m_node);
+        DestoryNode(iter.m_node);
+        return Iterator_t(nextNode);
     }
 
     Iterator_t Find(const Key_t& key) {
-        Data_t data;
-        data.first = key;
-        Node_t* node = m_tree.Search(data);
+        Entry_t entry;
+        entry.first = key;
+        auto node = m_tree.Search(entry);
         return Iterator_t(node);
     }
 
