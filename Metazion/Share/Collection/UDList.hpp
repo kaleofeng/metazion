@@ -43,11 +43,11 @@ class UDList {
             return *this;
         }
 
-        Value_t& operator *() {
+        auto& operator *() {
             return m_node->m_value;
         }
 
-        Value_t* operator ->() {
+        auto* operator ->() {
             return &m_node->m_value;
         }
 

@@ -47,11 +47,11 @@ class Map {
             return *this;
         }
 
-        Entry_t& operator *() {
+        auto& operator *() {
             return m_node->m_value;
         }
 
-        Entry_t* operator ->() {
+        auto* operator ->() {
             return &m_node->m_value;
         }
 

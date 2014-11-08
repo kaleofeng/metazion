@@ -25,7 +25,6 @@ class HashMap {
     using Hasher_t = HasherType;
     using Allocator_t = AllocatorFamily;
     using Bucket_t = Map<Key_t, Value_t, Compare_t, Allocator_t>;
-    using BucketEntry_t = Pair<Key_t, Value_t>;
     using BucketIterator_t = typename Bucket_t::Iterator_t;
 
     class Iterator {
@@ -57,11 +56,11 @@ class HashMap {
             return *this;
         }
 
-        BucketEntry_t& operator *() {
+        auto& operator *() {
             return m_iter.operator *();
         }
 
-        BucketEntry_t* operator ->() {
+        auto* operator ->() {
             return m_iter.operator ->();
         }
 
