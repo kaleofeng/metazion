@@ -38,20 +38,6 @@ struct DecodeBuffer {
     Buffer_t m_resultBuffer;
 };
 
-struct ThreadEncodeBuffer {
-    enum { TAG = 0xFFEEDDCC };
-
-    uint32_t m_tag = TAG;
-    EncodeBuffer m_buffer;
-};
-
-struct ThreadDecodeBuffer {
-    enum { TAG = 0xFFEEDDCC };
-
-    uint32_t m_tag = TAG;
-    DecodeBuffer m_buffer;
-};
-
 using PacketCache_t = NS_SHARE::StepBuffer<1024 * 4, 1024 * 256>;
 
 using PacketArray_t = NS_SHARE::StaticArray<void*>;

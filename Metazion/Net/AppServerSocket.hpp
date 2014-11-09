@@ -30,11 +30,6 @@ protected:
     virtual void OnInvalidPacket() = 0;
 
 private:
-    EncodeBuffer& GetEncodeBuffer();
-
-    DecodeBuffer& GetDecodeBuffer();
-
-private:
     PacketCodec m_packetCodec;
 };
 

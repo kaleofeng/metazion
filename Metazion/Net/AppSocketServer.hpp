@@ -6,7 +6,6 @@
 #include <Metazion/Share/Collection/StaticArray.hpp>
 
 #include "Metazion/Net/NormalSocketServer.hpp"
-#include "Metazion/Net/PacketDefine.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
@@ -16,12 +15,7 @@ class AppSocketServer : public NormalSocketServer {
 public:
     using SocketArray_t = NS_SHARE::StaticArray<Socket*>;
 
-public:
     struct SocketFilter {
-        SocketFilter() {}
-
-        virtual ~SocketFilter() {}
-
         virtual bool Filter(Socket* socket) { 
             return socket->GetType() != SOCKET_TCP_LISTEN;
         }
@@ -33,21 +27,9 @@ public:
     virtual ~AppSocketServer();
 
 public:
-    bool Initialize(int socketCapacity, int ioThreadNumber) override;
-
-    void Finalize() override;
-
     int LockSockets(SocketFilter& filter, SocketArray_t& socketArray);
 
     void UnlockSockets(SocketArray_t& socketArray);
-
-    EncodeBuffer& GetEncodeBuffer();
-
-    DecodeBuffer& GetDecodeBuffer();
-
-private:
-    int m_encodeBufferKey;
-    int m_decodeBufferKey;
 };
 
 DECL_NAMESPACE_MZ_NET_END
