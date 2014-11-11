@@ -21,7 +21,8 @@ template<typename T>
 struct PointerHasher {
     int32_t operator ()(const T& value) const {
         const auto magicNumber = 13;
-        auto hash = reinterpret_cast<uint32_t>(value);
+        auto ptr = reinterpret_cast<uintptr_t>(value);
+        auto hash = static_cast<uint32_t>(ptr);
         hash >>= 2;
         hash *= magicNumber;
         return hash & 0x7fffffff;
