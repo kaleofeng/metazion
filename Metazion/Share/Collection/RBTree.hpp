@@ -9,7 +9,7 @@ template<typename ValueType>
 struct RBTreeNode {
     using Value_t = ValueType;
 
-    enum Color{
+    enum Color {
         RED = 0,
         BLACK,
     };
