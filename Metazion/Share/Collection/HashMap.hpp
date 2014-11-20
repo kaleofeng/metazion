@@ -17,8 +17,6 @@ template<typename KeyType
 , typename AllocatorFamily = HeapAllocator<>
 >
 class HashMap {
-    DISALLOW_COPY_AND_ASSIGN(HashMap)
-    
     using Key_t = KeyType;
     using Value_t = ValueType;
     using Compare_t = CompareType;
@@ -130,6 +128,32 @@ public:
 
     ~HashMap() {}
 
+    HashMap(HashMap& other)
+        : HashMap() {
+        *this = other;
+    }
+
+    HashMap& operator =(HashMap& other) {
+        if (&other != this) {
+            Clear();
+            for (auto i = 0; i < BUCKETSIZE; ++i) {
+                m_buckets[i] = other.m_buckets[i];
+            }
+            m_size = other.m_size;
+        }
+        return *this;
+    }
+
+    HashMap(HashMap&& other)
+        : HashMap() {
+        *this = std::move(other);
+    }
+
+    HashMap& operator =(HashMap&& other) {
+        *this = other;
+        return *this;
+    }
+
 public:
     void Clear() {
         for (auto index = 0; index < BUCKETSIZE; ++index) {
@@ -172,7 +196,10 @@ public:
         const auto index = hashCode & (BUCKETSIZE - 1);
         auto& bucket = m_buckets[index];
         BucketIterator_t iter = bucket.Insert(key, value);
-        ++m_size;
+        if (iter != bucket.End()) {
+            ++m_size;
+        }
+
         return Iterator_t(this, index, iter);
     }
 

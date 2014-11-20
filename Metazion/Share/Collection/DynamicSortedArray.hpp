@@ -42,6 +42,7 @@ public:
 
     DynamicSortedArray& operator =(DynamicSortedArray&& other) {
         if (&other != this) {
+            Clear();
             m_array = std::move(other.m_array);
         }
         return *this;

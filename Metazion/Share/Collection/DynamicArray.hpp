@@ -45,6 +45,7 @@ public:
 
     DynamicArray& operator =(DynamicArray&& other) {
         if (&other != this) {
+            Clear();
             m_values = other.m_values;
             m_capacity = other.m_capacity;
             m_size = other.m_size;

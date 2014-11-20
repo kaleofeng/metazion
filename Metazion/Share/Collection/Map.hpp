@@ -14,8 +14,6 @@ template<typename KeyType
 , typename AllocatorFamily = HeapAllocator<>
 >
 class Map {
-    DISALLOW_COPY_AND_ASSIGN(Map)
-    
     using Key_t = KeyType;
     using Value_t = ValueType;
     using Compare_t = CompareType;
@@ -82,9 +80,34 @@ public:
     using Iterator_t = Iterator;
 
 public:
-    Map() { m_allocator.Initialize(); }
+    Map() {}
 
-    ~Map() { m_allocator.Finalize(); }
+    ~Map() {}
+
+    Map(Map& other)
+        : Map() {
+        *this = other;
+    }
+
+    Map& operator =(Map& other) {
+        if (&other != this) {
+            Clear();
+            for (auto& value : other) {
+                Insert(value.first, value.second);
+            }
+        }
+        return *this;
+    }
+
+    Map(Map&& other)
+        : Map() {
+        *this = std::move(other);
+    }
+
+    Map& operator =(Map&& other) {
+        *this = other;
+        return *this;
+    }
 
 public:
     void Clear() {

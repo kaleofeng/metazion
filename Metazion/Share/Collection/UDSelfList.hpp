@@ -20,8 +20,6 @@ struct UDSelfListNode<void> {
 
 template<typename NodeType>
 class UDSelfList {
-    DISALLOW_COPY_AND_ASSIGN(UDSelfList)
-
     using Node_t = NodeType;
 
 public:
@@ -32,11 +30,43 @@ public:
 
     ~UDSelfList() {}
 
+    UDSelfList(UDSelfList& other)
+        : UDSelfList() {
+        *this = other;
+    }
+
+    UDSelfList& operator =(UDSelfList& other) {
+        if (&other != this) {
+            m_headNode = other.m_headNode;
+            m_tailNode = other.m_tailNode;
+            m_size = other.m_size;
+        }
+        return *this;
+    }
+
+    UDSelfList(UDSelfList&& other)
+        : UDSelfList() {
+        *this = std::move(other);
+    }
+
+    UDSelfList& operator =(UDSelfList&& other) {
+        if (&other != this) {
+            m_headNode = other.m_headNode;
+            m_tailNode = other.m_tailNode;
+            m_size = other.m_size;
+
+            other.m_headNode = nullptr;
+            other.m_tailNode = nullptr;
+            other.m_size = 0;
+        }
+        return *this;
+    }
+
 public:
     void Clear() {
-        while (!IsEmpty()) {
-            PopFront();
-        }
+        m_headNode = nullptr;
+        m_tailNode = nullptr;
+        m_size = 0;
     }
 
     bool IsEmpty() const {

@@ -90,8 +90,6 @@ template<typename NodeType
 , typename CompareType = LessCompare<typename NodeType::Value_t>
 >
 class RBTree {
-    DISALLOW_COPY_AND_ASSIGN(RBTree)
-
     using Node_t = NodeType;
     using Compare_t = CompareType;
     using Value_t = typename Node_t::Value_t;
@@ -102,6 +100,35 @@ public:
         , m_size(0) {}
 
     ~RBTree() {}
+
+    RBTree(RBTree& other)
+        : RBTree() {
+        *this = other;
+    }
+
+    RBTree& operator =(RBTree& other) {
+        if (&other != this) {
+            m_root = other.m_root;
+            m_size = other.m_size;
+        }
+        return *this;
+    }
+
+    RBTree(RBTree&& other)
+        : RBTree() {
+        *this = std::move(other);
+    }
+
+    RBTree& operator =(RBTree&& other) {
+        if (&other != this) {
+            m_root = other.m_root;
+            m_size = other.m_size;
+
+            other.m_root = nullptr;
+            other.m_size = 0;
+        }
+        return *this;
+    }
 
 public:
     void Clear() {

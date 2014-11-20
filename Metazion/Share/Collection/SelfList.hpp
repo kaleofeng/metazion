@@ -22,8 +22,6 @@ struct SelfListNode<void> {
 
 template<typename NodeType>
 class SelfList {
-    DISALLOW_COPY_AND_ASSIGN(SelfList)
-
     using Node_t = NodeType;
 
 public:
@@ -34,11 +32,43 @@ public:
 
     ~SelfList() {}
 
+    SelfList(SelfList& other)
+        : SelfList() {
+        *this = other;
+    }
+
+    SelfList& operator =(SelfList& other) {
+        if (&other != this) {
+            m_headNode = other.m_headNode;
+            m_tailNode = other.m_tailNode;
+            m_size = other.m_size;
+        }
+        return *this;
+    }
+    
+    SelfList(SelfList&& other)
+        : SelfList() {
+        *this = std::move(other);
+    }
+
+    SelfList& operator =(SelfList&& other) {
+        if (&other != this) {
+            m_headNode = other.m_headNode;
+            m_tailNode = other.m_tailNode;
+            m_size = other.m_size;
+
+            other.m_headNode = nullptr;
+            other.m_tailNode = nullptr;
+            other.m_size = 0;
+        }
+        return *this;
+    }
+
 public:
     void Clear() {
-        while (!IsEmpty()) {
-            PopFront();
-        }
+        m_headNode = nullptr;
+        m_tailNode = nullptr;
+        m_size = 0;
     }
 
     bool IsEmpty() const {

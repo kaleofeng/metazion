@@ -56,7 +56,7 @@ struct Pair {
         , second(other.second) {}
 
     Pair& operator =(const Pair& other) {
-        if (this != &other) {
+        if (&other != this) {
             first = other.first;
             second = other.second;
         }

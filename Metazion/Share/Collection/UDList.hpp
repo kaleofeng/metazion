@@ -13,8 +13,6 @@ template<typename ValueType
 , typename AllocatorFamily = HeapAllocator<>
 >
 class UDList {
-    DISALLOW_COPY_AND_ASSIGN(UDList)
-
     using Value_t = ValueType;
     using Compare_t = CompareType;
     using Node_t = UDSelfListNode<Value_t>;
@@ -78,9 +76,34 @@ public:
     using Iterator_t = Iterator;
 
 public:
-    UDList() { m_allocator.Initialize(); }
+    UDList() {}
 
-    ~UDList() { m_allocator.Finalize(); }
+    ~UDList() {}
+
+    UDList(UDList& other)
+        : UDList() {
+        *this = other;
+    }
+
+    UDList& operator =(UDList& other) {
+        if (&other != this) {
+            Clear();
+            for (auto& value : other) {
+                PushBack(value);
+            }
+        }
+        return *this;
+    }
+
+    UDList(UDList&& other)
+        : UDList() {
+        *this = std::move(other);
+    }
+
+    UDList& operator =(UDList&& other) {
+        *this = other;
+        return *this;
+    }
 
 public:
     void Clear() {

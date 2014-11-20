@@ -13,8 +13,6 @@ template<typename ValueType
 , int STEPSIZE = 16
 >
 class PriorityQueue {
-    DISALLOW_COPY_AND_ASSIGN(PriorityQueue)
-
     using Value_t = ValueType;
     using Compare_t = CompareType;
     using Array_t = DynamicArray<Value_t, INITSIZE, STEPSIZE>;
@@ -23,6 +21,32 @@ public:
     PriorityQueue() {}
 
     ~PriorityQueue() {}
+
+    PriorityQueue(PriorityQueue& other)
+        : PriorityQueue() {
+        *this = other;
+    }
+
+    PriorityQueue& operator =(PriorityQueue& other) {
+        if (&other != this) {
+            Clear();
+            m_array = other.m_array;
+        }
+        return *this;
+    }
+
+    PriorityQueue(PriorityQueue&& other)
+        : PriorityQueue() {
+        *this = std::move(other);
+    }
+
+    PriorityQueue& operator =(PriorityQueue&& other) {
+        if (&other != this) {
+            Clear();
+            m_array = std::move(other.m_array);
+        }
+        return *this;
+    }
 
 public:
     void Clear() {

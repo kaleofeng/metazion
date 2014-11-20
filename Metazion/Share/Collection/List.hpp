@@ -13,8 +13,6 @@ template<typename ValueType
 , typename AllocatorFamily = HeapAllocator<>
 >
 class List {
-    DISALLOW_COPY_AND_ASSIGN(List)
-
     using Value_t = ValueType;
     using Compare_t = CompareType;
     using Node_t = SelfListNode<Value_t>;
@@ -78,9 +76,34 @@ public:
     using Iterator_t = Iterator;
 
 public:
-    List() { m_allocator.Initialize(); }
+    List() {}
 
-    ~List() { m_allocator.Finalize(); }
+    ~List() {}
+
+    List(List& other)
+        : List() {
+        *this = other;
+    }
+
+    List& operator =(List& other) {
+        if (&other != this) {
+            Clear();
+            for (auto& value : other) {
+                PushBack(value);
+            }
+        }
+        return *this;
+    }
+
+    List(List&& other)
+        : List() {
+        *this = std::move(other);
+    }
+
+    List& operator =(List&& other) {
+        *this = other;
+        return *this;
+    }
 
 public:
     void Clear() {

@@ -12,7 +12,9 @@ DECL_NAMESPACE_MZ_BEGIN
 
 #define DISALLOW_COPY_AND_ASSIGN(CLASS) \
     CLASS(const CLASS&) = delete; \
-    CLASS& operator =(const CLASS&) = delete;
+    CLASS& operator =(const CLASS&) = delete; \
+    CLASS(const CLASS&&) = delete; \
+    CLASS& operator =(const CLASS&&) = delete;
 
 #define ADAPT_FOR_RANGE_TRAVERSAL() \
     Iterator_t begin() { \
