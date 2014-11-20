@@ -21,10 +21,6 @@ public:
     ~HeapAllocator() {}
 
 public:
-    void Initialize() {}
-
-    void Finalize() {}
-
     void* Alloc() {
         return ::malloc(ALIGNLENGTH);
     }

@@ -33,17 +33,13 @@ public:
 public:
     StepAllocator() {}
 
-    ~StepAllocator() {}
-
-public:
-    void Initialize() {}
-
-    void Finalize() {
-       m_freeUnitList.Clear();
-       m_fullPieceList.Clear();
-       m_availPieceList.Clear();
+    ~StepAllocator() {
+        m_freeUnitList.Clear();
+        m_fullPieceList.Clear();
+        m_availPieceList.Clear();
     }
 
+public:
     void* Alloc() {
         auto unitNode = m_freeUnitList.Front();
         if (!IsNull(unitNode)) {

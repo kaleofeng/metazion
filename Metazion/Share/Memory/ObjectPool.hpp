@@ -22,9 +22,9 @@ class ObjectPool {
     using Allocator_t = typename AllocatorFamily::template Rebind<sizeof(Object_t)>;
 
 public:
-    ObjectPool() { m_allocator.Initialize(); }
+    ObjectPool() {}
 
-    ~ObjectPool() { m_allocator.Finalize(); }
+    ~ObjectPool() {}
 
 public:
     Object_t* Obtain() {

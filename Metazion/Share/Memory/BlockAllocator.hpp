@@ -23,19 +23,15 @@ public:
 
 public:
     BlockAllocator()
-        : m_piece(nullptr) {}
-
-    ~BlockAllocator() {}
-
-public:
-    void Initialize() {
+        : m_piece(nullptr) {
         m_piece = new Piece_t();
     }
 
-    void Finalize() {
+    ~BlockAllocator() {
         SafeDelete(m_piece);
     }
 
+public:
     void* Alloc() {
         return m_piece->Obtain();
     }

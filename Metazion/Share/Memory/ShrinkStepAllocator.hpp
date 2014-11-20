@@ -33,17 +33,13 @@ public:
 public:
     ShrinkStepAllocator() {}
 
-    ~ShrinkStepAllocator() {}
-
-public:
-    void Initialize() {}
-
-    void Finalize() {
+    ~ShrinkStepAllocator() {
         m_freeUnitList.Clear();
         m_fullPieceList.Clear();
         m_availPieceList.Clear();
     }
 
+public:
     void* Alloc() {
         auto unitNode = m_freeUnitList.Front();
         if (!IsNull(unitNode)) {
