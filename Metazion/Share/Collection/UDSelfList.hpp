@@ -30,12 +30,12 @@ public:
 
     ~UDSelfList() {}
 
-    UDSelfList(UDSelfList& other)
+    UDSelfList(const UDSelfList& other)
         : UDSelfList() {
         *this = other;
     }
 
-    UDSelfList& operator =(UDSelfList& other) {
+    UDSelfList& operator =(const UDSelfList& other) {
         if (&other != this) {
             m_headNode = other.m_headNode;
             m_tailNode = other.m_tailNode;

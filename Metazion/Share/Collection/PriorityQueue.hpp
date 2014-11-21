@@ -22,12 +22,12 @@ public:
 
     ~PriorityQueue() {}
 
-    PriorityQueue(PriorityQueue& other)
+    PriorityQueue(const PriorityQueue& other)
         : PriorityQueue() {
         *this = other;
     }
 
-    PriorityQueue& operator =(PriorityQueue& other) {
+    PriorityQueue& operator =(const PriorityQueue& other) {
         if (&other != this) {
             Clear();
             m_array = other.m_array;

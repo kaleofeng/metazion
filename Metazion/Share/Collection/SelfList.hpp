@@ -32,12 +32,12 @@ public:
 
     ~SelfList() {}
 
-    SelfList(SelfList& other)
+    SelfList(const SelfList& other)
         : SelfList() {
         *this = other;
     }
 
-    SelfList& operator =(SelfList& other) {
+    SelfList& operator =(const SelfList& other) {
         if (&other != this) {
             m_headNode = other.m_headNode;
             m_tailNode = other.m_tailNode;

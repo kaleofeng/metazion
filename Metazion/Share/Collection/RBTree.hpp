@@ -101,12 +101,12 @@ public:
 
     ~RBTree() {}
 
-    RBTree(RBTree& other)
+    RBTree(const RBTree& other)
         : RBTree() {
         *this = other;
     }
 
-    RBTree& operator =(RBTree& other) {
+    RBTree& operator =(const RBTree& other) {
         if (&other != this) {
             m_root = other.m_root;
             m_size = other.m_size;

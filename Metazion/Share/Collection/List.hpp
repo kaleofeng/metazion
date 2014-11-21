@@ -80,12 +80,12 @@ public:
 
     ~List() {}
 
-    List(List& other)
+    List(const List& other)
         : List() {
         *this = other;
     }
 
-    List& operator =(List& other) {
+    List& operator =(const List& other) {
         if (&other != this) {
             Clear();
             for (auto& value : other) {

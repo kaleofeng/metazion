@@ -80,12 +80,12 @@ public:
 
     ~UDList() {}
 
-    UDList(UDList& other)
+    UDList(const UDList& other)
         : UDList() {
         *this = other;
     }
 
-    UDList& operator =(UDList& other) {
+    UDList& operator =(const UDList& other) {
         if (&other != this) {
             Clear();
             for (auto& value : other) {

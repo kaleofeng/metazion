@@ -128,12 +128,12 @@ public:
 
     ~HashMap() {}
 
-    HashMap(HashMap& other)
+    HashMap(const HashMap& other)
         : HashMap() {
         *this = other;
     }
 
-    HashMap& operator =(HashMap& other) {
+    HashMap& operator =(const HashMap& other) {
         if (&other != this) {
             Clear();
             for (auto i = 0; i < BUCKETSIZE; ++i) {

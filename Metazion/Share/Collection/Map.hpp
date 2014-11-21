@@ -84,12 +84,12 @@ public:
 
     ~Map() {}
 
-    Map(Map& other)
+    Map(const Map& other)
         : Map() {
         *this = other;
     }
 
-    Map& operator =(Map& other) {
+    Map& operator =(const Map& other) {
         if (&other != this) {
             Clear();
             for (auto& value : other) {
