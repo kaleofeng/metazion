@@ -61,7 +61,55 @@ struct RBTreeNode {
         return parent;
     }
 
+    const RBTreeNode* Backward() const {
+        auto node = this;
+        if (node->m_parent == node) {
+            return nullptr;
+        }
+
+        if (!IsNull(node->m_left)) {
+            node = node->m_left;
+            while (!IsNull(node->m_right)) {
+                node = node->m_right;
+            }
+
+            return node;
+        }
+
+        auto parent = node->m_parent;
+        while (!IsNull(parent) && node == parent->m_left) {
+            node = parent;
+            parent = node->m_parent;
+        }
+
+        return parent;
+    }
+
     RBTreeNode* Forward() {
+        auto node = this;
+        if (node->m_parent == node) {
+            return nullptr;
+        }
+
+        if (!IsNull(node->m_right)) {
+            node = node->m_right;
+            while (!IsNull(node->m_left)) {
+                node = node->m_left;
+            }
+
+            return node;
+        }
+
+        auto parent = node->m_parent;
+        while (!IsNull(parent) && node == parent->m_right) {
+            node = parent;
+            parent = node->m_parent;
+        }
+
+        return parent;
+    }
+
+    const RBTreeNode* Forward() const {
         auto node = this;
         if (node->m_parent == node) {
             return nullptr;
@@ -157,7 +205,33 @@ public:
         return next;
     }
 
+    const Node_t* First() const {
+        auto next = m_root;
+        if (IsNull(next)) {
+            return nullptr;
+        }
+
+        while (!IsNull(next->m_left)) {
+            next = next->m_left;
+        }
+
+        return next;
+    }
+
     Node_t* Last() {
+        auto next = m_root;
+        if (IsNull(next)) {
+            return nullptr;
+        }
+
+        while (!IsNull(next->m_right)) {
+            next = next->m_right;
+        }
+
+        return next;
+    }
+
+    const Node_t* Last() const {
         auto next = m_root;
         if (IsNull(next)) {
             return nullptr;
@@ -313,24 +387,6 @@ public:
         return forward;
     }
 
-    Node_t* Search(const Value_t& value) {
-        auto node = m_root;
-        while (!IsNull(node)) {
-            const auto ret = m_compare(value, node->m_value);
-            if (ret < 0) {
-                node = node->m_left;
-            }
-            else if (ret > 0) {
-                node = node->m_right;
-            }
-            else {
-                return node;
-            }
-        }
-
-        return nullptr;
-    }
-
     Node_t* Replace(Node_t* victim, Node_t* replacement) {
         ASSERT_TRUE(!IsNull(victim));
         ASSERT_TRUE(!IsNull(replacement));
@@ -360,21 +416,26 @@ public:
         return victim;
     }
 
-    Node_t* Backward(Node_t* node) {
-        ASSERT_TRUE(!IsNull(node));
+    Node_t* Search(const Value_t& value) {
+        auto node = m_root;
+        while (!IsNull(node)) {
+            const auto ret = m_compare(value, node->m_value);
+            if (ret < 0) {
+                node = node->m_left;
+            }
+            else if (ret > 0) {
+                node = node->m_right;
+            }
+            else {
+                return node;
+            }
+        }
 
-        return node->Backward();
-    }
-
-    Node_t* Forward(Node_t* node) {
-        ASSERT_TRUE(!IsNull(node));
-
-        return node->Forward();
+        return nullptr;
     }
 
 private:
-
-    void Link(Node_t* node, Node_t* parent, Node_t*& link) {
+    void Link(Node_t* node, Node_t* parent, Node_t*& link) const {
         node->m_parent = parent;
         node->m_left = node->m_right = nullptr;
 

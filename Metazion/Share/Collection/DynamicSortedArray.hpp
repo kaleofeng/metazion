@@ -69,7 +69,7 @@ public:
         return m_array[index];
     }
 
-    int Find(const Value_t& value) {
+    int Find(const Value_t& value) const {
         int index = 0;
         auto found = BinarySearch(value, index);
         return found ? index : -1;
@@ -94,11 +94,11 @@ public:
     }
 
 private:
-    bool BinarySearch(const Value_t& value, int& index) {
-        int low = 0;
-        int high = m_array.GetSize() - 1;
-        int middle = 0;
-        bool found = false;
+    bool BinarySearch(const Value_t& value, int& index) const {
+        auto low = 0;
+        auto high = m_array.GetSize() - 1;
+        auto middle = 0;
+        auto found = false;
         while (low <= high) {
             middle = low + ((high - low) >> 1);
             const auto ret = m_compare(value, m_array[middle]);

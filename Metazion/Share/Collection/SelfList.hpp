@@ -79,19 +79,19 @@ public:
         return m_size;
     }
 
-    const Node_t* Front() const {
-        return m_headNode;
-    }
-
     Node_t* Front() {
         return m_headNode;
     }
 
-    const Node_t* Back() const {
-        return m_tailNode;
+    const Node_t* Front() const {
+        return m_headNode;
     }
 
     Node_t* Back() {
+        return m_tailNode;
+    }
+
+    const Node_t* Back() const {
         return m_tailNode;
     }
 
@@ -235,16 +235,10 @@ public:
         return nextNode;
     }
 
-    const Node_t* Forward(const Node_t* node) const {
+    Node_t* Backward(Node_t* node) {
         ASSERT_TRUE(!IsNull(node));
 
-        return node->m_nextNode;
-    }
-
-    Node_t* Forward(Node_t* node) {
-        ASSERT_TRUE(!IsNull(node));
-
-        return node->m_nextNode;
+        return node->m_prevNode;
     }
 
     const Node_t* Backward(const Node_t* node) const {
@@ -253,10 +247,16 @@ public:
         return node->m_prevNode;
     }
 
-    Node_t* Backward(Node_t* node) {
+    Node_t* Forward(Node_t* node) {
         ASSERT_TRUE(!IsNull(node));
 
-        return node->m_prevNode;
+        return node->m_nextNode;
+    }
+
+    const Node_t* Forward(const Node_t* node) const {
+        ASSERT_TRUE(!IsNull(node));
+
+        return node->m_nextNode;
     }
 
     bool IsContain(Node_t* node) const {

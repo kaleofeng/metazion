@@ -53,13 +53,13 @@ public:
         m_array.Clear();
     }
 
-    const Value_t& Top() const {
+    Value_t& Top() {
         ASSERT_TRUE(GetSize() > 0);
 
         return m_array[0];
     }
 
-    Value_t& Top() {
+    const Value_t& Top() const {
         ASSERT_TRUE(GetSize() > 0);
 
         return m_array[0];

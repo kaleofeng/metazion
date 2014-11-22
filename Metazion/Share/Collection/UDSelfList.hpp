@@ -192,13 +192,13 @@ public:
         return nullptr;
     }
 
-    const Node_t* Forward(const Node_t* node) const {
+    Node_t* Forward(Node_t* node) {
         ASSERT_TRUE(!IsNull(node));
 
         return node->m_nextNode;
     }
 
-    Node_t* Forward(Node_t* node) {
+    const Node_t* Forward(const Node_t* node) const {
         ASSERT_TRUE(!IsNull(node));
 
         return node->m_nextNode;

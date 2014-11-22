@@ -72,8 +72,62 @@ class UDList {
         Node_t* m_node;
     };
 
+    class ConstIterator {
+        friend class UDList;
+
+    public:
+        ConstIterator()
+            : m_node(nullptr) {}
+
+        ConstIterator(const ConstIterator& other)
+            : m_node(other.m_node) {}
+
+        ConstIterator(const Node_t* node)
+            : m_node(node) {}
+
+        ~ConstIterator() {}
+
+        ConstIterator& operator =(const ConstIterator& other) {
+            if (&other != this) {
+                m_node = other.m_node;
+            }
+            return *this;
+        }
+
+        const auto& operator *() {
+            return m_node->m_value;
+        }
+
+        const auto* operator ->() {
+            return &m_node->m_value;
+        }
+
+        ConstIterator& operator ++() {
+            m_node = m_node->m_nextNode;
+            return *this;
+        }
+
+        ConstIterator operator ++(int) {
+            auto temp = *this;
+            m_node = m_node->m_nextNode;
+            return temp;
+        }
+
+        bool operator ==(const ConstIterator& other) const {
+            return m_node == other.m_node;
+        }
+
+        bool operator !=(const ConstIterator& other) const {
+            return !operator ==(other);
+        }
+
+    private:
+        const Node_t* m_node;
+    };
+
 public:
     using Iterator_t = Iterator;
+    using ConstIterator_t = ConstIterator;
 
 public:
     UDList() {}
@@ -88,7 +142,7 @@ public:
     UDList& operator =(const UDList& other) {
         if (&other != this) {
             Clear();
-            for (auto& value : other) {
+            for (const auto& value : other) {
                 PushBack(value);
             }
         }
@@ -128,18 +182,17 @@ public:
         return Iterator_t(node);
     }
 
+    ConstIterator_t Begin() const {
+        const auto node = m_list.Front();
+        return ConstIterator_t(node);
+    }
+
     Iterator_t End() {
         return Iterator_t();
     }
 
-    Iterator_t Front() {
-        auto node = m_list.Front();
-        return Iterator_t(node);
-    }
-
-    Iterator_t Back() {
-        auto node = m_list.Back();
-        return Iterator_t(node);
+    ConstIterator_t End() const {
+        return ConstIterator_t();
     }
 
     Iterator_t PushFront(const Value_t& value) {

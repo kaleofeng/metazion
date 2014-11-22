@@ -24,6 +24,7 @@ class HashMap {
     using Allocator_t = AllocatorFamily;
     using Bucket_t = Map<Key_t, Value_t, Compare_t, Allocator_t>;
     using BucketIterator_t = typename Bucket_t::Iterator_t;
+    using BucketConstIterator_t = typename Bucket_t::ConstIterator_t;
 
     class Iterator {
         friend class HashMap;
@@ -119,8 +120,103 @@ class HashMap {
         BucketIterator_t m_iter;
     };
 
+    class ConstIterator {
+        friend class HashMap;
+
+    public:
+        ConstIterator()
+            : m_owner(nullptr)
+            , m_bucket(0) {}
+
+        ConstIterator(const Iterator& other)
+            : m_owner(other.m_owner)
+            , m_bucket(other.m_bucket)
+            , m_iter(other.m_iter) {}
+
+        ConstIterator(const HashMap* owner, int bucket, BucketConstIterator_t iter)
+            : m_owner(owner)
+            , m_bucket(bucket)
+            , m_iter(iter) {}
+
+        ~ConstIterator() {}
+
+        ConstIterator& operator =(const ConstIterator& other) {
+            if (&other != this) {
+                m_owner = other.m_owner;
+                m_bucket = other.m_bucket;
+                m_iter = other.m_iter;
+            }
+            return *this;
+        }
+
+        const auto& operator *() {
+            return m_iter.operator *();
+        }
+
+        const auto* operator ->() {
+            return m_iter.operator ->();
+        }
+
+        ConstIterator& operator ++() {
+            const auto& bucket = m_owner->m_buckets[m_bucket];
+            ++m_iter;
+            if (m_iter != bucket.End()) {
+                return *this;
+            }
+
+            for (m_bucket = m_bucket + 1; m_bucket < BUCKETSIZE; ++m_bucket) {
+                const auto& nextBucket = m_owner->m_buckets[m_bucket];
+                m_iter = nextBucket.Begin();
+                if (m_iter != nextBucket.End()) {
+                    return *this;
+                }
+            }
+
+            *this = ConstIterator();
+            return *this;
+        }
+
+        ConstIterator operator ++(int) {
+            const auto temp = *this;
+            const auto& bucket = m_owner->m_buckets[m_bucket];
+            ++m_iter;
+            if (m_iter != bucket.End()) {
+                return temp;
+            }
+
+            for (m_bucket = m_bucket + 1; m_bucket < BUCKETSIZE; ++m_bucket) {
+                const auto& nextBucket = m_owner->m_buckets[m_bucket];
+                m_iter = nextBucket.Begin();
+                if (m_iter != nextBucket.End()) {
+                    return temp;
+                }
+            }
+
+            *this = ConstIterator();
+            return temp;
+        }
+
+        bool operator ==(const ConstIterator& other) const {
+            if (IsNull(m_owner)) {
+                return IsNull(other.m_owner);
+            }
+
+            return m_bucket == other.m_bucket && m_iter == other.m_iter;
+        }
+
+        bool operator !=(const ConstIterator& other) const {
+            return !operator ==(other);
+        }
+
+    private:
+        const HashMap* m_owner;
+        int m_bucket;
+        BucketConstIterator_t m_iter;
+    };
+
 public:
     using Iterator_t = Iterator;
+    using ConstIterator_t = ConstIterator;
 
 public:
     HashMap()
@@ -177,7 +273,7 @@ public:
         if (!IsEmpty()) {
             for (auto index = 0; index < BUCKETSIZE; ++index) {
                 auto& bucket = m_buckets[index];
-                BucketIterator_t iter = bucket.Begin();
+                auto iter = bucket.Begin();
                 if (iter != bucket.End()) {
                     return Iterator_t(this, index, iter);
                 }
@@ -187,15 +283,33 @@ public:
         return End();
     }
 
+    ConstIterator_t Begin() const {
+        if (!IsEmpty()) {
+            for (auto index = 0; index < BUCKETSIZE; ++index) {
+                const auto& bucket = m_buckets[index];
+                const auto iter = bucket.Begin();
+                if (iter != bucket.End()) {
+                    return ConstIterator_t(this, index, iter);
+                }
+            }
+        }
+
+        return End();
+    }
+
     Iterator_t End() {
         return Iterator_t();
+    }
+
+    ConstIterator_t End() const {
+        return ConstIterator_t();
     }
 
     Iterator_t Insert(const Key_t& key, const Value_t& value) {
         const auto hashCode = m_hasher(key);
         const auto index = hashCode & (BUCKETSIZE - 1);
         auto& bucket = m_buckets[index];
-        BucketIterator_t iter = bucket.Insert(key, value);
+        auto iter = bucket.Insert(key, value);
         if (iter != bucket.End()) {
             ++m_size;
         }
@@ -209,7 +323,7 @@ public:
 
         auto index = iter.m_bucket;
         auto& bucket = m_buckets[index];
-        BucketIterator_t bucketIter = bucket.Erase(iter.m_iter);
+        auto bucketIter = bucket.Erase(iter.m_iter);
         --m_size;
 
         if (bucketIter != bucket.End()) {
@@ -231,7 +345,7 @@ public:
         const auto hashCode = m_hasher(key);
         const auto index = hashCode & (BUCKETSIZE - 1);
         auto& bucket = m_buckets[index];
-        BucketIterator_t iter = bucket.Find(key);
+        auto iter = bucket.Find(key);
         return Iterator_t(this, index, iter);
     }
 

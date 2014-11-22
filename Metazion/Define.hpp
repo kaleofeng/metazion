@@ -17,8 +17,14 @@ DECL_NAMESPACE_MZ_BEGIN
     CLASS& operator =(const CLASS&&) = delete;
 
 #define ADAPT_FOR_RANGE_TRAVERSAL() \
+    ConstIterator_t begin() const { \
+        return Begin(); \
+    } \
     Iterator_t begin() { \
         return Begin(); \
+    } \
+    ConstIterator_t end() const { \
+        return End(); \
     } \
     Iterator_t end() { \
         return End(); \

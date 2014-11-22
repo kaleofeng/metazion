@@ -76,8 +76,62 @@ class Map {
         Node_t* m_node;
     };
 
+    class ConstIterator {
+        friend class Map;
+
+    public:
+        ConstIterator()
+            : m_node(nullptr) {}
+
+        ConstIterator(const Iterator& other)
+            : m_node(other.m_node) {}
+
+        ConstIterator(const Node_t* node)
+            : m_node(node) {}
+
+        ~ConstIterator() {}
+
+        ConstIterator& operator =(const ConstIterator& other) {
+            if (&other != this) {
+                m_node = other.m_node;
+            }
+            return *this;
+        }
+
+        const auto& operator *() {
+            return m_node->m_value;
+        }
+
+        const auto* operator ->() {
+            return &m_node->m_value;
+        }
+
+        ConstIterator& operator ++() {
+            m_node = m_node->Forward();
+            return *this;
+        }
+
+        ConstIterator operator ++(int) {
+            const auto temp = *this;
+            m_node = m_node->Forward();
+            return temp;
+        }
+
+        bool operator ==(const ConstIterator& other) const {
+            return m_node == other.m_node;
+        }
+
+        bool operator !=(const ConstIterator& other) const {
+            return !operator ==(other);
+        }
+
+    private:
+        const Node_t* m_node;
+    };
+
 public:
     using Iterator_t = Iterator;
+    using ConstIterator_t = ConstIterator;
 
 public:
     Map() {}
@@ -92,7 +146,7 @@ public:
     Map& operator =(const Map& other) {
         if (&other != this) {
             Clear();
-            for (auto& value : other) {
+            for (const auto& value : other) {
                 Insert(value.first, value.second);
             }
         }
@@ -133,8 +187,17 @@ public:
         return Iterator_t(node);
     }
 
+    ConstIterator_t Begin() const {
+        const auto node = m_tree.First();
+        return ConstIterator_t(node);
+    }
+
     Iterator_t End() {
         return Iterator_t();
+    }
+
+    ConstIterator_t End() const {
+        return ConstIterator_t();
     }
 
     Iterator_t Insert(const Key_t& key, const Value_t& value) {
