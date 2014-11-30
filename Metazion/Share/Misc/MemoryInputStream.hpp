@@ -1,5 +1,5 @@
-#ifndef _MZ_SHARE_MSGINPUTSTREAM_HPP_
-#define _MZ_SHARE_MSGINPUTSTREAM_HPP_
+#ifndef _MZ_SHARE_MEMORYINPUTSTREAM_HPP_
+#define _MZ_SHARE_MEMORYINPUTSTREAM_HPP_
 
 #include "Metazion/Share/ShareInclude.hpp"
 
@@ -9,43 +9,113 @@ class MemoryInputStream {
     DISALLOW_COPY_AND_ASSIGN(MemoryInputStream);
 
 public:
-    MemoryInputStream();
+    MemoryInputStream()
+        : m_buffer(nullptr)
+        , m_length(0)
+        , m_position(0) {}
 
-    ~MemoryInputStream();
+    ~MemoryInputStream() {}
 
 public:
-    void Attach(const void* buffer, int length);
+    void Attach(const void* buffer, int length) {
+        ASSERT_TRUE(!IsNull(buffer));
+        ASSERT_TRUE(length > 0);
 
-    void Detach();
+        m_buffer = static_cast<const char*>(buffer);
+        m_length = length;
+        m_position = 0;
+    }
 
-    void Seek(int position);
+    void Detach() {
+        m_buffer = nullptr;
+        m_length = 0;
+        m_position = 0;
+    }
 
-    bool ReadInt8(int8_t& arg);
+    void Seek(int position) {
+        ASSERT_TRUE(position >= 0 && position < m_length);
 
-    bool ReadUint8(uint8_t& arg);
+        m_position = position;
+    }
+
+    bool ReadInt8(int8_t& arg) {
+        return Read(&arg, sizeof(arg));
+    }
+
+    bool ReadUint8(uint8_t& arg) {
+        return Read(&arg, sizeof(arg));
+    }
     
-    bool ReadInt16(int16_t& arg);
+    bool ReadInt16(int16_t& arg) {
+        return Read(&arg, sizeof(arg));
+    }
     
-    bool ReadUint16(uint16_t& arg);
+    bool ReadUint16(uint16_t& arg) {
+        return Read(&arg, sizeof(arg));
+    }
     
-    bool ReadInt32(int32_t& arg);
+    bool ReadInt32(int32_t& arg) {
+        return Read(&arg, sizeof(arg));
+    }
     
-    bool ReadUint32(uint32_t& arg);
+    bool ReadUint32(uint32_t& arg) {
+        return Read(&arg, sizeof(arg));
+    }
     
-    bool ReadInt64(int64_t& arg);
+    bool ReadInt64(int64_t& arg) {
+        return Read(&arg, sizeof(arg));
+    }
     
-    bool ReadUint64(uint64_t& arg);
+    bool ReadUint64(uint64_t& arg) {
+        return Read(&arg, sizeof(arg));
+    }
     
-    bool ReadFloat(float& arg);
+    bool ReadFloat(float& arg) {
+        return Read(&arg, sizeof(arg));
+    }
     
-    bool ReadDouble(double& arg);
+    bool ReadDouble(double& arg) {
+        return Read(&arg, sizeof(arg));
+    }
     
-    bool ReadString(char* buffer, int32_t length);
+    bool ReadString(char* buffer, int length) {
+        int strLength = 0;
+        if (!ReadInt32(strLength)) {
+            return false;
+        }
+
+        if (length < strLength + 1) {
+            return false;
+        }
+
+        if (strLength == 0) {
+            buffer[0] = '\0';
+            return true;
+        }
+
+        if (!Read(buffer, strLength)) {
+            return false;
+        }
+
+        buffer[strLength] = '\0';
+        return true;
+    }
     
-    bool Read(void* buffer, int32_t length);
+    bool Read(void* buffer, int length) {
+        if (!Check(length)) {
+            return false;
+        }
+
+        ::memcpy(buffer, m_buffer + m_position, length);
+        m_position += length;
+        return true;
+    }
+
 
 private:
-    bool Check(int length);
+    bool Check(int length) const {
+        return m_position + length <= m_length;
+    }
 
 private:
     const char* m_buffer;
@@ -55,4 +125,4 @@ private:
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // _MZ_SHARE_MSGINPUTSTREAM_HPP_
+#endif // _MZ_SHARE_MEMORYINPUTSTREAM_HPP_
