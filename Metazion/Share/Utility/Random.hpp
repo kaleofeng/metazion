@@ -32,4 +32,4 @@ private:
 
 DECL_NAMESPACE_MZ_SHARE_END
 
-#endif // _MZ_SHARE_UTILITY_HPP_
+#endif // _MZ_SHARE_RANDOM_HPP_
