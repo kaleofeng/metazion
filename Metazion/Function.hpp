@@ -39,7 +39,15 @@ inline bool IsLengthAlign(int length, int align) {
     return (length & (align - 1)) == 0;
 }
 
-int GetLastError();
+inline int GetLastError() {
+#if defined(MZ_PLATFORM_WINOWS)
+    return ::GetLastError();
+#endif // MZ_PLATFORM_WINOWS
+
+#if defined(MZ_PLATFORM_LINUX)
+    return errno;
+#endif // MZ_PLATFORM_LINUX
+}
 
 DECL_NAMESPACE_MZ_END
     
