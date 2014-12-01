@@ -79,6 +79,9 @@ public:
     }
     
     bool ReadString(char* buffer, int length) {
+        ASSERT_TRUE(!IsNull(buffer));
+        ASSERT_TRUE(length > 0);
+
         int strLength = 0;
         if (!ReadInt32(strLength)) {
             return false;

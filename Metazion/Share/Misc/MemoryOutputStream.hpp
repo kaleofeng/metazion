@@ -71,9 +71,8 @@ public:
     }
     
     bool WriteString(const char* buffer, int length) {
-        if (length == 0) {
-            length = static_cast<int>(::strlen(buffer));
-        }
+        ASSERT_TRUE(!IsNull(buffer));
+        ASSERT_TRUE(length >= 0);
 
         if (!WriteInt32(length)) {
             return true;
