@@ -11,7 +11,9 @@ class MemoryOutputStream {
 
 public:
     MemoryOutputStream()
-        : m_position(0) {}
+        : m_position(0) {
+        ::memset(m_buffer, 0, sizeof(m_buffer));
+    }
 
     ~MemoryOutputStream() {}
 
