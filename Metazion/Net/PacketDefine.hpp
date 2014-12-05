@@ -42,10 +42,6 @@ struct DecodeBuffer {
     Buffer_t m_resultBuffer;
 };
 
-using PacketCache_t = NS_SHARE::StepBuffer<1024 * 4, 1024 * 256>;
-
-using PacketArray_t = NS_SHARE::StaticArray<void*>;
-
 DECL_NAMESPACE_MZ_NET_END
 
 #endif // _MZ_NET_PACKETDEFINE_HPP_

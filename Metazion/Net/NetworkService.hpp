@@ -1,5 +1,5 @@
-#ifndef _MZ_NET_SOCKETSERVER_HPP_
-#define _MZ_NET_SOCKETSERVER_HPP_
+#ifndef _MZ_NET_NETWORKSERVICE_HPP_
+#define _MZ_NET_NETWORKSERVICE_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
@@ -14,8 +14,8 @@
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class SocketServer {
-    DISALLOW_COPY_AND_ASSIGN(SocketServer)
+class NetworkService {
+    DISALLOW_COPY_AND_ASSIGN(NetworkService)
 
     friend class IoThread;
     friend class MaintenanceThread;
@@ -24,9 +24,9 @@ class SocketServer {
     using LockGuard_t = std::lock_guard<Lock_t>;
 
 public:
-    SocketServer();
+    NetworkService();
 
-    virtual ~SocketServer();
+    virtual ~NetworkService();
 
 public:
     virtual bool Initialize(int socketCapacity, int ioThreadNumber);
@@ -75,42 +75,42 @@ private:
     MaintenanceThread* m_maintenanceThread;
 };
 
-inline bool SocketServer::CanAttachMore() const {
+inline bool NetworkService::CanAttachMore() const {
     return m_socketNumber < m_socketCapacity;
 }
 
-inline void SocketServer::Lock() {
+inline void NetworkService::Lock() {
     m_lock.lock();
 }
 
-inline void SocketServer::Unlock() {
+inline void NetworkService::Unlock() {
     m_lock.unlock();
 }
 
-inline int SocketServer::GetSocketCapacity() const {
+inline int NetworkService::GetSocketCapacity() const {
     return m_socketCapacity;
 }
 
-inline int SocketServer::GetSocketNumber() const {
+inline int NetworkService::GetSocketNumber() const {
     return m_socketNumber;
 }
 
-inline int SocketServer::GetIoThreadNumber() const {
+inline int NetworkService::GetIoThreadNumber() const {
     return m_ioThreadNumber;
 }
 
-inline Socket* SocketServer::GetSocket(int index) {
+inline Socket* NetworkService::GetSocket(int index) {
     return m_socketCtrlList[index].m_socket;
 }
 
-inline SocketService& SocketServer::GetSocketService() {
+inline SocketService& NetworkService::GetSocketService() {
     return m_socketService;
 }
 
-inline SocketCtrl& SocketServer::GetSocketCtrl(int index) {
+inline SocketCtrl& NetworkService::GetSocketCtrl(int index) {
     return m_socketCtrlList[index];
 }
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // _MZ_NET_SOCKETSERVER_HPP_
+#endif // _MZ_NET_NETWORKSERVICE_HPP_

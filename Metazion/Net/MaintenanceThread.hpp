@@ -8,7 +8,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class Socket;
-class SocketServer;
+class NetworkService;
 
 class MaintenanceThread : public NS_SHARE::Thread {
     DISALLOW_COPY_AND_ASSIGN(MaintenanceThread)
@@ -19,7 +19,7 @@ public:
     ~MaintenanceThread();
 
 public:
-    void Init(SocketServer* socketServer);
+    void Init(NetworkService* networkService);
 
     void Finalize();
 
@@ -34,7 +34,7 @@ private:
     void ProcessClosedSocket(Socket* socket, int index);
 
 private:
-    SocketServer* m_socketServer;
+    NetworkService* m_networkService;
     int m_interval;
     volatile bool m_stopDesired;
 };

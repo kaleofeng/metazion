@@ -11,7 +11,7 @@
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class SocketServer;
+class NetworkService;
 
 class Socket {
     DISALLOW_COPY_AND_ASSIGN(Socket)
@@ -80,9 +80,9 @@ public:
 
     void SetIndex(int index);
 
-    SocketServer* GetSocketServer();
+    NetworkService* GetNetworkService();
 
-    void SetSocketServer(SocketServer* socketServer);
+    void SetNetworkService(NetworkService* networkService);
 
 protected:
     Lock_t m_lock;
@@ -91,7 +91,7 @@ protected:
     volatile bool m_wannaClose;
     SockId_t m_sockId;
     int m_index;
-    SocketServer* m_socketServer;
+    NetworkService* m_networkService;
 };
 
 inline bool Socket::IsValid() const {
@@ -133,12 +133,12 @@ inline void Socket::SetIndex(int index) {
     m_index = index;
 }
 
-inline SocketServer* Socket::GetSocketServer() {
-    return m_socketServer;
+inline NetworkService* Socket::GetNetworkService() {
+    return m_networkService;
 }
 
-inline void Socket::SetSocketServer(SocketServer* socketServer) {
-    m_socketServer = socketServer;
+inline void Socket::SetNetworkService(NetworkService* networkService) {
+    m_networkService = networkService;
 }
 
 DECL_NAMESPACE_MZ_NET_END

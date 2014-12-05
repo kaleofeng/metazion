@@ -12,7 +12,7 @@
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class SocketServer;
+class NetworkService;
 
 class EpollIoThread : public NS_SHARE::Thread {
     DISALLOW_COPY_AND_ASSIGN(EpollIoThread)
@@ -23,7 +23,7 @@ public:
     ~EpollIoThread();
 
 public:
-    void Initialize(SocketServer* socketServer, int index);
+    void Initialize(NetworkService* networkService, int index);
 
     void Finalize();
 
@@ -36,7 +36,7 @@ private:
     void ProcessSockets();
 
 private:
-    SocketServer* m_socketServer;
+    NetworkService* m_networkService;
     int m_index;
     int m_epollfd;
     epoll_event* m_eventList;

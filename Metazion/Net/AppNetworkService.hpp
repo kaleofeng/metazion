@@ -1,16 +1,16 @@
-#ifndef _MZ_NET_APPSOCKETSERVER_HPP_
-#define _MZ_NET_APPSOCKETSERVER_HPP_
+#ifndef _MZ_NET_APPNETWORKSERVICE_HPP_
+#define _MZ_NET_APPNETWORKSERVICE_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
 #include <Metazion/Share/Collection/StaticArray.hpp>
 
-#include "Metazion/Net/NormalSocketServer.hpp"
+#include "Metazion/Net/NormalNetworkService.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class AppSocketServer : public NormalSocketServer {
-    DISALLOW_COPY_AND_ASSIGN(AppSocketServer)
+class AppNetworkService : public NormalNetworkService {
+    DISALLOW_COPY_AND_ASSIGN(AppNetworkService)
 
 public:
     using SocketArray_t = NS_SHARE::StaticArray<Socket*>;
@@ -22,9 +22,9 @@ public:
     };
     
 public:
-    AppSocketServer();
+    AppNetworkService();
 
-    virtual ~AppSocketServer();
+    virtual ~AppNetworkService();
 
 public:
     int LockSockets(SocketFilter& filter, SocketArray_t& socketArray);
@@ -34,4 +34,4 @@ public:
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // _MZ_NET_APPSOCKETSERVER_HPP_
+#endif // _MZ_NET_APPNETWORKSERVICE_HPP_

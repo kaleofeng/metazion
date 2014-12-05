@@ -12,7 +12,7 @@
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class SocketServer;
+class NetworkService;
 
 class IocpIoThread : public NS_SHARE::Thread {
     DISALLOW_COPY_AND_ASSIGN(IocpIoThread)
@@ -31,7 +31,7 @@ public:
     ~IocpIoThread();
 
 public:
-    void Initialize(SocketServer* socketServer, int index);
+    void Initialize(NetworkService* networkService, int index);
 
     void Finalize();
 
@@ -45,7 +45,7 @@ private:
         , DWORD error);
 
 private:
-    SocketServer* m_socketServer;
+    NetworkService* m_networkService;
     int m_index;
     volatile bool m_stopDesired;
 };
