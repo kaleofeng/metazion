@@ -15,19 +15,13 @@ class AppNetworkService : public NormalNetworkService {
 public:
     using SocketArray_t = NS_SHARE::StaticArray<Socket*>;
 
-    struct SocketFilter {
-        virtual bool Filter(Socket* socket) { 
-            return socket->GetType() != SOCKET_TCP_LISTEN;
-        }
-    };
-    
 public:
     AppNetworkService();
 
     virtual ~AppNetworkService();
 
 public:
-    int LockSockets(SocketFilter& filter, SocketArray_t& socketArray);
+    int LockSockets(std::function<bool(Socket*)> socketFilter, SocketArray_t& socketArray);
 
     void UnlockSockets(SocketArray_t& socketArray);
 };
