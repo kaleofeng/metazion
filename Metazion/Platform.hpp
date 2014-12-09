@@ -1,21 +1,23 @@
 #ifndef _MZ_PLATFORM_HPP_
 #define _MZ_PLATFORM_HPP_
 
-// Current platform
+// Current Platform
 #if defined(_WIN32)
 #   define MZ_PLATFORM_WINOWS
-#else
+#elif defined(__linux__ )
 #   define MZ_PLATFORM_LINUX
+#else
+#   define MZ_PLATFORM_OTHER
 #endif // _WIN32
 
-// Current mode
+// Current Mode
 #if defined(_DEBUG)
 #   define MZ_MODE_DEBUG
 #else
 #   define MZ_MODE_RELEASE
 #endif // _DEBUG
 
-// Platform dependent
+// Platform Dependent
 #if defined(MZ_PLATFORM_WINOWS)
 #   ifdef MZ_EXPORT_LIB
 #       define _declspec(dllexport)
@@ -30,7 +32,7 @@
 #   endif // MZ_EXPORT_LIB
 #endif // MZ_PLATFORM_WINOWS
 
-// Platform headers
+// Platform Headers
 #if defined(MZ_PLATFORM_WINOWS)
 #   define WIN32_LEAN_AND_MEAN 
 #   include <Windows.h>

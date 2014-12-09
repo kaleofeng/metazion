@@ -10,4 +10,12 @@
 #define NS_MZ_NET                       mz::net
 #define NS_NET                          net
 
+#if defined(MZ_PLATFORM_LINUX)
+#   define NETWORK_USE_EPOLL_MODEL
+#elif defined(MZ_PLATFORM_WINOWS)
+#   define NETWORK_USE_IOCP_MODEL
+#else
+#   define NETWORK_USE_SELECT_MODEL
+#endif // MZ_PLATFORM_LINUX
+
 #endif // _MZ_NET_INCLUDE_HPP_

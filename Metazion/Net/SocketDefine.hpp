@@ -29,6 +29,7 @@ typedef int SockLen_t;
 #define SHUT_RD SD_SEND;
 #define SHUT_WR SD_RECEIVE;
 #define SHUT_RDWR SD_BOTH;
+#define MSG_NOSIGNAL 0
 #endif // MZ_PLATFORM_WINOWS
 
 #if defined(MZ_PLATFORM_LINUX)
@@ -58,8 +59,6 @@ void DestroySockId(SockId_t sockId);
 
 bool SetNonBlock(SockId_t sockId);
 
-bool IsWouldBlock();
-
 int GetSockOpt(SockId_t sockId
     , int level
     , int optname
@@ -71,6 +70,14 @@ int SetSockOpt(SockId_t sockId
     , int optname
     , const void* optval
     , SockLen_t optlen);
+
+int SAGetLastError();
+
+bool IsInterrupted(int error);
+
+bool IsWouldBlock(int error);
+
+bool IsConnectWouldBlock(int error);
 
 DECL_NAMESPACE_MZ_NET_END
 

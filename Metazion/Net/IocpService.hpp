@@ -5,7 +5,7 @@
 
 #include "Metazion/Net/SocketDefine.hpp"
 
-#if defined(MZ_PLATFORM_WINOWS)
+#if defined(NETWORK_USE_IOCP_MODEL)
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
@@ -40,6 +40,6 @@ inline HANDLE IocpService::GetIocpHandle() const {
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_PLATFORM_WINOWS
+#endif // NETWORK_USE_IOCP_MODEL
 
 #endif // _MZ_NET_IOCPSERVICE_HPP_

@@ -3,7 +3,7 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#if defined(MZ_PLATFORM_WINOWS)
+#if defined(NETWORK_USE_IOCP_MODEL)
 
 #include <Metazion/Share/Thread/Thread.hpp>
 
@@ -45,13 +45,14 @@ private:
         , DWORD error);
 
 private:
+    volatile bool m_stopDesired;
+
     NetworkService* m_networkService;
     int m_index;
-    volatile bool m_stopDesired;
 };
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_PLATFORM_WINOWS
+#endif // NETWORK_USE_IOCP_MODEL
 
 #endif // _MZ_NET_IOCPIOTHREAD_HPP_

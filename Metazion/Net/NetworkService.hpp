@@ -9,6 +9,7 @@
 
 #include "Metazion/Net/AlternativeService.hpp"
 #include "Metazion/Net/AlternativeThread.hpp"
+#include "Metazion/Net/MaintenanceThread.hpp"
 #include "Metazion/Net/Socket.hpp"
 #include "Metazion/Net/SocketCtrl.hpp"
 

@@ -3,7 +3,7 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#if defined(MZ_PLATFORM_WINOWS)
+#if defined(NETWORK_USE_IOCP_MODEL)
 
 #include "Metazion/Net/SocketDefine.hpp"
 
@@ -77,6 +77,6 @@ struct RecvOperation final : public IocpOperation {
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_PLATFORM_WINOWS
+#endif // NETWORK_USE_IOCP_MODEL
 
 #endif // _MZ_NET_IOCPOPERATION_HPP_

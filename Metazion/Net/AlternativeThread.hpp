@@ -5,17 +5,21 @@
 
 #include "Metazion/Net/EpollIoThread.hpp"
 #include "Metazion/Net/IocpIoThread.hpp"
-#include "Metazion/Net/MaintenanceThread.hpp"
+#include "Metazion/Net/SelectIoThread.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-#if defined(MZ_PLATFORM_LINUX)
-#define IoThread EpollIoThread
-#endif // MZ_PLATFORM_LINUX
+#if defined(NETWORK_USE_EPOLL_MODEL)
+#   define IoThread EpollIoThread
+#endif // NETWORK_USE_EPOLL_MODEL
 
-#if defined(MZ_PLATFORM_WINOWS)
-#define IoThread IocpIoThread
-#endif // MZ_PLATFORM_WINOWS
+#if defined(NETWORK_USE_IOCP_MODEL)
+#   define IoThread IocpIoThread
+#endif // NETWORK_USE_IOCP_MODEL
+
+#if defined(NETWORK_USE_SELECT_MODEL)
+#   define IoThread SelectIoThread
+#endif // NETWORK_USE_SELECT_MODEL
 
 DECL_NAMESPACE_MZ_NET_END
 

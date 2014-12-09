@@ -3,7 +3,7 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#if defined(MZ_PLATFORM_LINUX)
+#if defined(NETWORK_USE_EPOLL_MODEL)
 
 #include <Metazion/Share/Thread/Thread.hpp>
 
@@ -36,17 +36,18 @@ private:
     void ProcessSockets();
 
 private:
+    volatile bool m_stopDesired;
+
     NetworkService* m_networkService;
     int m_index;
-    int m_epollfd;
-    epoll_event* m_eventList;
     int m_socketCount;
     SocketCtrl* m_socketCtrlList;
-    volatile bool m_stopDesired;
+    int m_epollfd;
+    epoll_event* m_eventList;
 };
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // MZ_PLATFORM_LINUX
+#endif // NETWORK_USE_EPOLL_MODEL
 
 #endif // _MZ_NET_EPOLLIOTHREAD_HPP_
