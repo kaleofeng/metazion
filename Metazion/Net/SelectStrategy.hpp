@@ -31,6 +31,8 @@ public:
     virtual void DoOutput() = 0;
 
     virtual void EnableOutput() = 0;
+
+    virtual bool ShouldCareAboutOutput() const = 0;
 };
 
 DECL_NAMESPACE_MZ_NET_END

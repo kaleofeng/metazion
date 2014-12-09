@@ -20,21 +20,21 @@ public:
     ~EpollListenStrategy();
 
 public:
-    void Reset() override;
+    void Reset() override final;
 
-    void Prepare() override;
+    void Prepare() override final;
 
-    void Tick(int interval) override;
+    void Tick(int interval) override final;
 
-    void Start() override;
+    void Start() override final;
 
-    bool IsBusy() const override;
+    bool IsBusy() const override final;
 
-    void DoInput() override;
+    void DoInput() override final;
 
-    void DoOutput() override;
+    void DoOutput() override final;
 
-    void EnableOutput() override;
+    void EnableOutput() override final;
 
 private:
     ListenSocket& m_listenSocket;

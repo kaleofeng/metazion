@@ -20,28 +20,28 @@ public:
     ~IocpTransmitStrategy();
 
 public:
-    void Reset() override;
+    void Reset() override final;
 
-    void Prepare() override;
+    void Prepare() override final;
 
-    void Tick(int interval) override;
+    void Tick(int interval) override final;
 
-    void Start() override;
+    void Start() override final;
 
-    bool IsBusy() const override;
+    bool IsBusy() const override final;
 
-    bool PostInput() override;
+    bool PostInput() override final;
 
-    bool PostOutput() override;
+    bool PostOutput() override final;
 
     bool HandleSuccess(const IocpOperation* iocpOperation
-        , DWORD byteNumber) override;
+        , DWORD byteNumber) override final;
 
     bool HandleFailure(const IocpOperation* iocpOperation
-        , DWORD byteNumber, int error) override;
+        , DWORD byteNumber, int error) override final;
 
     bool HandleClose(const IocpOperation* iocpOperation
-        , DWORD byteNumber) override;
+        , DWORD byteNumber) override final;
 
 private:
     bool PostRecv();
