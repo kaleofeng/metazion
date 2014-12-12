@@ -20,9 +20,9 @@
 // Platform Dependent
 #if defined(MZ_PLATFORM_WINOWS)
 #   ifdef MZ_EXPORT_LIB
-#       define _declspec(dllexport)
+#       define MZEXPORT _declspec(dllexport)
 #   else
-#       define _declspec(dllimport)
+#       define MZEXPORT _declspec(dllimport)
 #   endif // MZ_EXPORT_LIB
 #else
 #   ifdef MZ_EXPORT_LIB
