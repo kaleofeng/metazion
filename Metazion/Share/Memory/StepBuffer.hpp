@@ -15,7 +15,7 @@ template<int STEPLENGTH
 , int MAXLENGTH
 >
 class StepBuffer {
-    DISALLOW_COPY_AND_ASSIGN(StepBuffer)
+    MZ_DISALLOW_COPY_AND_ASSIGN(StepBuffer)
 
     enum { MAXSTEPNUMBER = MAXLENGTH + (STEPLENGTH - 1) / STEPLENGTH };
 

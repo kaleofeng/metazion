@@ -180,7 +180,7 @@ public:
     }
 
 public:
-    ADAPT_FOR_RANGE_TRAVERSAL()
+    MZ_ADAPT_FOR_RANGE_TRAVERSAL()
 
     Iterator_t Begin() {
         auto node = m_tree.First();
@@ -202,7 +202,7 @@ public:
 
     Iterator_t Insert(const Key_t& key, const Value_t& value) {
         auto node = CreateNode();
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
         node->m_value.first = key;
         node->m_value.second = value;
         auto curNode = m_tree.InsertUnique(node);
@@ -214,7 +214,7 @@ public:
     }
 
     Iterator_t Erase(Iterator_t iter) {
-        ASSERT_TRUE(iter != End());
+        MZ_ASSERT_TRUE(iter != End());
 
         auto nextNode = m_tree.Remove(iter.m_node);
         DestoryNode(iter.m_node);

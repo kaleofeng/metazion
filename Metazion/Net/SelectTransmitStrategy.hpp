@@ -12,7 +12,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class TransmitSocket;
 
 class SelectTransmitStrategy final : public SelectStrategy {
-    DISALLOW_COPY_AND_ASSIGN(SelectTransmitStrategy)
+    MZ_DISALLOW_COPY_AND_ASSIGN(SelectTransmitStrategy)
 
 public:
     SelectTransmitStrategy(TransmitSocket& transmitSocket);

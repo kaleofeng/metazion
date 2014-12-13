@@ -15,7 +15,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class ListenSocket;
 
 class IocpListenStrategy final : public IocpStrategy {
-    DISALLOW_COPY_AND_ASSIGN(IocpListenStrategy)
+    MZ_DISALLOW_COPY_AND_ASSIGN(IocpListenStrategy)
 
 public:
     IocpListenStrategy(ListenSocket& listenSocket);

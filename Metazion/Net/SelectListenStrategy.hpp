@@ -12,7 +12,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class ListenSocket;
 
 class SelectListenStrategy final : public SelectStrategy {
-    DISALLOW_COPY_AND_ASSIGN(SelectListenStrategy)
+    MZ_DISALLOW_COPY_AND_ASSIGN(SelectListenStrategy)
 
 public:
     SelectListenStrategy(ListenSocket& m_listenSocket);

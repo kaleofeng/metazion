@@ -11,7 +11,7 @@ class Socket;
 class NetworkService;
 
 class MaintenanceThread : public NS_SHARE::Thread {
-    DISALLOW_COPY_AND_ASSIGN(MaintenanceThread)
+    MZ_DISALLOW_COPY_AND_ASSIGN(MaintenanceThread)
 
 public:
     MaintenanceThread();

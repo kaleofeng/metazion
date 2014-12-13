@@ -15,7 +15,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class NetworkService;
 
 class IocpIoThread : public NS_SHARE::Thread {
-    DISALLOW_COPY_AND_ASSIGN(IocpIoThread)
+    MZ_DISALLOW_COPY_AND_ASSIGN(IocpIoThread)
 
     enum Result {
         RESULT_SUCCESS = 1,

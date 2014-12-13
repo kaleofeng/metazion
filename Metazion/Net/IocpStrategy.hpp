@@ -10,7 +10,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class IocpStrategy {
-    DISALLOW_COPY_AND_ASSIGN(IocpStrategy)
+    MZ_DISALLOW_COPY_AND_ASSIGN(IocpStrategy)
 
 public:
     IocpStrategy() {}

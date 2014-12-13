@@ -175,7 +175,7 @@ public:
     }
 
 public:
-    ADAPT_FOR_RANGE_TRAVERSAL()
+    MZ_ADAPT_FOR_RANGE_TRAVERSAL()
 
     Iterator_t Begin() {
         auto node = m_list.Front();
@@ -197,7 +197,7 @@ public:
 
     Iterator_t PushFront(const Value_t& value) {
         auto node = CreateNode();
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
         node->m_value = value;
         node = m_list.PushFront(node);
         return Iterator_t(node);
@@ -205,7 +205,7 @@ public:
 
     Iterator_t PushBack(const Value_t& value) {
         auto node = CreateNode();
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
         node->m_value = value;
         node = m_list.PushBack(node);
         return Iterator_t(node);
@@ -222,7 +222,7 @@ public:
 
     Iterator_t InsertAfter(Iterator_t iter, const Value_t& value) {
         auto node = CreateNode();
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
         node->m_value = value;
         m_list.InsertAfter(iter.m_node, node);
         return Iterator_t(node);

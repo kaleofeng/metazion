@@ -15,7 +15,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class NetworkService;
 
 class SelectIoThread : public NS_SHARE::Thread {
-    DISALLOW_COPY_AND_ASSIGN(SelectIoThread)
+    MZ_DISALLOW_COPY_AND_ASSIGN(SelectIoThread)
 
 public:
     SelectIoThread();

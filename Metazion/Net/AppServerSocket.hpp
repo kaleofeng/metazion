@@ -10,7 +10,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 
 class AppServerSocket 
     : public NormalServerSocket {
-    DISALLOW_COPY_AND_ASSIGN(AppServerSocket)
+    MZ_DISALLOW_COPY_AND_ASSIGN(AppServerSocket)
 
 public:
     AppServerSocket();

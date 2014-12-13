@@ -16,7 +16,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class NetworkService {
-    DISALLOW_COPY_AND_ASSIGN(NetworkService)
+    MZ_DISALLOW_COPY_AND_ASSIGN(NetworkService)
 
     friend class IoThread;
     friend class MaintenanceThread;

@@ -10,7 +10,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class NormalServerSocket;
 
 class NormalListenSocket : public ListenSocket {
-    DISALLOW_COPY_AND_ASSIGN(NormalListenSocket)
+    MZ_DISALLOW_COPY_AND_ASSIGN(NormalListenSocket)
 
 public:
     NormalListenSocket();

@@ -8,7 +8,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class SelectStrategy {
-    DISALLOW_COPY_AND_ASSIGN(SelectStrategy)
+    MZ_DISALLOW_COPY_AND_ASSIGN(SelectStrategy)
 
 public:
     SelectStrategy() {}

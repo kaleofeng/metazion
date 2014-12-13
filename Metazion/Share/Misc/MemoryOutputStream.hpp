@@ -7,7 +7,7 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<int MAXLENGTH = 1024>
 class MemoryOutputStream {
-    DISALLOW_COPY_AND_ASSIGN(MemoryOutputStream);
+    MZ_DISALLOW_COPY_AND_ASSIGN(MemoryOutputStream);
 
 public:
     MemoryOutputStream()
@@ -27,7 +27,7 @@ public:
     }
 
     void Seek(int position) {
-        ASSERT_TRUE(position >= 0 && position < MAXLENGTH);
+        MZ_ASSERT_TRUE(position >= 0 && position < MAXLENGTH);
 
         m_position = position;
     }
@@ -73,8 +73,8 @@ public:
     }
     
     bool WriteString(const char* buffer, int length) {
-        ASSERT_TRUE(!IsNull(buffer));
-        ASSERT_TRUE(length >= 0);
+        MZ_ASSERT_TRUE(!IsNull(buffer));
+        MZ_ASSERT_TRUE(length >= 0);
 
         if (!WriteInt32(length)) {
             return true;

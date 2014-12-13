@@ -8,7 +8,7 @@
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 class Thread {
-    DISALLOW_COPY_AND_ASSIGN(Thread)
+    MZ_DISALLOW_COPY_AND_ASSIGN(Thread)
 
 public:
     Thread();

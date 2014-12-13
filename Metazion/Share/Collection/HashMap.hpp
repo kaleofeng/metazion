@@ -267,7 +267,7 @@ public:
     }
 
 public:
-    ADAPT_FOR_RANGE_TRAVERSAL()
+    MZ_ADAPT_FOR_RANGE_TRAVERSAL()
 
     Iterator_t Begin() {
         if (!IsEmpty()) {
@@ -318,8 +318,8 @@ public:
     }
 
     Iterator_t Erase(Iterator_t iter) {
-        ASSERT_TRUE(iter != End());
-        ASSERT_TRUE(iter.m_owner == this);
+        MZ_ASSERT_TRUE(iter != End());
+        MZ_ASSERT_TRUE(iter.m_owner == this);
 
         auto index = iter.m_bucket;
         auto& bucket = m_buckets[index];

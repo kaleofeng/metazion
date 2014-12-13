@@ -6,7 +6,7 @@
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 class MemoryRecordset {
-    DISALLOW_COPY_AND_ASSIGN(MemoryRecordset)
+    MZ_DISALLOW_COPY_AND_ASSIGN(MemoryRecordset)
 
 public:
     using Handle = void*;
@@ -21,7 +21,7 @@ public:
 private:
     enum {
         INVALIDRECORDINDEX = 0x7FFFFFFF,
-        RECORDALIGNLENGTH = DEFAULT_ALIGNMENT,
+        RECORDALIGNLENGTH = MZ_DEFAULT_ALIGNMENT,
     };
 
     struct Record {

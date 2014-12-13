@@ -65,13 +65,13 @@ public:
     }
 
     Value_t& At(int index) {
-        ASSERT_TRUE(index >= 0 && index < m_size);
+        MZ_ASSERT_TRUE(index >= 0 && index < m_size);
 
         return m_values[index];
     }
 
     const Value_t& At(int index) const {
-        ASSERT_TRUE(index >= 0 && index < m_size);
+        MZ_ASSERT_TRUE(index >= 0 && index < m_size);
 
         return m_values[index];
     }
@@ -127,7 +127,7 @@ public:
 
 private:
     int Set(int index, const Value_t& value) {
-        ASSERT_TRUE(index >= 0);
+        MZ_ASSERT_TRUE(index >= 0);
 
         const int size = index + 1;
         if (size > m_capacity) {
@@ -143,7 +143,7 @@ private:
     }
 
     void Inflate(int capacity) {
-        ASSERT_TRUE(capacity > m_capacity);
+        MZ_ASSERT_TRUE(capacity > m_capacity);
         
         if (m_capacity <= 0) {
             m_capacity = INITSIZE;

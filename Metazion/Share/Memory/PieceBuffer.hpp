@@ -7,7 +7,7 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<int MAXLENGTH>
 class PieceBuffer {
-    DISALLOW_COPY_AND_ASSIGN(PieceBuffer)
+    MZ_DISALLOW_COPY_AND_ASSIGN(PieceBuffer)
 
 public:
     PieceBuffer()

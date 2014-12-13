@@ -7,7 +7,7 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<typename ValueType>
 class StaticArray {
-    DISALLOW_COPY_AND_ASSIGN(StaticArray);
+    MZ_DISALLOW_COPY_AND_ASSIGN(StaticArray);
 
     using Value_t = ValueType;
 
@@ -37,13 +37,13 @@ public:
     }
 
     Value_t& At(int index) {
-        ASSERT_TRUE(index >= 0 && index < m_size);
+        MZ_ASSERT_TRUE(index >= 0 && index < m_size);
 
         return m_values[index];
     }
 
     const Value_t& At(int index) const {
-        ASSERT_TRUE(index >= 0 && index < m_size);
+        MZ_ASSERT_TRUE(index >= 0 && index < m_size);
 
         return m_values[index];
     }
@@ -103,7 +103,7 @@ public:
 
 private:
     int Set(int index, const Value_t& value) {
-        ASSERT_TRUE(index >= 0 && index < m_capacity);
+        MZ_ASSERT_TRUE(index >= 0 && index < m_capacity);
 
         const auto size = index + 1;
         if (size > m_size) {

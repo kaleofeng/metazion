@@ -12,7 +12,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class TransmitSocket;
 
 class EpollTransmitStrategy final : public EpollStrategy {
-    DISALLOW_COPY_AND_ASSIGN(EpollTransmitStrategy)
+    MZ_DISALLOW_COPY_AND_ASSIGN(EpollTransmitStrategy)
 
 public:
     EpollTransmitStrategy(TransmitSocket& transmitSocket);

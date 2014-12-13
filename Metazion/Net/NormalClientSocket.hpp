@@ -8,7 +8,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class NormalClientSocket : public TransmitSocket {
-    DISALLOW_COPY_AND_ASSIGN(NormalClientSocket)
+    MZ_DISALLOW_COPY_AND_ASSIGN(NormalClientSocket)
 
     enum Stage {
         STAGE_NONE = 0,

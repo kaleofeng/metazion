@@ -12,7 +12,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class Socket;
 
 class EpollService {
-    DISALLOW_COPY_AND_ASSIGN(EpollService)
+    MZ_DISALLOW_COPY_AND_ASSIGN(EpollService)
 
 public:
     EpollService();

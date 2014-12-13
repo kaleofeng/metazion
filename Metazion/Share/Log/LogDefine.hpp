@@ -5,10 +5,10 @@
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
-#define LOG_NONE        0x00
-#define LOG_DEBUG       0x01
-#define LOG_WARNNING    0x02
-#define LOG_ERROR       0x04
+#define MZ_LOG_NONE         0x00
+#define MZ_LOG_DEBUG        0x01
+#define MZ_LOG_WARNNING     0x02
+#define MZ_LOG_ERROR        0x04
 
 DECL_NAMESPACE_MZ_SHARE_END
 

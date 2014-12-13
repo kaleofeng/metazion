@@ -12,7 +12,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class Socket;
 
 class SelectService {
-    DISALLOW_COPY_AND_ASSIGN(SelectService)
+    MZ_DISALLOW_COPY_AND_ASSIGN(SelectService)
 
 public:
     SelectService();

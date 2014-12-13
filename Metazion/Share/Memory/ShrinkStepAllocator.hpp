@@ -9,17 +9,17 @@
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<int STEPSIZE
-, int UNITLENGTH = DEFAULT_ALIGNMENT
+, int UNITLENGTH = MZ_DEFAULT_ALIGNMENT
 >
 class ShrinkStepAllocator {
-    DISALLOW_COPY_AND_ASSIGN(ShrinkStepAllocator)
+    MZ_DISALLOW_COPY_AND_ASSIGN(ShrinkStepAllocator)
 
     using UnitNode_t = UDSelfListNode<void>;
     using UnitList_t = UDSelfList<UnitNode_t>;
 
     enum {
-        MINLENGTH = MAX(UNITLENGTH, sizeof(UnitNode_t)),
-        ALIGNLENGTH = ALIGN_LENGTH(MINLENGTH, DEFAULT_ALIGNMENT),
+        MINLENGTH = MZ_MAX(UNITLENGTH, sizeof(UnitNode_t)),
+        ALIGNLENGTH = MZ_ALIGN_LENGTH(MINLENGTH, MZ_DEFAULT_ALIGNMENT),
     };
 
     using Piece_t = MemoryPiece<STEPSIZE, ALIGNLENGTH>;
@@ -165,7 +165,7 @@ private:
     }
 
     void ShrinkPiece(PieceNode_t* pieceNode) {
-        ASSERT_TRUE(!IsNull(pieceNode));
+        MZ_ASSERT_TRUE(!IsNull(pieceNode));
 
         auto& piece = pieceNode->m_value;
         UnitList_t restUnitList;

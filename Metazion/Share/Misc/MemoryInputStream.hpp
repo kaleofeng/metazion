@@ -6,7 +6,7 @@
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 class MemoryInputStream {
-    DISALLOW_COPY_AND_ASSIGN(MemoryInputStream);
+    MZ_DISALLOW_COPY_AND_ASSIGN(MemoryInputStream);
 
 public:
     MemoryInputStream()
@@ -18,8 +18,8 @@ public:
 
 public:
     void Attach(const void* buffer, int length) {
-        ASSERT_TRUE(!IsNull(buffer));
-        ASSERT_TRUE(length > 0);
+        MZ_ASSERT_TRUE(!IsNull(buffer));
+        MZ_ASSERT_TRUE(length > 0);
 
         m_buffer = static_cast<const char*>(buffer);
         m_length = length;
@@ -33,7 +33,7 @@ public:
     }
 
     void Seek(int position) {
-        ASSERT_TRUE(position >= 0 && position < m_length);
+        MZ_ASSERT_TRUE(position >= 0 && position < m_length);
 
         m_position = position;
     }
@@ -79,8 +79,8 @@ public:
     }
     
     bool ReadString(char* buffer, int length) {
-        ASSERT_TRUE(!IsNull(buffer));
-        ASSERT_TRUE(length > 0);
+        MZ_ASSERT_TRUE(!IsNull(buffer));
+        MZ_ASSERT_TRUE(length > 0);
 
         int strLength = 0;
         if (!ReadInt32(strLength)) {

@@ -8,7 +8,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class NormalNetworkService : public GenericNetworkService {
-    DISALLOW_COPY_AND_ASSIGN(NormalNetworkService)
+    MZ_DISALLOW_COPY_AND_ASSIGN(NormalNetworkService)
     
 public:
     NormalNetworkService();

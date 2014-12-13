@@ -8,7 +8,7 @@
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 class Random  {
-    DISALLOW_COPY_AND_ASSIGN(Random)
+    MZ_DISALLOW_COPY_AND_ASSIGN(Random)
 
     using RandomDevice_t = std::random_device;
     using RandomEngine_t = std::mt19937;

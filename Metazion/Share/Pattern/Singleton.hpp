@@ -7,7 +7,7 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<typename T>
 class Singleton {
-    DISALLOW_COPY_AND_ASSIGN(Singleton);
+    MZ_DISALLOW_COPY_AND_ASSIGN(Singleton);
 
 protected:
     Singleton() {}

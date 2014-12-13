@@ -11,7 +11,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class SocketBuffer {
-    DISALLOW_COPY_AND_ASSIGN(SocketBuffer)
+    MZ_DISALLOW_COPY_AND_ASSIGN(SocketBuffer)
 
     using Lock_t = std::mutex;
     using LockGuard_t = std::lock_guard<Lock_t>;

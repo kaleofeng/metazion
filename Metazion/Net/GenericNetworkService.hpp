@@ -9,7 +9,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class GenericNetworkService : public NetworkService {
-    DISALLOW_COPY_AND_ASSIGN(GenericNetworkService)
+    MZ_DISALLOW_COPY_AND_ASSIGN(GenericNetworkService)
 
 public:
     GenericNetworkService();

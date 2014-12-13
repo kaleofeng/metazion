@@ -11,7 +11,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class ListenSocket : public Socket {
-    DISALLOW_COPY_AND_ASSIGN(ListenSocket)
+    MZ_DISALLOW_COPY_AND_ASSIGN(ListenSocket)
 
     friend class ListenStrategy;
 

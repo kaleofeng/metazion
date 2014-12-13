@@ -15,7 +15,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class NetworkService;
 
 class EpollIoThread : public NS_SHARE::Thread {
-    DISALLOW_COPY_AND_ASSIGN(EpollIoThread)
+    MZ_DISALLOW_COPY_AND_ASSIGN(EpollIoThread)
 
 public:
     EpollIoThread();

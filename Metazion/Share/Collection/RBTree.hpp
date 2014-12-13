@@ -245,7 +245,7 @@ public:
     }
 
     Node_t* InsertUnique(Node_t* node) {
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
 
         Node_t* parent = nullptr;
         auto temp = &m_root;
@@ -272,7 +272,7 @@ public:
     }
 
     Node_t* InsertRepeat(Node_t* node) {
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
 
         Node_t* parent = nullptr;
         auto temp = &m_root;
@@ -296,7 +296,7 @@ public:
     }
 
     Node_t* Remove(Node_t* node) {
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
 
         auto forward = node->Forward();
 
@@ -388,8 +388,8 @@ public:
     }
 
     Node_t* Replace(Node_t* victim, Node_t* replacement) {
-        ASSERT_TRUE(!IsNull(victim));
-        ASSERT_TRUE(!IsNull(replacement));
+        MZ_ASSERT_TRUE(!IsNull(victim));
+        MZ_ASSERT_TRUE(!IsNull(replacement));
 
         auto parent = victim->m_parent;
         if (!IsNull(parent)) {

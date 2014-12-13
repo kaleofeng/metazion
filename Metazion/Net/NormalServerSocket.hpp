@@ -8,7 +8,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class NormalServerSocket : public TransmitSocket {
-    DISALLOW_COPY_AND_ASSIGN(NormalServerSocket)
+    MZ_DISALLOW_COPY_AND_ASSIGN(NormalServerSocket)
 
 public:
     NormalServerSocket();

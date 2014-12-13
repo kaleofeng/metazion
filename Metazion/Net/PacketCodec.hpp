@@ -12,7 +12,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class TransmitSocket;
 
 class PacketCodec {
-    DISALLOW_COPY_AND_ASSIGN(PacketCodec)
+    MZ_DISALLOW_COPY_AND_ASSIGN(PacketCodec)
         
 public:
     PacketCodec(TransmitSocket& transmitSocket);

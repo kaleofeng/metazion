@@ -10,7 +10,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class AppNetworkService : public NormalNetworkService {
-    DISALLOW_COPY_AND_ASSIGN(AppNetworkService)
+    MZ_DISALLOW_COPY_AND_ASSIGN(AppNetworkService)
 
 public:
     using SocketArray_t = NS_SHARE::StaticArray<Socket*>;

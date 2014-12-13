@@ -12,7 +12,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class ListenSocket;
 
 class EpollListenStrategy final : public EpollStrategy {
-    DISALLOW_COPY_AND_ASSIGN(EpollListenStrategy)
+    MZ_DISALLOW_COPY_AND_ASSIGN(EpollListenStrategy)
 
 public:
     EpollListenStrategy(ListenSocket& m_listenSocket);

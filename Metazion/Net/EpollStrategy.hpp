@@ -8,7 +8,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class EpollStrategy {
-    DISALLOW_COPY_AND_ASSIGN(EpollStrategy)
+    MZ_DISALLOW_COPY_AND_ASSIGN(EpollStrategy)
 
 public:
     EpollStrategy() {}

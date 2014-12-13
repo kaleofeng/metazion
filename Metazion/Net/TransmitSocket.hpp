@@ -9,7 +9,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class TransmitSocket : public Socket {
-    DISALLOW_COPY_AND_ASSIGN(TransmitSocket)
+    MZ_DISALLOW_COPY_AND_ASSIGN(TransmitSocket)
 
     friend class TransmitStrategy;
 

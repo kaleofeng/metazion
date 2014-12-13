@@ -9,17 +9,17 @@
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<int STEPSIZE
-, int UNITLENGTH = DEFAULT_ALIGNMENT
+, int UNITLENGTH = MZ_DEFAULT_ALIGNMENT
 >
 class StepAllocator {
-    DISALLOW_COPY_AND_ASSIGN(StepAllocator)
+    MZ_DISALLOW_COPY_AND_ASSIGN(StepAllocator)
 
     using UnitNode_t = UDSelfListNode<void>;
     using UnitList_t = UDSelfList<UnitNode_t>;
 
     enum {
-        MINLENGTH = MAX(UNITLENGTH, sizeof(UnitNode_t)),
-        ALIGNLENGTH = ALIGN_LENGTH(MINLENGTH, DEFAULT_ALIGNMENT),
+        MINLENGTH = MZ_MAX(UNITLENGTH, sizeof(UnitNode_t)),
+        ALIGNLENGTH = MZ_ALIGN_LENGTH(MINLENGTH, MZ_DEFAULT_ALIGNMENT),
     };
 
     using Piece_t = MemoryPiece<STEPSIZE, ALIGNLENGTH>;

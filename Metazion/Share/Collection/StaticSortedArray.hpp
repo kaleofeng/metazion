@@ -11,7 +11,7 @@ template<typename ValueType
 , typename CompareType = LessCompare<ValueType>
 >
 class StaticSortedArray {
-    DISALLOW_COPY_AND_ASSIGN(StaticSortedArray);
+    MZ_DISALLOW_COPY_AND_ASSIGN(StaticSortedArray);
 
     using Value_t = ValueType;
     using Compare_t = CompareType;

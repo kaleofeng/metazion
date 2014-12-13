@@ -15,7 +15,7 @@ template<typename ObjectType
 , typename LockType = NoneLock
 >
 class ObjectPool {
-    DISALLOW_COPY_AND_ASSIGN(ObjectPool)
+    MZ_DISALLOW_COPY_AND_ASSIGN(ObjectPool)
     
     using Object_t = ObjectType;
     using Lock_t = LockType;

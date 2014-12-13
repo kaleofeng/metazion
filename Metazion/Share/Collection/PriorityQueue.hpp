@@ -54,13 +54,13 @@ public:
     }
 
     Value_t& Top() {
-        ASSERT_TRUE(GetSize() > 0);
+        MZ_ASSERT_TRUE(GetSize() > 0);
 
         return m_array[0];
     }
 
     const Value_t& Top() const {
-        ASSERT_TRUE(GetSize() > 0);
+        MZ_ASSERT_TRUE(GetSize() > 0);
 
         return m_array[0];
     }
@@ -74,7 +74,7 @@ public:
 
     void Pop() {
         const auto size = GetSize();
-        ASSERT_TRUE(size > 0);
+        MZ_ASSERT_TRUE(size > 0);
         m_array[0] = m_array[size - 1];
         m_array.Remove(size - 1);
 

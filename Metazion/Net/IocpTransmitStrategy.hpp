@@ -12,7 +12,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class TransmitSocket;
 
 class IocpTransmitStrategy final : public IocpStrategy {
-    DISALLOW_COPY_AND_ASSIGN(IocpTransmitStrategy)
+    MZ_DISALLOW_COPY_AND_ASSIGN(IocpTransmitStrategy)
 
 public:
     IocpTransmitStrategy(TransmitSocket& transmitSocket);

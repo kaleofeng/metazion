@@ -12,7 +12,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class Socket;
 
 class IocpService {
-    DISALLOW_COPY_AND_ASSIGN(IocpService)
+    MZ_DISALLOW_COPY_AND_ASSIGN(IocpService)
 
 public:
     IocpService();

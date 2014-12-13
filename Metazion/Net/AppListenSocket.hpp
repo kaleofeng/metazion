@@ -8,7 +8,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class AppListenSocket : public NormalListenSocket {
-    DISALLOW_COPY_AND_ASSIGN(AppListenSocket)
+    MZ_DISALLOW_COPY_AND_ASSIGN(AppListenSocket)
 
 public:
     AppListenSocket();

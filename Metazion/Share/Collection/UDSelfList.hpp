@@ -94,7 +94,7 @@ public:
     }
 
     Node_t* PushFront(Node_t* node) {
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
 
         node->m_nextNode = nullptr;
         if (IsNull(m_headNode)) {
@@ -110,7 +110,7 @@ public:
     }
 
     Node_t* PushBack(Node_t* node) {
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
 
         node->m_nextNode = nullptr;
         if (IsNull(m_tailNode)) {
@@ -141,10 +141,10 @@ public:
     }
 
     Node_t* InsertAfter(Node_t* location, Node_t* node) {
-        ASSERT_TRUE(!IsNull(location));
-        ASSERT_TRUE(!IsNull(node));
-        ASSERT_TRUE(IsContain(location));
-        ASSERT_TRUE(!IsContain(node));
+        MZ_ASSERT_TRUE(!IsNull(location));
+        MZ_ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(IsContain(location));
+        MZ_ASSERT_TRUE(!IsContain(node));
 
         auto nextNode = location->m_nextNode;
         if (IsNull(nextNode)) {
@@ -157,8 +157,8 @@ public:
     }
 
     Node_t* Remove(Node_t* node) {
-        ASSERT_TRUE(!IsNull(node));
-        ASSERT_TRUE(IsContain(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(IsContain(node));
 
         Node_t* prevNode = nullptr;
         auto curNode = m_headNode;
@@ -188,24 +188,24 @@ public:
             return nextNode;
         }
 
-        ASSERT_TRUE(false);
+        MZ_ASSERT_TRUE(false);
         return nullptr;
     }
 
     Node_t* Forward(Node_t* node) {
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
 
         return node->m_nextNode;
     }
 
     const Node_t* Forward(const Node_t* node) const {
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
 
         return node->m_nextNode;
     }
 
     bool IsContain(Node_t* node) const {
-        ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsNull(node));
 
         auto cursor = Front();
         while (!IsNull(cursor)) {

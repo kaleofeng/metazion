@@ -6,7 +6,7 @@
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 class NoneLock {
-    DISALLOW_COPY_AND_ASSIGN(NoneLock)
+    MZ_DISALLOW_COPY_AND_ASSIGN(NoneLock)
 
 public:
     NoneLock() {}

@@ -9,15 +9,15 @@ template<int MAXSIZE
 , int UNITLENGTH
 >
 class MemoryPiece {
-    DISALLOW_COPY_AND_ASSIGN(MemoryPiece)
+    MZ_DISALLOW_COPY_AND_ASSIGN(MemoryPiece)
 
     typedef struct Node {
         Node* m_nextNode = nullptr;
     } Node_t;
     
     enum { 
-        MINLENGTH = MAX(UNITLENGTH, sizeof(Node_t)),
-        ALIGNLENGTH = ALIGN_LENGTH(MINLENGTH, DEFAULT_ALIGNMENT),
+        MINLENGTH = MZ_MAX(UNITLENGTH, sizeof(Node_t)),
+        ALIGNLENGTH = MZ_ALIGN_LENGTH(MINLENGTH, MZ_DEFAULT_ALIGNMENT),
     };
     
     typedef struct Unit {
@@ -59,7 +59,7 @@ public:
     }
 
     void Return(void* memory) {
-        ASSERT_TRUE(IsResponsible(memory));
+        MZ_ASSERT_TRUE(IsResponsible(memory));
 
         auto node = static_cast<Node_t*>(memory);
         node->m_nextNode = m_freeList;
