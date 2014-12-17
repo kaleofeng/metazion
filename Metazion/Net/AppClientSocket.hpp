@@ -18,13 +18,15 @@ public:
     virtual ~AppClientSocket();
 
 public:
-    void Dispatch() override;
+    void Dispatch() override final;
     
     bool SendData(int command, const void* data, int length);
 
     void PostData(int command, const void* data, int length);
 
 protected:
+    void OnConnectFailed() override;
+
     virtual void OnValidPacket(int command, const void* data, int length) = 0;
 
     virtual void OnInvalidPacket() = 0;

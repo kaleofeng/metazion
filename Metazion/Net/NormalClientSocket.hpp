@@ -45,6 +45,8 @@ protected:
 
     int OnRecved(const void* data, int length) override;
 
+    virtual void OnConnectFailed() = 0;
+
 private:
     void ConnectStage();
 

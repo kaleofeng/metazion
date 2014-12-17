@@ -18,7 +18,7 @@ public:
     virtual ~AppServerSocket();
 
 public:
-    void Dispatch() override;
+    void Dispatch() override final;
 
     bool SendData(int command, const void* data, int length);
 
