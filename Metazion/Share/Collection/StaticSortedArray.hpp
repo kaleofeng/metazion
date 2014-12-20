@@ -57,7 +57,7 @@ public:
         return found ? index : -1;
     }
 
-    int Add(const Value_t& value) {
+    int Append(const Value_t& value) {
         int index = 0;
         auto found = BinarySearch(value, index);
         return m_array.Insert(index, value);

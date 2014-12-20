@@ -101,7 +101,7 @@ public:
         return index;
     }
 
-    int Add(const Value_t& value) {
+    int Append(const Value_t& value) {
         const auto index = m_size;
         return Set(index, value);
     }

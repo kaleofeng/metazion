@@ -66,7 +66,7 @@ public:
     }
 
     void Push(const Value_t& value) {
-        m_array.Add(value);
+        m_array.Append(value);
 
         const auto size = GetSize();
         SiftUp(size - 1);

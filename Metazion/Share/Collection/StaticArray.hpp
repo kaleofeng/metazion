@@ -73,7 +73,7 @@ public:
         return index;
     }
 
-    int Add(const Value_t& value) {
+    int Append(const Value_t& value) {
         if (m_size >= m_capacity) {
             return -1;
         }
