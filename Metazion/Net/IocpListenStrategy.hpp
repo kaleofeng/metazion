@@ -27,8 +27,6 @@ public:
 
     void Prepare() override final;
 
-    void Tick(int interval) override final;
-    
     void Start() override final;
 
     bool IsBusy() const override final;

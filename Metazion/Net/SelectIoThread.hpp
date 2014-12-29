@@ -33,8 +33,6 @@ protected:
 private:
     void ProcessEvents();
 
-    void ProcessSockets();
-
     int ResetFds();
 
 private:

@@ -14,6 +14,9 @@ public:
     AppListenSocket();
 
     virtual ~AppListenSocket();
+
+public:
+    void Dispatch() override final;
 };
 
 DECL_NAMESPACE_MZ_NET_END

@@ -33,8 +33,6 @@ protected:
 private:
     void ProcessEvents();
 
-    void ProcessSockets();
-
 private:
     volatile bool m_stopDesired;
 

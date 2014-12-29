@@ -25,8 +25,6 @@ public:
 
     void Prepare() override;
 
-    void Tick(int interval) override;
-
     IoStrategy& GetIoStrategy() override final;
 
     bool IsAlive() const override final;
@@ -39,7 +37,7 @@ public:
 
     void OnClose() override final;
 
-    bool OnError(int error) override final;
+    void OnError(int error) override final;
 
     void SetLocalHost(const Host& host);
 

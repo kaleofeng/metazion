@@ -20,15 +20,13 @@ public:
 
     virtual void Prepare() = 0;
 
-    virtual void Tick(int interval) = 0;
-
     virtual void Start() = 0;
 
     virtual bool IsBusy() const = 0;
 
-    virtual void DoInput() = 0;
+    virtual void PostInput() = 0;
 
-    virtual void DoOutput() = 0;
+    virtual void PostOutput() = 0;
 
     virtual void EnableOutput() = 0;
 

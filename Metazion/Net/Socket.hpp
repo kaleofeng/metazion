@@ -33,7 +33,7 @@ public:
 
     virtual void Tick(int interval);
 
-    virtual void Dispatch();
+    virtual void Dispatch() = 0;
 
     virtual int GetType() const = 0;
 
@@ -49,7 +49,7 @@ public:
 
     virtual void OnClose() = 0;
 
-    virtual bool OnError(int error) = 0;
+    virtual void OnError(int error) = 0;
 
 public:
     void Retain();

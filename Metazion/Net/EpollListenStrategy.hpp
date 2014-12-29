@@ -24,15 +24,13 @@ public:
 
     void Prepare() override final;
 
-    void Tick(int interval) override final;
-
     void Start() override final;
 
     bool IsBusy() const override final;
 
-    void DoInput() override final;
+    void PostInput() override final;
 
-    void DoOutput() override final;
+    void PostOutput() override final;
 
     void EnableOutput() override final;
 
