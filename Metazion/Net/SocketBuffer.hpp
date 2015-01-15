@@ -19,8 +19,8 @@ class SocketBuffer {
 public:
     using SendCache_t = NS_SHARE::StepBuffer<1024 * 4, 1024 * 256>;
     using RecvCache_t = NS_SHARE::StepBuffer<1024 * 4, 1024 * 256>;
-    using SendBuffer_t = NS_SHARE::PieceBuffer<4096>;
-    using RecvBuffer_t = NS_SHARE::PieceBuffer<4096>;
+    using SendBuffer_t = NS_SHARE::PieceBuffer<1024 * 4>;
+    using RecvBuffer_t = NS_SHARE::PieceBuffer<1024 * 4>;
 
 public:
     SocketBuffer();
@@ -41,6 +41,8 @@ public:
     int PreserveRecvBuffer();
 
     bool HasDataToSend() const;
+
+    bool HasDataRecvedYet() const;
 
 public:
     std::mutex m_sendLock;
