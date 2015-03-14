@@ -21,7 +21,7 @@ class MemoryPiece {
     };
     
     typedef struct Unit {
-        Unit() { ::memset(m_buffer, 0, sizeof(m_buffer)); }
+        Unit() { memset(m_buffer, 0, sizeof(m_buffer)); }
 
         char m_buffer[ALIGNLENGTH];
     } Unit_t;
@@ -30,7 +30,7 @@ public:
     MemoryPiece()
         : m_freeList(nullptr)
         , m_count(0)
-        , m_freeCount(0) { ::memset(m_units, 0, sizeof(m_units)); }
+        , m_freeCount(0) { memset(m_units, 0, sizeof(m_units)); }
 
     ~MemoryPiece() {}
 

@@ -9,7 +9,7 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 template<typename T, typename ...Args>
 void Log(T type, const char* format, Args... args) {
-    ::printf(format, args...);
+    printf(format, args...);
 }
 
 DECL_NAMESPACE_MZ_SHARE_END

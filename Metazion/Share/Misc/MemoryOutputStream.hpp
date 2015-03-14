@@ -12,7 +12,7 @@ class MemoryOutputStream {
 public:
     MemoryOutputStream()
         : m_position(0) {
-        ::memset(m_buffer, 0, sizeof(m_buffer));
+        memset(m_buffer, 0, sizeof(m_buffer));
     }
 
     ~MemoryOutputStream() {}
@@ -96,7 +96,7 @@ public:
             return false;
         }
 
-        ::memcpy(m_buffer + m_position, buffer, length);
+        memcpy(m_buffer + m_position, buffer, length);
         m_position += length;
         return true;
     }

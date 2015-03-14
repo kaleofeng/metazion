@@ -25,7 +25,7 @@ private:
     };
 
     struct Record {
-        Record() { ::memset(this, 0, sizeof(*this)); }
+        Record() { memset(this, 0, sizeof(*this)); }
 
         union {
             int m_flag;

@@ -12,13 +12,13 @@ class PieceBuffer {
 public:
     PieceBuffer()
         : m_pushIndex(0)
-        , m_pullIndex(0) { ::memset(m_buffer, 0, sizeof(m_buffer)); }
+        , m_pullIndex(0) { memset(m_buffer, 0, sizeof(m_buffer)); }
 
     ~PieceBuffer() {}
 
 public:
     void Reset() {
-        ::memset(m_buffer, 0, sizeof(m_buffer));
+        memset(m_buffer, 0, sizeof(m_buffer));
         m_pushIndex = 0;
         m_pullIndex = 0;
     }
@@ -32,7 +32,7 @@ public:
         if (pushLength < length) {
             length = pushLength;
         }
-        ::memcpy(&m_buffer[m_pushIndex], data, length);
+        memcpy(&m_buffer[m_pushIndex], data, length);
         m_pushIndex += length;
         return length;
     }
@@ -46,7 +46,7 @@ public:
         if (pullLength < length) {
             length = pullLength;
         }
-        ::memcpy(data, &m_buffer[m_pullIndex], length);
+        memcpy(data, &m_buffer[m_pullIndex], length);
         m_pullIndex += length;
         return length;
     }
@@ -60,7 +60,7 @@ public:
         if (pullLength < length) {
             length = pullLength;
         }
-        ::memcpy(data, &m_buffer[m_pullIndex], length);
+        memcpy(data, &m_buffer[m_pullIndex], length);
         return length;
     }
 
@@ -83,7 +83,7 @@ public:
         }
 
         if(m_pushIndex > m_pullIndex) {
-            ::memmove(&m_buffer[0], &m_buffer[m_pullIndex], m_pushIndex-m_pullIndex);
+            memmove(&m_buffer[0], &m_buffer[m_pullIndex], m_pushIndex-m_pullIndex);
             m_pushIndex = m_pushIndex - m_pullIndex;
             m_pullIndex = 0;
         } else  {

@@ -22,11 +22,11 @@ public:
 
 public:
     void* Alloc() {
-        return ::malloc(ALIGNLENGTH);
+        return malloc(ALIGNLENGTH);
     }
 
     void Free(void* memory) {
-        ::free(memory);
+        free(memory);
     }
 };
 

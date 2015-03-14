@@ -17,10 +17,10 @@ struct IocpOperation {
     };
 
     IocpOperation(Type type)
-        : m_type(type) { ::memset(&m_overlapped, 0, sizeof(m_overlapped)); }
+        : m_type(type) { memset(&m_overlapped, 0, sizeof(m_overlapped)); }
 
     void Reset() {
-        ::memset(&m_overlapped, 0, sizeof(m_overlapped));
+        memset(&m_overlapped, 0, sizeof(m_overlapped));
         m_busy = false;
     }
 
@@ -57,7 +57,7 @@ struct SendOperation final : public IocpOperation {
     
     void Reset() {
         IocpOperation::Reset();
-        ::memset(&m_wsaBuf, 0, sizeof(m_wsaBuf));
+        memset(&m_wsaBuf, 0, sizeof(m_wsaBuf));
     }
 
     WSABUF m_wsaBuf;
@@ -69,7 +69,7 @@ struct RecvOperation final : public IocpOperation {
 
     void Reset() {
         IocpOperation::Reset();
-        ::memset(&m_wsaBuf, 0, sizeof(m_wsaBuf));
+        memset(&m_wsaBuf, 0, sizeof(m_wsaBuf));
     }
 
     WSABUF m_wsaBuf;

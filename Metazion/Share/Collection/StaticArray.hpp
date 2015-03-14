@@ -65,7 +65,7 @@ public:
             return Set(index, value);
         }
 
-        ::memmove(m_values + index + 1, m_values + index
+        memmove(m_values + index + 1, m_values + index
             , sizeof(Value_t)* (m_size - index));
 
         m_values[index] = value;
@@ -87,7 +87,7 @@ public:
             return -1;
         }
 
-        ::memmove(m_values + index, m_values + index + 1
+        memmove(m_values + index, m_values + index + 1
             , sizeof(Value_t)* (m_size - index - 1));
         --m_size;
         return index;

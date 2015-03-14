@@ -11,7 +11,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 class Host {
 public:
     Host() { 
-        ::memset(&m_sockAddrIn, 0, sizeof(m_sockAddrIn)); 
+        memset(&m_sockAddrIn, 0, sizeof(m_sockAddrIn)); 
     }
 
     ~Host() {}
@@ -22,7 +22,7 @@ public:
 
     Host& operator =(const Host& other) {
         if(this != &other) {
-            ::memcpy(&m_sockAddrIn, &other.m_sockAddrIn, sizeof(m_sockAddrIn));
+            memcpy(&m_sockAddrIn, &other.m_sockAddrIn, sizeof(m_sockAddrIn));
         }
 
         return *this;
@@ -30,7 +30,7 @@ public:
 
 public:
     void Reset() {
-        ::memset(&m_sockAddrIn, 0, sizeof(m_sockAddrIn));
+        memset(&m_sockAddrIn, 0, sizeof(m_sockAddrIn));
     }
 
     void FromAddress(const Address& address, int family = AF_INET) {
@@ -71,7 +71,7 @@ public:
     }
 
     void SetIp(const char* ip) {
-        ::inet_pton(m_sockAddrIn.sin_family, ip, &m_sockAddrIn.sin_addr);
+        inet_pton(m_sockAddrIn.sin_family, ip, &m_sockAddrIn.sin_addr);
     }
 
     int GetPort() const {

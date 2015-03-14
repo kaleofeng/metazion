@@ -13,13 +13,13 @@ public:
     RingBuffer()
         : m_length(0)
         , m_pushIndex(0)
-        , m_pullIndex(0) { ::memset(m_buffer, 0, sizeof(m_buffer)); }
+        , m_pullIndex(0) { memset(m_buffer, 0, sizeof(m_buffer)); }
 
     ~RingBuffer() {}
 
 public:
     void Reset() {
-        ::memset(m_buffer, 0, sizeof(m_buffer));
+        memset(m_buffer, 0, sizeof(m_buffer));
         m_length = 0;
         m_pushIndex = 0;
         m_pullIndex = 0;
@@ -35,12 +35,12 @@ public:
 
         const auto rightLength = MAXLENGTH - m_pushIndex;
         if (properLength <= rightLength) {
-            ::memcpy(&m_buffer[m_pushIndex], buffer, properLength);
+            memcpy(&m_buffer[m_pushIndex], buffer, properLength);
             m_pushIndex += properLength;
         }
         else {
-            ::memcpy(&m_buffer[m_pushIndex], buffer, rightLength);
-            ::memcpy(m_buffer, &buffer[rightLength], properLength - rightLength);
+            memcpy(&m_buffer[m_pushIndex], buffer, rightLength);
+            memcpy(m_buffer, &buffer[rightLength], properLength - rightLength);
             m_pushIndex = properLength - rightLength;
         }
 
@@ -60,12 +60,12 @@ public:
 
         const auto rightLength = MAXLENGTH - m_pullIndex;
         if (properLength <= rightLength) {
-            ::memcpy(buffer, &m_buffer[m_pullIndex], properLength);
+            memcpy(buffer, &m_buffer[m_pullIndex], properLength);
             m_pullIndex += properLength;
         }
         else {
-            ::memcpy(buffer, &m_buffer[m_pullIndex], rightLength);
-            ::memcpy(&buffer[rightLength], m_buffer, properLength - rightLength);
+            memcpy(buffer, &m_buffer[m_pullIndex], rightLength);
+            memcpy(&buffer[rightLength], m_buffer, properLength - rightLength);
             m_pullIndex = properLength - rightLength;
         }
 
@@ -85,11 +85,11 @@ public:
 
         const auto rightLength = MAXLENGTH - m_pullIndex;
         if (properLength <= rightLength) {
-            ::memcpy(buffer, &m_buffer[m_pullIndex], properLength);
+            memcpy(buffer, &m_buffer[m_pullIndex], properLength);
         }
         else {
-            ::memcpy(buffer, &m_buffer[m_pullIndex], rightLength);
-            ::memcpy(&buffer[rightLength], m_buffer, properLength - rightLength);
+            memcpy(buffer, &m_buffer[m_pullIndex], rightLength);
+            memcpy(&buffer[rightLength], m_buffer, properLength - rightLength);
         }
 
         return properLength;

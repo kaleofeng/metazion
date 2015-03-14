@@ -109,7 +109,7 @@ public:
             return false;
         }
 
-        ::memcpy(buffer, m_buffer + m_position, length);
+        memcpy(buffer, m_buffer + m_position, length);
         m_position += length;
         return true;
     }

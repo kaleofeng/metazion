@@ -31,7 +31,7 @@ public:
         if (&other != this) {
             Clear();
             m_values = new Value_t[other.m_capacity];
-            ::memcpy(m_values, other.m_values, sizeof(Value_t) * other.m_size);
+            memcpy(m_values, other.m_values, sizeof(Value_t) * other.m_size);
             m_capacity = other.m_capacity;
             m_size = other.m_size;
         }
@@ -93,7 +93,7 @@ public:
             Inflate(m_size + 1);
         }
 
-        ::memmove(m_values + index + 1, m_values + index
+        memmove(m_values + index + 1, m_values + index
             , sizeof(Value_t)* (m_size - index));
 
         m_values[index] = value;
@@ -111,7 +111,7 @@ public:
             return -1;
         }
 
-        ::memmove(m_values + index, m_values + index + 1
+        memmove(m_values + index, m_values + index + 1
             , sizeof(Value_t) * (m_size - index - 1));
         --m_size;
         return index;
@@ -159,7 +159,7 @@ private:
         }
 
         auto tValues = new Value_t[m_capacity];
-        ::memmove(tValues, m_values, sizeof(Value_t) * m_size);
+        memmove(tValues, m_values, sizeof(Value_t) * m_size);
         SafeDeleteArray(m_values);
         m_values = tValues;
     }
