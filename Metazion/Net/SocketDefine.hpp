@@ -13,12 +13,23 @@
 
 #if defined(MZ_PLATFORM_LINUX)
 #include <arpa/inet.h>
-#include <fcntl.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <netinet/tcp.h>
 #include <sys/epoll.h>
+#include <sys/ioctl.h>
 #include <sys/socket.h>
 #endif // MZ_PLATFORM_LINUX
+
+#if defined(MZ_PLATFORM_MACOS)
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <sys/event.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#endif // MZ_PLATFORM_MACOS
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
@@ -38,6 +49,13 @@ typedef socklen_t SockLen_t;
 #define INVALID_SOCKID (-1)
 #define SOCKET_ERROR (-1)
 #endif // MZ_PLATFORM_LINUX
+
+#if defined(MZ_PLATFORM_MACOS)
+typedef int SockId_t;
+typedef socklen_t SockLen_t;
+#define INVALID_SOCKID (-1)
+#define SOCKET_ERROR (-1)
+#endif // MZ_PLATFORM_MACOS
 
 enum TansportType {
     TRANSPORT_TCP = 1,

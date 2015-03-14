@@ -35,14 +35,14 @@ public:
 
     void FromAddress(const Address& address, int family = AF_INET) {
         m_sockAddrIn.sin_family = family;
-        m_sockAddrIn.sin_addr.s_addr = ::htonl(address.m_ip);
-        m_sockAddrIn.sin_port = ::htons(address.m_port);
+        m_sockAddrIn.sin_addr.s_addr = htonl(address.m_ip);
+        m_sockAddrIn.sin_port = htons(address.m_port);
     }
 
     Address ToAddress() {
         Address address;
-        address.m_ip = ::ntohl(m_sockAddrIn.sin_addr.s_addr);
-        address.m_port = ::ntohs(m_sockAddrIn.sin_port);
+        address.m_ip = ntohl(m_sockAddrIn.sin_addr.s_addr);
+        address.m_port = ntohs(m_sockAddrIn.sin_port);
         return address;
     }
 
@@ -67,7 +67,7 @@ public:
     }
 
     const char* GetIp(char* buffer, int length) {
-        return ::inet_ntop(m_sockAddrIn.sin_family, &m_sockAddrIn.sin_addr, buffer, length);
+        return inet_ntop(m_sockAddrIn.sin_family, &m_sockAddrIn.sin_addr, buffer, length);
     }
 
     void SetIp(const char* ip) {
@@ -75,11 +75,11 @@ public:
     }
 
     int GetPort() const {
-        return ::ntohs(m_sockAddrIn.sin_port);
+        return ntohs(m_sockAddrIn.sin_port);
     }
 
     void SetPort(int port) {
-        m_sockAddrIn.sin_port = ::htons(port);
+        m_sockAddrIn.sin_port = htons(port);
     }
 
 private:

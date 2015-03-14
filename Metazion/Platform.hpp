@@ -6,6 +6,8 @@
 #   define MZ_PLATFORM_WINOWS
 #elif defined(__linux__ )
 #   define MZ_PLATFORM_LINUX
+#elif defined(__APPLE__)
+#   define MZ_PLATFORM_MACOS
 #else
 #   define MZ_PLATFORM_OTHER
 #endif // _WIN32
@@ -41,10 +43,23 @@
 #if defined(MZ_PLATFORM_LINUX)
 #   include <errno.h>
 #   include <error.h>
-#   include <unistd.h>
+#   include <fcntl.h>
+#   include <signal.h>
+#   include <sys/syscall.h>
 #   include <sys/time.h>
 #   include <sys/types.h>
+#   include <unistd.h>
 #endif // MZ_PLATFORM_LINUX
+
+#if defined(MZ_PLATFORM_MACOS)
+#   include <errno.h>
+#   include <fcntl.h>
+#   include <signal.h>
+#   include <sys/syscall.h>
+#   include <sys/time.h>
+#   include <sys/types.h>
+#   include <unistd.h>
+#endif // MZ_PLATFORM_MACOS
 
 #include <algorithm>
 #include <new>

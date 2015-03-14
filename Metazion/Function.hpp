@@ -47,6 +47,11 @@ inline int MzGetLastError() {
 #if defined(MZ_PLATFORM_LINUX)
     return errno;
 #endif // MZ_PLATFORM_LINUX
+    
+#if defined(MZ_PLATFORM_MACOS)
+    return errno;
+#endif // MZ_PLATFORM_MACOS
+
 }
 
 DECL_NAMESPACE_MZ_END
