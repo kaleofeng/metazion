@@ -3,7 +3,7 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include <mutex>
+#include <atomic>
 
 #include "Metazion/Net/AlternativeStrategy.hpp"
 #include "Metazion/Net/Host.hpp"
@@ -15,9 +15,6 @@ class NetworkService;
 
 class Socket {
     MZ_DISALLOW_COPY_AND_ASSIGN(Socket)
-
-    using Lock_t = std::mutex;
-    using LockGuard_t = std::lock_guard<Lock_t>;
 
 public:
     Socket();
@@ -85,8 +82,7 @@ public:
     void SetNetworkService(NetworkService* networkService);
 
 protected:
-    Lock_t m_lock;
-    volatile int m_reference;
+    std::atomic<int> m_reference;
     volatile bool m_working;
     volatile bool m_wannaClose;
     SockId_t m_sockId;
