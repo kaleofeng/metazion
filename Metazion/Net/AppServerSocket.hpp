@@ -3,13 +3,12 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include "Metazion/Net/NormalServerSocket.hpp"
-#include "Metazion/Net/PacketCodec.hpp"
+#include "Metazion/Net/TransmitSocket.hpp"
+#include "Metazion/Net/ComPacketer.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class AppServerSocket 
-    : public NormalServerSocket {
+class AppServerSocket : public TransmitSocket {
     MZ_DISALLOW_COPY_AND_ASSIGN(AppServerSocket)
 
 public:
@@ -18,19 +17,14 @@ public:
     virtual ~AppServerSocket();
 
 public:
+    void Reset() override;
+
     void Dispatch() override final;
 
-    bool SendData(int command, const void* data, int length);
-
-    void PostData(int command, const void* data, int length);
-
-protected:
-    virtual void OnValidPacket(int command, const void* data, int length) = 0;
-
-    virtual void OnInvalidPacket() = 0;
-
-private:
-    PacketCodec m_packetCodec;
+    void Attach(const SockId_t& sockId);
+    
+public:
+    ComPacketer m_packeter;
 };
 
 DECL_NAMESPACE_MZ_NET_END

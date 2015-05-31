@@ -3,11 +3,12 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include "Metazion/Net/NormalListenSocket.hpp"
+#include "Metazion/Net/ListenSocket.hpp"
+#include "Metazion/Net/ComAccepter.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class AppListenSocket : public NormalListenSocket {
+class AppListenSocket : public ListenSocket {
     MZ_DISALLOW_COPY_AND_ASSIGN(AppListenSocket)
 
 public:
@@ -16,7 +17,15 @@ public:
     virtual ~AppListenSocket();
 
 public:
+    void Reset() override;
+
     void Dispatch() override final;
+
+protected:
+    bool OnAccepted(const SockId_t& sockId) override final;
+
+public:
+    ComAccepter m_accepter;
 };
 
 DECL_NAMESPACE_MZ_NET_END

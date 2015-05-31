@@ -23,6 +23,8 @@ public:
 
     void Prepare() override;
 
+    int GetType() const override final;
+
     IoStrategy& GetIoStrategy() override final;
 
     bool IsAlive() const override final;
@@ -42,20 +44,39 @@ public:
     SocketBuffer& GetSocketBuffer();
 
 protected:
-    virtual void OnConnected() = 0;
+    virtual void OnConnected();
 
-    virtual void OnDisconnected() = 0;
+    virtual void OnDisconnected();
 
-    virtual int OnSended(const void* data, int length) = 0;
+    virtual int OnSended(const void* data, int length);
 
-    virtual int OnRecved(const void* data, int length) = 0;
+    virtual int OnRecved(const void* data, int length);
 
 protected:
     SocketBuffer m_socketBuffer;
 
+#if defined(MZ_ENABLE_STATISTIC)
+    int64_t m_connectedTime;
+    int64_t m_disconnectedTime;
+    int64_t m_firstSendTime;
+    int64_t m_lastSendTime;
+    int64_t m_sendedBytes;
+    int64_t m_firstRecvTime;
+    int64_t m_lastRecvTime;
+    int64_t m_recvedBytes;
+#endif // MZ_ENABLE_STATISTIC
+
 private:
     TransmitStrategy m_transmitStrategy;
 };
+
+inline int TransmitSocket::GetType() const {
+    return SOCKET_TCP_TRANSMIT;
+}
+
+inline IoStrategy& TransmitSocket::GetIoStrategy() {
+    return m_transmitStrategy;
+}
 
 inline SocketBuffer& TransmitSocket::GetSocketBuffer() {
     return m_socketBuffer;

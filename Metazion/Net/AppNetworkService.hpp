@@ -5,11 +5,11 @@
 
 #include <Metazion/Share/Collection/StaticArray.hpp>
 
-#include "Metazion/Net/NormalNetworkService.hpp"
+#include "Metazion/Net/GenericNetworkService.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-class AppNetworkService : public NormalNetworkService {
+class AppNetworkService : public GenericNetworkService {
     MZ_DISALLOW_COPY_AND_ASSIGN(AppNetworkService)
 
 public:

@@ -3,9 +3,6 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#include <Metazion/Share/Memory/PieceBuffer.hpp>
-#include <Metazion/Share/Memory/RingBuffer.hpp>
-
 #include "Metazion/Net/Socket.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
@@ -24,6 +21,8 @@ public:
     void Reset() override;
 
     void Prepare() override;
+
+    int GetType() const override final;
 
     IoStrategy& GetIoStrategy() override final;
 
@@ -44,9 +43,9 @@ public:
     bool Listen(int backlog);
 
 protected:
-    virtual void OnWatched() = 0;
+    virtual void OnWatched() {};
 
-    virtual void OnUnwatched() = 0;
+    virtual void OnUnwatched() {};
 
     virtual bool OnAccepted(const SockId_t& sockId) = 0;
 
@@ -56,6 +55,14 @@ protected:
 private:
     ListenStrategy m_listenStrategy;
 };
+
+inline int ListenSocket::GetType() const {
+    return SOCKET_TCP_LISTEN;
+}
+
+inline IoStrategy& ListenSocket::GetIoStrategy() {
+    return m_listenStrategy;
+}
 
 DECL_NAMESPACE_MZ_NET_END
 
