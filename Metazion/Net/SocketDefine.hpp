@@ -3,13 +3,13 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#if defined(MZ_PLATFORM_WINOWS)
+#if defined(MZ_PLATFORM_WINDOWS)
 #include <winsock2.h>
 #include <mswsock.h>
 #include <WS2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "mswsock.lib")
-#endif // MZ_PLATFORM_WINOWS
+#endif
 
 #if defined(MZ_PLATFORM_LINUX)
 #include <arpa/inet.h>
@@ -19,7 +19,7 @@
 #include <sys/epoll.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
-#endif // MZ_PLATFORM_LINUX
+#endif
 
 #if defined(MZ_PLATFORM_MACOS)
 #include <arpa/inet.h>
@@ -29,32 +29,32 @@
 #include <sys/event.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
-#endif // MZ_PLATFORM_MACOS
+#endif
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-#if defined(MZ_PLATFORM_WINOWS)
-typedef SOCKET SockId_t;
-typedef int SockLen_t;
-#define INVALID_SOCKID INVALID_SOCKET
-#define SHUT_RD SD_SEND;
-#define SHUT_WR SD_RECEIVE;
-#define SHUT_RDWR SD_BOTH;
-#endif // MZ_PLATFORM_WINOWS
+#if defined(MZ_PLATFORM_WINDOWS)
+    typedef SOCKET SockId_t;
+    typedef int SockLen_t;
+#   define INVALID_SOCKID INVALID_SOCKET
+#   define SHUT_RD SD_SEND;
+#   define SHUT_WR SD_RECEIVE;
+#   define SHUT_RDWR SD_BOTH;
+#endif
 
 #if defined(MZ_PLATFORM_LINUX)
-typedef int SockId_t;
-typedef socklen_t SockLen_t;
-#define INVALID_SOCKID (-1)
-#define SOCKET_ERROR (-1)
-#endif // MZ_PLATFORM_LINUX
+    typedef int SockId_t;
+    typedef socklen_t SockLen_t;
+#   define INVALID_SOCKID (-1)
+#   define SOCKET_ERROR (-1)
+#endif
 
 #if defined(MZ_PLATFORM_MACOS)
-typedef int SockId_t;
-typedef socklen_t SockLen_t;
-#define INVALID_SOCKID (-1)
-#define SOCKET_ERROR (-1)
-#endif // MZ_PLATFORM_MACOS
+    typedef int SockId_t;
+    typedef socklen_t SockLen_t;
+#   define INVALID_SOCKID (-1)
+#   define SOCKET_ERROR (-1)
+#endif
 
 enum TansportType {
     TRANSPORT_TCP = 1,

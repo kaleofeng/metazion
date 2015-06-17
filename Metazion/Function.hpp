@@ -40,17 +40,17 @@ inline bool IsLengthAlign(int length, int align) {
 }
 
 inline int MzGetLastError() {
-#if defined(MZ_PLATFORM_WINOWS)
+#if defined(MZ_PLATFORM_WINDOWS)
     return GetLastError();
-#endif // MZ_PLATFORM_WINOWS
+#endif
 
 #if defined(MZ_PLATFORM_LINUX)
     return errno;
-#endif // MZ_PLATFORM_LINUX
+#endif
     
 #if defined(MZ_PLATFORM_MACOS)
     return errno;
-#endif // MZ_PLATFORM_MACOS
+#endif
 
 }
 

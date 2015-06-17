@@ -46,6 +46,6 @@ private:
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // NETWORK_USE_EPOLL_MODEL
+#endif
 
 #endif // _MZ_NET_EPOLLIOTHREAD_HPP_

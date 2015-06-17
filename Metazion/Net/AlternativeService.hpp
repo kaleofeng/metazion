@@ -11,15 +11,15 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 
 #if defined(NETWORK_USE_EPOLL_MODEL)
 #   define SocketService EpollService
-#endif // NETWORK_USE_EPOLL_MODEL
+#endif
 
 #if defined(NETWORK_USE_IOCP_MODEL)
 #   define SocketService IocpService
-#endif // NETWORK_USE_IOCP_MODEL
+#endif
 
 #if defined(NETWORK_USE_SELECT_MODEL)
 #   define SocketService SelectService
-#endif // NETWORK_USE_SELECT_MODEL
+#endif
 
 DECL_NAMESPACE_MZ_NET_END
 

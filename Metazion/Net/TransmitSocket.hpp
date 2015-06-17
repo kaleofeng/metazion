@@ -64,7 +64,7 @@ protected:
     int64_t m_firstRecvTime;
     int64_t m_lastRecvTime;
     int64_t m_recvedBytes;
-#endif // MZ_ENABLE_STATISTIC
+#endif
 
 private:
     TransmitStrategy m_transmitStrategy;

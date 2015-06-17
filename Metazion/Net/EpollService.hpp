@@ -53,6 +53,6 @@ inline epoll_event& EpollService::GetEpollEvent(int index) {
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // NETWORK_USE_EPOLL_MODEL
+#endif
 
 #endif // _MZ_NET_EPOLLSERVICE_HPP_

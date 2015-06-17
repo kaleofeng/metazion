@@ -11,15 +11,15 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 
 #if defined(NETWORK_USE_EPOLL_MODEL)
 #   define IoThread EpollIoThread
-#endif // NETWORK_USE_EPOLL_MODEL
+#endif
 
 #if defined(NETWORK_USE_IOCP_MODEL)
 #   define IoThread IocpIoThread
-#endif // NETWORK_USE_IOCP_MODEL
+#endif
 
 #if defined(NETWORK_USE_SELECT_MODEL)
 #   define IoThread SelectIoThread
-#endif // NETWORK_USE_SELECT_MODEL
+#endif
 
 DECL_NAMESPACE_MZ_NET_END
 

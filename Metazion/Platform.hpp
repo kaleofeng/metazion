@@ -3,42 +3,42 @@
 
 // Current Platform
 #if defined(_WIN32)
-#   define MZ_PLATFORM_WINOWS
+#   define MZ_PLATFORM_WINDOWS
 #elif defined(__linux__ )
 #   define MZ_PLATFORM_LINUX
 #elif defined(__APPLE__)
 #   define MZ_PLATFORM_MACOS
 #else
 #   define MZ_PLATFORM_OTHER
-#endif // _WIN32
+#endif
 
 // Current Mode
 #if defined(_DEBUG)
 #   define MZ_MODE_DEBUG
 #else
 #   define MZ_MODE_RELEASE
-#endif // _DEBUG
+#endif
 
 // Platform Dependent
-#if defined(MZ_PLATFORM_WINOWS)
+#if defined(MZ_PLATFORM_WINDOWS)
 #   ifdef MZ_EXPORT_LIB
 #       define MZEXPORT _declspec(dllexport)
 #   else
 #       define MZEXPORT _declspec(dllimport)
-#   endif // MZ_EXPORT_LIB
+#   endif
 #else
 #   ifdef MZ_EXPORT_LIB
 #       define MZEXPORT
 #   else
 #       define MZEXPORT
-#   endif // MZ_EXPORT_LIB
-#endif // MZ_PLATFORM_WINOWS
+#   endif
+#endif
 
 // Platform Headers
-#if defined(MZ_PLATFORM_WINOWS)
+#if defined(MZ_PLATFORM_WINDOWS)
 #   define WIN32_LEAN_AND_MEAN 
 #   include <Windows.h>
-#endif // MZ_PLATFORM_WINOWS
+#endif
 
 #if defined(MZ_PLATFORM_LINUX)
 #   include <errno.h>
@@ -49,7 +49,7 @@
 #   include <sys/time.h>
 #   include <sys/types.h>
 #   include <unistd.h>
-#endif // MZ_PLATFORM_LINUX
+#endif
 
 #if defined(MZ_PLATFORM_MACOS)
 #   include <errno.h>
@@ -59,7 +59,7 @@
 #   include <sys/time.h>
 #   include <sys/types.h>
 #   include <unistd.h>
-#endif // MZ_PLATFORM_MACOS
+#endif
 
 #include <algorithm>
 #include <new>

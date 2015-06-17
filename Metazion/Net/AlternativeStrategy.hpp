@@ -16,19 +16,19 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 #   define IoStrategy EpollStrategy
 #   define ListenStrategy EpollListenStrategy
 #   define TransmitStrategy EpollTransmitStrategy
-#endif // NETWORK_USE_EPOLL_MODEL
+#endif
 
 #if defined(NETWORK_USE_IOCP_MODEL)
 #   define IoStrategy IocpStrategy
 #   define ListenStrategy IocpListenStrategy
 #   define TransmitStrategy IocpTransmitStrategy
-#endif // NETWORK_USE_IOCP_MODEL
+#endif
 
 #if defined(NETWORK_USE_SELECT_MODEL)
 #   define IoStrategy SelectStrategy
 #   define ListenStrategy SelectListenStrategy
 #   define TransmitStrategy SelectTransmitStrategy
-#endif // NETWORK_USE_SELECT_MODEL
+#endif
 
 DECL_NAMESPACE_MZ_NET_END
 

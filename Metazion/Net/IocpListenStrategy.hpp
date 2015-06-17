@@ -55,6 +55,6 @@ private:
 
 DECL_NAMESPACE_MZ_NET_END
 
-#endif // NETWORK_USE_IOCP_MODEL
+#endif
 
 #endif // _MZ_NET_IOCPLISTENSTRATEGY_HPP_
