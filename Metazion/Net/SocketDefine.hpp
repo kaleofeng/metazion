@@ -40,7 +40,6 @@ typedef int SockLen_t;
 #define SHUT_RD SD_SEND;
 #define SHUT_WR SD_RECEIVE;
 #define SHUT_RDWR SD_BOTH;
-#define MSG_NOSIGNAL 0
 #endif // MZ_PLATFORM_WINOWS
 
 #if defined(MZ_PLATFORM_LINUX)

@@ -5,12 +5,14 @@
 
 #include <mutex>
 
+#include <Metazion/Share/Collection/StaticArray.hpp>
 #include <Metazion/Share/Thread/Thread.hpp>
 
 #include "Metazion/Net/AlternativeService.hpp"
 #include "Metazion/Net/AlternativeThread.hpp"
 #include "Metazion/Net/MaintenanceThread.hpp"
 #include "Metazion/Net/Socket.hpp"
+#include "Metazion/Net/SocketBuffer.hpp"
 #include "Metazion/Net/SocketCtrl.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
@@ -25,16 +27,23 @@ class NetworkService {
     using LockGuard_t = std::lock_guard<Lock_t>;
 
 public:
-    NetworkService();
-
-    virtual ~NetworkService();
+    using SocketArray_t = NS_SHARE::StaticArray<Socket*>;
 
 public:
-    virtual bool Initialize(int socketCapacity, int ioThreadNumber);
+    NetworkService();
 
-    virtual void Finalize();
+    ~NetworkService();
+
+public:
+    bool Initialize(int socketCapacity, int ioThreadNumber);
+
+    void Finalize();
 
     bool Attach(Socket* socket);
+
+    int AcquireSockets(std::function<bool(Socket*)> socketFilter, SocketArray_t& socketArray);
+
+    void ReleaseSockets(SocketArray_t& socketArray);
 
     bool CanAttachMore() const;
 
@@ -49,6 +58,10 @@ public:
     int GetIoThreadNumber() const;
 
     Socket* GetSocket(int index);
+
+    SocketBuffer::SendCache_t::BufferPool_t& GetSendCachePool();
+
+    SocketBuffer::RecvCache_t::BufferPool_t& GetRecvCachePool();
 
 private:
     SocketService& GetSocketService();
@@ -74,6 +87,8 @@ private:
     int m_ioThreadNumber;
     IoThread** m_ioThreadList;
     MaintenanceThread* m_maintenanceThread;
+    SocketBuffer::SendCache_t::BufferPool_t m_sendCachePool;
+    SocketBuffer::RecvCache_t::BufferPool_t m_recvCachePool;
 };
 
 inline bool NetworkService::CanAttachMore() const {
@@ -102,6 +117,14 @@ inline int NetworkService::GetIoThreadNumber() const {
 
 inline Socket* NetworkService::GetSocket(int index) {
     return m_socketCtrlList[index].m_socket;
+}
+
+inline SocketBuffer::SendCache_t::BufferPool_t& NetworkService::GetSendCachePool() {
+    return m_sendCachePool;
+}
+
+inline SocketBuffer::RecvCache_t::BufferPool_t& NetworkService::GetRecvCachePool() {
+    return m_recvCachePool;
 }
 
 inline SocketService& NetworkService::GetSocketService() {

@@ -7,6 +7,10 @@
 
 DECL_NAMESPACE_MZ_BEGIN
 
+#if defined(MZ_PLATFORM_MACOS)
+# define thread_local
+#endif // MZ_PLATFORM_MACOS
+
 #define DECL_BLOCK_BEGIN    {
 #define DECL_BLOCK_END      }
 
