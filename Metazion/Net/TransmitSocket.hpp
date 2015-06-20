@@ -23,8 +23,6 @@ public:
 
     void Prepare() override;
 
-    int GetType() const override final;
-
     IoStrategy& GetIoStrategy() override final;
 
     bool IsAlive() const override final;
@@ -35,7 +33,7 @@ public:
 
     void OnStart() override final;
 
-    void OnClose() override final;
+    void OnStop() override final;
 
     void OnError(int error) override final;
 
@@ -48,9 +46,9 @@ protected:
 
     virtual void OnDisconnected();
 
-    virtual int OnSended(const void* data, int length);
+    virtual void OnSended(const void* data, int length);
 
-    virtual int OnRecved(const void* data, int length);
+    virtual void OnRecved(const void* data, int length);
 
 protected:
     SocketBuffer m_socketBuffer;
@@ -69,10 +67,6 @@ protected:
 private:
     TransmitStrategy m_transmitStrategy;
 };
-
-inline int TransmitSocket::GetType() const {
-    return SOCKET_TCP_TRANSMIT;
-}
 
 inline IoStrategy& TransmitSocket::GetIoStrategy() {
     return m_transmitStrategy;

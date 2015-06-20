@@ -63,7 +63,8 @@ enum TansportType {
 
 enum SocketType {
     SOCKET_TCP_LISTEN = 1,
-    SOCKET_TCP_TRANSMIT,
+    SOCKET_TCP_SERVER,
+    SOCKET_TCP_CLIENT,
 };
 
 typedef struct sockaddr SockAddr_t;

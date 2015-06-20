@@ -18,16 +18,49 @@ public:
     virtual ~AppClientSocket();
 
 public:
-    void Reset() override;
+    void Reset() override final;
 
-    void Tick(int interval) override;
+    void Prepare() override final;
+
+    void Tick(int interval) override final;
 
     void Dispatch() override final;
+
+    int GetType() const override final;
+
+protected:
+    void OnConnected() override final;
+
+    void OnDisconnected() override final;
+
+    void OnSended(const void* data, int length) override final;
+
+    void OnRecved(const void* data, int length) override final;
+
+    virtual void DerivedReset() {};
+
+    virtual void DerivedPrepare() {};
+
+    virtual void DerivedTick(int interval) {};
+
+    virtual void DerivedDispatch() {};
+
+    virtual void DerivedOnConnected() {};
+
+    virtual void DerivedOnDisconnected() {};
+
+    virtual void DerivedOnSended(const void* data, int length) {};
+
+    virtual void DerivedOnRecved(const void* data, int length) {};
 
 public:
     ComConnecter m_connecter;
     ComPacketer m_packeter;
 };
+
+inline int AppClientSocket::GetType() const {
+    return SOCKET_TCP_CLIENT;
+}
 
 DECL_NAMESPACE_MZ_NET_END
 

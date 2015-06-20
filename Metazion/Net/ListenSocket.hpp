@@ -22,8 +22,6 @@ public:
 
     void Prepare() override;
 
-    int GetType() const override final;
-
     IoStrategy& GetIoStrategy() override final;
 
     bool IsAlive() const override final;
@@ -34,7 +32,7 @@ public:
 
     void OnStart() override final;
 
-    void OnClose() override final;
+    void OnStop() override final;
 
     void OnError(int error) override final;
 
@@ -43,22 +41,26 @@ public:
     bool Listen(int backlog);
 
 protected:
-    virtual void OnWatched() {};
+    virtual void OnWatched();
 
-    virtual void OnUnwatched() {};
+    virtual void OnUnwatched();
 
-    virtual bool OnAccepted(const SockId_t& sockId) = 0;
+    virtual bool OnAccepted(const SockId_t& sockId);
 
 protected:
     Host m_localHost;
 
+#if defined(MZ_ENABLE_STATISTIC)
+    int64_t m_watchedTime;
+    int64_t m_unwatchedTime;
+    int64_t m_firstAcceptTime;
+    int64_t m_lastAcceptTime;
+    int64_t m_acceptedNumber;
+#endif
+
 private:
     ListenStrategy m_listenStrategy;
 };
-
-inline int ListenSocket::GetType() const {
-    return SOCKET_TCP_LISTEN;
-}
 
 inline IoStrategy& ListenSocket::GetIoStrategy() {
     return m_listenStrategy;

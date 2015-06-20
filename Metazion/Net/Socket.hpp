@@ -4,6 +4,7 @@
 #include "Metazion/Net/NetInclude.hpp"
 
 #include <atomic>
+#include <functional>
 
 #include "Metazion/Net/AlternativeStrategy.hpp"
 #include "Metazion/Net/Host.hpp"
@@ -16,6 +17,8 @@ class NetworkService;
 class Socket {
     MZ_DISALLOW_COPY_AND_ASSIGN(Socket)
 
+    using DestoryCallback_t = std::function<void(Socket* socket)>;
+
 public:
     Socket();
 
@@ -26,9 +29,7 @@ public:
 
     virtual void Prepare();
 
-    virtual void Destory();
-
-    virtual void Tick(int interval);
+    virtual void Tick(int interval) = 0;
 
     virtual void Dispatch() = 0;
 
@@ -44,7 +45,7 @@ public:
 
     virtual void OnStart() = 0;
 
-    virtual void OnClose() = 0;
+    virtual void OnStop() = 0;
 
     virtual void OnError(int error) = 0;
 
@@ -53,11 +54,13 @@ public:
 
     void Release();
 
-    void Start();
-    
     void Close();
 
-    void DoClose();
+    void Destory();
+
+    void Start();
+    
+    void Stop();
 
     bool IsValid() const;
 
@@ -81,6 +84,8 @@ public:
 
     void SetNetworkService(NetworkService* networkService);
 
+    void SetDestroyCallback(DestoryCallback_t callback);
+
 protected:
     std::atomic<int> m_reference;
     volatile bool m_working;
@@ -88,6 +93,7 @@ protected:
     SockId_t m_sockId;
     int m_index;
     NetworkService* m_networkService;
+    DestoryCallback_t m_destroyCallback;
 };
 
 inline bool Socket::IsValid() const {
@@ -135,6 +141,10 @@ inline NetworkService* Socket::GetNetworkService() {
 
 inline void Socket::SetNetworkService(NetworkService* networkService) {
     m_networkService = networkService;
+}
+
+inline void Socket::SetDestroyCallback(DestoryCallback_t callback) {
+    m_destroyCallback = callback;
 }
 
 DECL_NAMESPACE_MZ_NET_END

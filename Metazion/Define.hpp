@@ -11,6 +11,10 @@ DECL_NAMESPACE_MZ_BEGIN
 #   define thread_local
 #endif
 
+#if defined(MZ_MODE_DEBUG)
+#   define MZ_ENABLE_STATISTIC
+#endif
+
 #define DECL_BLOCK_BEGIN    {
 #define DECL_BLOCK_END      }
 
