@@ -48,6 +48,7 @@ protected:
     virtual bool OnAccepted(const SockId_t& sockId);
 
 protected:
+    ListenStrategy m_listenStrategy;
     Host m_localHost;
 
 #if defined(MZ_ENABLE_STATISTIC)
@@ -57,9 +58,6 @@ protected:
     int64_t m_lastAcceptTime;
     int64_t m_acceptedNumber;
 #endif
-
-private:
-    ListenStrategy m_listenStrategy;
 };
 
 inline IoStrategy& ListenSocket::GetIoStrategy() {

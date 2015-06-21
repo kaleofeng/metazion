@@ -51,6 +51,7 @@ protected:
     virtual void OnRecved(const void* data, int length);
 
 protected:
+    TransmitStrategy m_transmitStrategy;
     SocketBuffer m_socketBuffer;
 
 #if defined(MZ_ENABLE_STATISTIC)
@@ -63,9 +64,6 @@ protected:
     int64_t m_lastRecvTime;
     int64_t m_recvedBytes;
 #endif
-
-private:
-    TransmitStrategy m_transmitStrategy;
 };
 
 inline IoStrategy& TransmitSocket::GetIoStrategy() {
