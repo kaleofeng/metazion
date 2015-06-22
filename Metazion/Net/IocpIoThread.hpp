@@ -5,6 +5,8 @@
 
 #if defined(NETWORK_USE_IOCP_MODEL)
 
+#include <atomic>
+
 #include <Metazion/Share/Thread/Thread.hpp>
 
 #include "Metazion/Net/SocketCtrl.hpp"
@@ -45,10 +47,9 @@ private:
         , DWORD error);
 
 private:
-    volatile bool m_stopDesired;
-
     NetworkService* m_networkService;
     int m_index;
+    std::atomic<bool> m_stopDesired;
 };
 
 DECL_NAMESPACE_MZ_NET_END

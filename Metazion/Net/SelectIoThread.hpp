@@ -5,6 +5,8 @@
 
 #if defined(NETWORK_USE_SELECT_MODEL)
 
+#include <atomic>
+
 #include <Metazion/Share/Thread/Thread.hpp>
 
 #include "Metazion/Net/SocketCtrl.hpp"
@@ -36,7 +38,7 @@ private:
     int ResetFds();
 
 private:
-    volatile bool m_stopDesired;
+    std::atomic<bool> m_stopDesired;
     
     NetworkService* m_networkService;
     int m_index;

@@ -5,6 +5,8 @@
 
 #if defined(NETWORK_USE_IOCP_MODEL)
 
+#include <atomic>
+
 #include "Metazion/Net/SocketDefine.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
@@ -34,7 +36,7 @@ struct IocpOperation {
 
     Type m_type;
     OVERLAPPED m_overlapped;
-    volatile bool m_busy = false;
+    std::atomic<bool> m_busy = false;
 };
 
 struct AcceptOperation final : public IocpOperation {

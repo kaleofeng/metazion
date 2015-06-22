@@ -3,6 +3,8 @@
 
 #include "Metazion/Net/NetInclude.hpp"
 
+#include <atomic>
+
 #include <Metazion/Share/Thread/Thread.hpp>
 
 DECL_NAMESPACE_MZ_NET_BEGIN
@@ -36,7 +38,7 @@ private:
 private:
     NetworkService* m_networkService;
     int m_interval;
-    volatile bool m_stopDesired;
+    std::atomic<bool> m_stopDesired;
 };
 
 DECL_NAMESPACE_MZ_NET_END

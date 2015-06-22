@@ -5,6 +5,8 @@
 
 #if defined(NETWORK_USE_EPOLL_MODEL)
 
+#include <atomic>
+
 #include "Metazion/Net/EpollStrategy.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
@@ -36,7 +38,7 @@ public:
 
 private:
     TransmitSocket& m_transmitSocket;
-    volatile bool m_canOutput;
+    std::atomic<bool> m_canOutput;
 };
 
 DECL_NAMESPACE_MZ_NET_END

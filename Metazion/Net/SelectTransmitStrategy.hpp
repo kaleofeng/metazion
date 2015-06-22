@@ -5,6 +5,8 @@
 
 #if defined(NETWORK_USE_SELECT_MODEL)
 
+#include <atomic>
+
 #include "Metazion/Net/SelectStrategy.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
@@ -38,7 +40,7 @@ public:
 
 private:
     TransmitSocket& m_transmitSocket;
-    volatile bool m_canOutput;
+    std::atomic<bool> m_canOutput;
 };
 
 inline bool SelectTransmitStrategy::ShouldCareAboutOutput() const {

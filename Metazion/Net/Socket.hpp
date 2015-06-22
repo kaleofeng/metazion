@@ -88,8 +88,8 @@ public:
 
 protected:
     std::atomic<int> m_reference;
-    volatile bool m_working;
-    volatile bool m_wannaClose;
+    std::atomic<bool> m_working;
+    std::atomic<bool> m_wannaClose;
     SockId_t m_sockId;
     int m_index;
     NetworkService* m_networkService;
