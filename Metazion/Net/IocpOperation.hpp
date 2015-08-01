@@ -36,7 +36,7 @@ struct IocpOperation {
 
     Type m_type;
     OVERLAPPED m_overlapped;
-    std::atomic<bool> m_busy = false;
+    std::atomic<bool> m_busy = { false };
 };
 
 struct AcceptOperation final : public IocpOperation {

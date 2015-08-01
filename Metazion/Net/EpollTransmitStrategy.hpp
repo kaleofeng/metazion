@@ -38,7 +38,7 @@ public:
 
 private:
     TransmitSocket& m_transmitSocket;
-    std::atomic<bool> m_canOutput = false;
+    std::atomic<bool> m_canOutput = { false };
 };
 
 DECL_NAMESPACE_MZ_NET_END

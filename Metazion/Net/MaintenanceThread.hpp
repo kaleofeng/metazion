@@ -38,7 +38,7 @@ private:
 private:
     NetworkService* m_networkService = nullptr;
     int m_interval = 0;
-    std::atomic<bool> m_stopDesired = false;
+    std::atomic<bool> m_stopDesired = { false };
 };
 
 DECL_NAMESPACE_MZ_NET_END

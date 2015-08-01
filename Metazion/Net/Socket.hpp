@@ -87,9 +87,9 @@ public:
     void SetDestroyCallback(DestoryCallback_t callback);
 
 protected:
-    std::atomic<int> m_reference = 0;
-    std::atomic<bool> m_working = false;
-    std::atomic<bool> m_wannaClose = false;
+    std::atomic<int> m_reference = { 0 };
+    std::atomic<bool> m_working = { false };
+    std::atomic<bool> m_wannaClose = { false };
     SockId_t m_sockId = INVALID_SOCKID;
     int m_index = -1;
     NetworkService* m_networkService = nullptr;

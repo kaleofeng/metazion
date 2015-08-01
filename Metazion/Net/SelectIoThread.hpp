@@ -38,7 +38,7 @@ private:
     int ResetFds();
 
 private:
-    std::atomic<bool> m_stopDesired = false;
+    std::atomic<bool> m_stopDesired = { false };
     
     NetworkService* m_networkService = nullptr;
     int m_index = 0;
