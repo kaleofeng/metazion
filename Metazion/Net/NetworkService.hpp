@@ -39,7 +39,9 @@ public:
 
     void Finalize();
 
-    bool Attach(Socket* socket);
+    void Tick();
+
+    bool AdoptSocket(Socket* socket);
 
     int AcquireSockets(std::function<bool(Socket*)> socketFilter, SocketArray_t& socketArray);
 
@@ -89,6 +91,9 @@ private:
     MaintenanceThread* m_maintenanceThread;
     SocketBuffer::SendCache_t::BufferPool_t m_sendCachePool;
     SocketBuffer::RecvCache_t::BufferPool_t m_recvCachePool;
+
+    Socket** m_sockets;
+    SocketArray_t m_socketArray;
 };
 
 inline bool NetworkService::CanAttachMore() const {
