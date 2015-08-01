@@ -50,7 +50,7 @@ private:
 private:
     ListenSocket& m_listenSocket;
     AcceptOperation m_acceptOperation;
-    char m_acceptBuffer[256];
+    char m_acceptBuffer[256] = { 0 };
 };
 
 DECL_NAMESPACE_MZ_NET_END

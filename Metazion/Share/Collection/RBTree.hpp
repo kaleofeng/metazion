@@ -19,7 +19,7 @@ struct RBTreeNode {
     RBTreeNode* m_left = nullptr;
     Color m_color = RED;
     
-    Value_t m_value;
+    Value_t m_value = {};
 
     bool IsRed() const {
         return m_color == RED;
@@ -143,9 +143,7 @@ class RBTree {
     using Value_t = typename Node_t::Value_t;
 
 public:
-    RBTree()
-        : m_root(nullptr)
-        , m_size(0) {}
+    RBTree() {}
 
     ~RBTree() {}
 
@@ -622,8 +620,8 @@ private:
 
 private:
     Compare_t m_compare;
-    Node_t* m_root;
-    int m_size;
+    Node_t* m_root = nullptr;
+    int m_size = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

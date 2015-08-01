@@ -26,10 +26,7 @@ public:
     using BufferPool_t = ObjectPool<BufferNode_t, StepAllocator<256>, std::mutex>;
 
 public:
-    StepBuffer()
-        : m_bufferPool(nullptr)
-        , m_stepNumber(0)
-        , m_length(0) {}
+    StepBuffer() {}
 
     ~StepBuffer() { Reset(); }
 
@@ -210,9 +207,9 @@ private:
 
 private:
     BufferList_t m_bufferList;
-    BufferPool_t* m_bufferPool;
-    int m_stepNumber;
-    int m_length;
+    BufferPool_t* m_bufferPool = nullptr;
+    int m_stepNumber = 0;
+    int m_length = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

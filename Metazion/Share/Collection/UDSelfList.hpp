@@ -23,10 +23,7 @@ class UDSelfList {
     using Node_t = NodeType;
 
 public:
-    UDSelfList()
-        : m_headNode(nullptr)
-        , m_tailNode(nullptr)
-        , m_size(0) {}
+    UDSelfList() {}
 
     ~UDSelfList() {}
 
@@ -219,9 +216,9 @@ public:
     }
 
 private:
-    Node_t* m_headNode;
-    Node_t* m_tailNode;
-    int m_size;
+    Node_t* m_headNode = nullptr;
+    Node_t* m_tailNode = nullptr;
+    int m_size = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

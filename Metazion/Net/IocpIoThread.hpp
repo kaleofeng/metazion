@@ -47,9 +47,9 @@ private:
         , DWORD error);
 
 private:
-    NetworkService* m_networkService;
-    int m_index;
-    std::atomic<bool> m_stopDesired;
+    NetworkService* m_networkService = nullptr;
+    int m_index = 0;
+    std::atomic<bool> m_stopDesired = false;
 };
 
 DECL_NAMESPACE_MZ_NET_END

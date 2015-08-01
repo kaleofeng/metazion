@@ -9,10 +9,7 @@ class MemoryInputStream {
     MZ_DISALLOW_COPY_AND_ASSIGN(MemoryInputStream);
 
 public:
-    MemoryInputStream()
-        : m_buffer(nullptr)
-        , m_length(0)
-        , m_position(0) {}
+    MemoryInputStream() {}
 
     ~MemoryInputStream() {}
 
@@ -121,9 +118,9 @@ private:
     }
 
 private:
-    const char* m_buffer;
-    int m_length;
-    int m_position;
+    const char* m_buffer = nullptr;
+    int m_length = 0;
+    int m_position = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

@@ -40,7 +40,7 @@ public:
 
 private:
     TransmitSocket& m_transmitSocket;
-    std::atomic<bool> m_canOutput;
+    std::atomic<bool> m_canOutput = false;
 };
 
 inline bool SelectTransmitStrategy::ShouldCareAboutOutput() const {

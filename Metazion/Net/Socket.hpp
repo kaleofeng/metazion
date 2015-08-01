@@ -87,13 +87,13 @@ public:
     void SetDestroyCallback(DestoryCallback_t callback);
 
 protected:
-    std::atomic<int> m_reference;
-    std::atomic<bool> m_working;
-    std::atomic<bool> m_wannaClose;
-    SockId_t m_sockId;
-    int m_index;
-    NetworkService* m_networkService;
-    DestoryCallback_t m_destroyCallback;
+    std::atomic<int> m_reference = 0;
+    std::atomic<bool> m_working = false;
+    std::atomic<bool> m_wannaClose = false;
+    SockId_t m_sockId = INVALID_SOCKID;
+    int m_index = -1;
+    NetworkService* m_networkService = nullptr;
+    DestoryCallback_t m_destroyCallback = [](Socket* socket) { delete socket; };
 };
 
 inline bool Socket::IsValid() const {

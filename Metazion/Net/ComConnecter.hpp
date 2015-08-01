@@ -73,10 +73,10 @@ private:
     TransmitSocket& m_socket;
     
     Host m_remoteHost;
-    int m_stage;
-    int64_t m_connectTime;
-    int m_reconnectInterval;
-    SockId_t m_tempSockId;
+    int m_stage = STAGE_NONE;
+    int64_t m_connectTime = 0;
+    int m_reconnectInterval = 0;
+    SockId_t m_tempSockId = INVALID_SOCKID;
 
     ConnectFailedCallback_t m_connectFaildCallback;
 };

@@ -38,12 +38,12 @@ private:
     int ResetFds();
 
 private:
-    std::atomic<bool> m_stopDesired;
+    std::atomic<bool> m_stopDesired = false;
     
-    NetworkService* m_networkService;
-    int m_index;
-    int m_socketCount;
-    SocketCtrl* m_socketCtrlList;
+    NetworkService* m_networkService = nullptr;
+    int m_index = 0;
+    int m_socketCount = 0;
+    SocketCtrl* m_socketCtrlList = nullptr;
     fd_set m_rfds;
     fd_set m_wfds;
     fd_set m_efds;

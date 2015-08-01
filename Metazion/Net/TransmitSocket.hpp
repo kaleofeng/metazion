@@ -55,14 +55,14 @@ protected:
     SocketBuffer m_socketBuffer;
 
 #if defined(MZ_ENABLE_STATISTIC)
-    int64_t m_connectedTime;
-    int64_t m_disconnectedTime;
-    int64_t m_firstSendTime;
-    int64_t m_lastSendTime;
-    int64_t m_sendedBytes;
-    int64_t m_firstRecvTime;
-    int64_t m_lastRecvTime;
-    int64_t m_recvedBytes;
+    int64_t m_connectedTime = 0;
+    int64_t m_disconnectedTime = 0;
+    int64_t m_firstSendTime = 0;
+    int64_t m_lastSendTime = 0;
+    int64_t m_sendedBytes = 0;
+    int64_t m_firstRecvTime = 0;
+    int64_t m_lastRecvTime = 0;
+    int64_t m_recvedBytes = 0;
 #endif
 };
 

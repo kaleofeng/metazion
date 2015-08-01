@@ -13,10 +13,7 @@ class DynamicArray {
     using Value_t = ValueType;
 
 public:
-    DynamicArray()
-        : m_values(nullptr)
-        , m_capacity(0)
-        , m_size(0) {}
+    DynamicArray() {}
 
     ~DynamicArray() { 
         Clear();
@@ -165,9 +162,9 @@ private:
     }
 
 private:
-    Value_t* m_values;
-    int m_capacity;
-    int m_size;
+    Value_t* m_values = nullptr;
+    int m_capacity = 0;
+    int m_size = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

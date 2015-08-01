@@ -10,9 +10,7 @@ class PieceBuffer {
     MZ_DISALLOW_COPY_AND_ASSIGN(PieceBuffer)
 
 public:
-    PieceBuffer()
-        : m_pushIndex(0)
-        , m_pullIndex(0) { memset(m_buffer, 0, sizeof(m_buffer)); }
+    PieceBuffer() {}
 
     ~PieceBuffer() {}
 
@@ -145,9 +143,9 @@ public:
     }
 
 private:
-    char m_buffer[MAXLENGTH];
-    int m_pushIndex;
-    int m_pullIndex;
+    char m_buffer[MAXLENGTH] = { 0 };
+    int m_pushIndex = 0;
+    int m_pullIndex = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

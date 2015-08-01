@@ -22,8 +22,7 @@ public:
     using Rebind = BlockAllocator<MAXSIZE, OTHERLENGTH>;
 
 public:
-    BlockAllocator()
-        : m_piece(nullptr) {
+    BlockAllocator() {
         m_piece = new Piece_t();
     }
 
@@ -41,7 +40,7 @@ public:
     }
 
 private:
-    Piece_t* m_piece;
+    Piece_t* m_piece = nullptr;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

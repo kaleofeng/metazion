@@ -30,9 +30,7 @@ class HashMap {
         friend class HashMap;
 
     public:
-        Iterator()
-            : m_owner(nullptr)
-            , m_bucket(0) {}
+        Iterator() {}
 
         Iterator(const Iterator& other)
             : m_owner(other.m_owner)
@@ -115,8 +113,8 @@ class HashMap {
         }
 
     private:
-        HashMap* m_owner;
-        int m_bucket;
+        HashMap* m_owner = nullptr;
+        int m_bucket = 0;
         BucketIterator_t m_iter;
     };
 
@@ -124,9 +122,7 @@ class HashMap {
         friend class HashMap;
 
     public:
-        ConstIterator()
-            : m_owner(nullptr)
-            , m_bucket(0) {}
+        ConstIterator() {}
 
         ConstIterator(const Iterator& other)
             : m_owner(other.m_owner)
@@ -209,8 +205,8 @@ class HashMap {
         }
 
     private:
-        const HashMap* m_owner;
-        int m_bucket;
+        const HashMap* m_owner = nullptr;
+        int m_bucket = 0;
         BucketConstIterator_t m_iter;
     };
 
@@ -219,8 +215,7 @@ public:
     using ConstIterator_t = ConstIterator;
 
 public:
-    HashMap()
-        : m_size(0) {}
+    HashMap() {}
 
     ~HashMap() {}
 
@@ -352,7 +347,7 @@ public:
 private:
     Hasher_t m_hasher;
     Bucket_t m_buckets[BUCKETSIZE];
-    int m_size;
+    int m_size = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

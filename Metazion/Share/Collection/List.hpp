@@ -23,8 +23,7 @@ class List {
         friend class List;
 
     public:
-        Iterator()
-            : m_node(nullptr) {}
+        Iterator() {}
 
         Iterator(const Iterator& other)
             : m_node(other.m_node) {}
@@ -69,15 +68,14 @@ class List {
         }
 
     private:
-        Node_t* m_node;
+        Node_t* m_node = nullptr;
     };
 
     class ConstIterator {
         friend class List;
 
     public:
-        ConstIterator()
-            : m_node(nullptr) {}
+        ConstIterator() {}
 
         ConstIterator(const ConstIterator& other)
             : m_node(other.m_node) {}
@@ -122,7 +120,7 @@ class List {
         }
 
     private:
-        const Node_t* m_node;
+        const Node_t* m_node = nullptr;
     };
 
 public:
@@ -134,8 +132,7 @@ public:
 
     ~List() {}
 
-    List(const List& other)
-        : List() {
+    List(const List& other) {
         *this = other;
     }
 
@@ -149,8 +146,7 @@ public:
         return *this;
     }
 
-    List(List&& other)
-        : List() {
+    List(List&& other) {
         *this = std::move(other);
     }
 

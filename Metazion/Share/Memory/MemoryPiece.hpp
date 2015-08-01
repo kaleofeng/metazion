@@ -21,16 +21,11 @@ class MemoryPiece {
     };
     
     typedef struct Unit {
-        Unit() { memset(m_buffer, 0, sizeof(m_buffer)); }
-
-        char m_buffer[ALIGNLENGTH];
+        char m_buffer[ALIGNLENGTH] = { 0 };
     } Unit_t;
 
 public:
-    MemoryPiece()
-        : m_freeList(nullptr)
-        , m_count(0)
-        , m_freeCount(0) { memset(m_units, 0, sizeof(m_units)); }
+    MemoryPiece() {}
 
     ~MemoryPiece() {}
 
@@ -85,9 +80,9 @@ public:
 
 private:
     Unit_t m_units[MAXSIZE];
-    Node_t* m_freeList;
-    int m_count;
-    int m_freeCount;
+    Node_t* m_freeList = nullptr;
+    int m_count = 0;
+    int m_freeCount = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

@@ -33,8 +33,8 @@ public:
     int GetSocketCount(int threadIndex) const;
 
 private:
-    int m_socketCapacity;
-    int m_ioThreadNumber;
+    int m_socketCapacity = 0;
+    int m_ioThreadNumber = 0;
 };
 
 DECL_NAMESPACE_MZ_NET_END

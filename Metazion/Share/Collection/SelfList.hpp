@@ -25,10 +25,7 @@ class SelfList {
     using Node_t = NodeType;
 
 public:
-    SelfList()
-        : m_headNode(nullptr)
-        , m_tailNode(nullptr)
-        , m_size(0) {}
+    SelfList() {}
 
     ~SelfList() {}
 
@@ -274,9 +271,9 @@ public:
     }
 
 private:
-    Node_t* m_headNode;
-    Node_t* m_tailNode;
-    int m_size;
+    Node_t* m_headNode = nullptr;
+    Node_t* m_tailNode = nullptr;
+    int m_size = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

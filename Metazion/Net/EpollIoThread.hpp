@@ -36,14 +36,14 @@ private:
     void ProcessEvents();
 
 private:
-    std::atomic<bool> m_stopDesired;
+    std::atomic<bool> m_stopDesired = false;
 
-    NetworkService* m_networkService;
-    int m_index;
-    int m_socketCount;
-    SocketCtrl* m_socketCtrlList;
-    int m_epollfd;
-    epoll_event* m_eventList;
+    NetworkService* m_networkService = nullptr;
+    int m_index = 0;
+    int m_socketCount = 0;
+    SocketCtrl* m_socketCtrlList = nullptr;
+    int m_epollfd = 0;
+    epoll_event* m_eventList = nullptr;
 };
 
 DECL_NAMESPACE_MZ_NET_END

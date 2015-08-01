@@ -27,8 +27,7 @@ class Map {
         friend class Map;
 
     public:
-        Iterator()
-            : m_node(nullptr) {}
+        Iterator() {}
 
         Iterator(const Iterator& other)
             : m_node(other.m_node) {}
@@ -73,15 +72,14 @@ class Map {
         }
 
     private:
-        Node_t* m_node;
+        Node_t* m_node = nullptr;
     };
 
     class ConstIterator {
         friend class Map;
 
     public:
-        ConstIterator()
-            : m_node(nullptr) {}
+        ConstIterator() {}
 
         ConstIterator(const Iterator& other)
             : m_node(other.m_node) {}
@@ -126,7 +124,7 @@ class Map {
         }
 
     private:
-        const Node_t* m_node;
+        const Node_t* m_node = nullptr;
     };
 
 public:
@@ -138,8 +136,7 @@ public:
 
     ~Map() {}
 
-    Map(const Map& other)
-        : Map() {
+    Map(const Map& other) {
         *this = other;
     }
 
@@ -153,8 +150,7 @@ public:
         return *this;
     }
 
-    Map(Map&& other)
-        : Map() {
+    Map(Map&& other) {
         *this = std::move(other);
     }
 

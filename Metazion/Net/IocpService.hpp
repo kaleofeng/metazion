@@ -29,9 +29,9 @@ public:
     HANDLE GetIocpHandle() const;
 
 private:
-    int m_socketCapacity;
-    int m_ioThreadNumber;
-    HANDLE m_hIocp;
+    int m_socketCapacity = 0;
+    int m_ioThreadNumber = 0;
+    HANDLE m_hIocp = nullptr;
 };
 
 inline HANDLE IocpService::GetIocpHandle() const {

@@ -37,10 +37,10 @@ public:
     epoll_event& GetEpollEvent(int index);
 
 private:
-    int m_socketCapacity;
-    int m_ioThreadNumber;
-    int* m_epollfdList;
-    epoll_event* m_epollEventList;
+    int m_socketCapacity = 0;
+    int m_ioThreadNumber = 0;
+    int* m_epollfdList = 0;
+    epoll_event* m_epollEventList = nullptr;
 };
 
 inline int EpollService::GetEpollfd(int threadIndex) const {

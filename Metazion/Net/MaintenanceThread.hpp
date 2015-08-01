@@ -36,9 +36,9 @@ private:
     void ProcessClosedSocket(Socket* socket, int index);
 
 private:
-    NetworkService* m_networkService;
-    int m_interval;
-    std::atomic<bool> m_stopDesired;
+    NetworkService* m_networkService = nullptr;
+    int m_interval = 0;
+    std::atomic<bool> m_stopDesired = false;
 };
 
 DECL_NAMESPACE_MZ_NET_END
