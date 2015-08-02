@@ -147,8 +147,7 @@ public:
 
     ~RBTree() {}
 
-    RBTree(const RBTree& other)
-        : RBTree() {
+    RBTree(const RBTree& other) {
         *this = other;
     }
 
@@ -160,8 +159,7 @@ public:
         return *this;
     }
 
-    RBTree(RBTree&& other)
-        : RBTree() {
+    RBTree(RBTree&& other) {
         *this = std::move(other);
     }
 

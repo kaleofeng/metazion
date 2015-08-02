@@ -219,8 +219,7 @@ public:
 
     ~HashMap() {}
 
-    HashMap(const HashMap& other)
-        : HashMap() {
+    HashMap(const HashMap& other) {
         *this = other;
     }
 
@@ -235,8 +234,7 @@ public:
         return *this;
     }
 
-    HashMap(HashMap&& other)
-        : HashMap() {
+    HashMap(HashMap&& other) {
         *this = std::move(other);
     }
 

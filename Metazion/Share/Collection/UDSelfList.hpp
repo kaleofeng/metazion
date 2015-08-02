@@ -27,8 +27,7 @@ public:
 
     ~UDSelfList() {}
 
-    UDSelfList(const UDSelfList& other)
-        : UDSelfList() {
+    UDSelfList(const UDSelfList& other) {
         *this = other;
     }
 
@@ -41,8 +40,7 @@ public:
         return *this;
     }
 
-    UDSelfList(UDSelfList&& other)
-        : UDSelfList() {
+    UDSelfList(UDSelfList&& other) {
         *this = std::move(other);
     }
 
@@ -92,6 +90,7 @@ public:
 
     Node_t* PushFront(Node_t* node) {
         MZ_ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsContain(node));
 
         node->m_nextNode = nullptr;
         if (IsNull(m_headNode)) {
@@ -108,6 +107,7 @@ public:
 
     Node_t* PushBack(Node_t* node) {
         MZ_ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsContain(node));
 
         node->m_nextNode = nullptr;
         if (IsNull(m_tailNode)) {

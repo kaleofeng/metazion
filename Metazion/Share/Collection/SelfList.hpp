@@ -29,8 +29,7 @@ public:
 
     ~SelfList() {}
 
-    SelfList(const SelfList& other)
-        : SelfList() {
+    SelfList(const SelfList& other) {
         *this = other;
     }
 
@@ -43,8 +42,7 @@ public:
         return *this;
     }
     
-    SelfList(SelfList&& other)
-        : SelfList() {
+    SelfList(SelfList&& other) {
         *this = std::move(other);
     }
 
@@ -94,6 +92,7 @@ public:
 
     Node_t* PushFront(Node_t* node) {
         MZ_ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsContain(node));
 
         node->m_prevNode = nullptr;
         node->m_nextNode = nullptr;
@@ -112,6 +111,7 @@ public:
 
     Node_t* PushBack(Node_t* node) {
         MZ_ASSERT_TRUE(!IsNull(node));
+        MZ_ASSERT_TRUE(!IsContain(node));
 
         node->m_prevNode = nullptr;
         node->m_nextNode = nullptr;

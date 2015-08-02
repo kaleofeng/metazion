@@ -22,8 +22,7 @@ public:
 
     ~PriorityQueue() {}
 
-    PriorityQueue(const PriorityQueue& other)
-        : PriorityQueue() {
+    PriorityQueue(const PriorityQueue& other) {
         *this = other;
     }
 
@@ -35,8 +34,7 @@ public:
         return *this;
     }
 
-    PriorityQueue(PriorityQueue&& other)
-        : PriorityQueue() {
+    PriorityQueue(PriorityQueue&& other) {
         *this = std::move(other);
     }
 

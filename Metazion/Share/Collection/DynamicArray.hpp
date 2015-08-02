@@ -19,8 +19,7 @@ public:
         Clear();
     }
 
-    DynamicArray(const DynamicArray& other)
-        : DynamicArray() {
+    DynamicArray(const DynamicArray& other) {
         *this = other;
     }
 
@@ -35,8 +34,7 @@ public:
         return *this;
     }
 
-    DynamicArray(DynamicArray&& other)
-        : DynamicArray() {
+    DynamicArray(DynamicArray&& other) {
         *this = std::move(other);
     }
 

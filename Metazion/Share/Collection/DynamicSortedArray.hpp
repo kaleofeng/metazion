@@ -22,8 +22,7 @@ public:
 
     ~DynamicSortedArray() {}
 
-    DynamicSortedArray(const DynamicSortedArray& other)
-        : DynamicSortedArray() {
+    DynamicSortedArray(const DynamicSortedArray& other) {
         *this = other;
     }
 
@@ -35,8 +34,7 @@ public:
         return *this;
     }
 
-    DynamicSortedArray(DynamicSortedArray&& other)
-        : DynamicSortedArray() {
+    DynamicSortedArray(DynamicSortedArray&& other) {
         *this = std::move(other);
     }
 

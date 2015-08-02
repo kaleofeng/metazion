@@ -132,8 +132,7 @@ public:
 
     ~UDList() {}
 
-    UDList(const UDList& other)
-        : UDList() {
+    UDList(const UDList& other) {
         *this = other;
     }
 
@@ -147,8 +146,7 @@ public:
         return *this;
     }
 
-    UDList(UDList&& other)
-        : UDList() {
+    UDList(UDList&& other) {
         *this = std::move(other);
     }
 
