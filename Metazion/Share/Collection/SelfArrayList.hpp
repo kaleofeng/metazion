@@ -430,11 +430,11 @@ private:
 
 private:
     Entry m_entries[INITSIZE];
+    int m_allocIndex = 0;
+    int m_freeHead = 0;
     int m_usedHead = -1;
     int m_usedTail = -1;
     int m_size = 0;
-    int m_freeHead = 0;
-    int m_allocIndex = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END
