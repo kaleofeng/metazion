@@ -41,13 +41,11 @@ public:
 
     void Tick();
 
-    bool AdoptSocket(Socket* socket);
+    bool Manage(Socket* socket);
 
     int AcquireSockets(std::function<bool(Socket*)> socketFilter, SocketArray_t& socketArray);
 
     void ReleaseSockets(SocketArray_t& socketArray);
-
-    bool CanAttachMore() const;
 
     void Lock();
 
@@ -95,10 +93,6 @@ private:
     Socket** m_sockets = nullptr;
     SocketArray_t m_socketArray;
 };
-
-inline bool NetworkService::CanAttachMore() const {
-    return m_socketNumber < m_socketCapacity;
-}
 
 inline void NetworkService::Lock() {
     m_lock.lock();
