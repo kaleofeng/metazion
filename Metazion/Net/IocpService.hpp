@@ -14,6 +14,11 @@ class Socket;
 class IocpService {
     MZ_DISALLOW_COPY_AND_ASSIGN(IocpService)
 
+private:
+    int m_socketCapacity = 0;
+    int m_ioThreadNumber = 0;
+    HANDLE m_hIocp = nullptr;
+
 public:
     IocpService();
 
@@ -27,11 +32,6 @@ public:
     bool Associate(Socket* socket);
 
     HANDLE GetIocpHandle() const;
-
-private:
-    int m_socketCapacity = 0;
-    int m_ioThreadNumber = 0;
-    HANDLE m_hIocp = nullptr;
 };
 
 inline HANDLE IocpService::GetIocpHandle() const {

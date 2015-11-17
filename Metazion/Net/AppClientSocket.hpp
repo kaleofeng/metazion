@@ -13,6 +13,10 @@ class AppClientSocket : public TransmitSocket {
     MZ_DISALLOW_COPY_AND_ASSIGN(AppClientSocket)
 
 public:
+    ComConnecter m_connecter;
+    ComPacketer m_packeter;
+
+public:
     AppClientSocket();
 
     virtual ~AppClientSocket();
@@ -52,10 +56,6 @@ protected:
     virtual void DerivedOnSended(const void* data, int length) {};
 
     virtual void DerivedOnRecved(const void* data, int length) {};
-
-public:
-    ComConnecter m_connecter;
-    ComPacketer m_packeter;
 };
 
 inline int AppClientSocket::GetType() const {

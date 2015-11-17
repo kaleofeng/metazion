@@ -26,6 +26,9 @@ class Map {
     class Iterator {
         friend class Map;
 
+    private:
+        Node_t* m_node = nullptr;
+
     public:
         Iterator() {}
 
@@ -70,13 +73,13 @@ class Map {
         bool operator !=(const Iterator& other) const {
             return !operator ==(other);
         }
-
-    private:
-        Node_t* m_node = nullptr;
     };
 
     class ConstIterator {
         friend class Map;
+
+    private:
+        const Node_t* m_node = nullptr;
 
     public:
         ConstIterator() {}
@@ -122,14 +125,15 @@ class Map {
         bool operator !=(const ConstIterator& other) const {
             return !operator ==(other);
         }
-
-    private:
-        const Node_t* m_node = nullptr;
     };
 
 public:
     using Iterator_t = Iterator;
     using ConstIterator_t = ConstIterator;
+
+private:
+    Allocator_t m_allocator;
+    Tree_t m_tree;
 
 public:
     Map() {}
@@ -235,10 +239,6 @@ private:
         node->~Node_t();
         m_allocator.Free(node);
     }
-
-private:
-    Allocator_t m_allocator;
-    Tree_t m_tree;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

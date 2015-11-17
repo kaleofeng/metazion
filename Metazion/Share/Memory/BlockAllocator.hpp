@@ -21,6 +21,9 @@ public:
     template<int OTHERLENGTH>
     using Rebind = BlockAllocator<MAXSIZE, OTHERLENGTH>;
 
+private:
+    Piece_t* m_piece = nullptr;
+
 public:
     BlockAllocator() {
         m_piece = new Piece_t();
@@ -38,9 +41,6 @@ public:
     void Free(void* memory) {
         return m_piece->Return(memory);
     }
-
-private:
-    Piece_t* m_piece = nullptr;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

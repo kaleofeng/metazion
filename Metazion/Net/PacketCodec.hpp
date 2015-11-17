@@ -13,7 +13,10 @@ class TransmitSocket;
 
 class PacketCodec {
     MZ_DISALLOW_COPY_AND_ASSIGN(PacketCodec)
-        
+
+private:
+    TransmitSocket& m_transmitSocket;
+
 public:
     PacketCodec(TransmitSocket& transmitSocket);
     
@@ -23,9 +26,6 @@ public:
     int Encode(int command, const void* data, int length, EncodeBuffer& encodeBuffer);
     
     int Decode(int& command, DecodeBuffer& decodeBuffer);
-
-private:
-    TransmitSocket& m_transmitSocket;
 };
 
 DECL_NAMESPACE_MZ_NET_END

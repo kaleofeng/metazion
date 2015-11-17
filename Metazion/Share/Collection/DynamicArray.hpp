@@ -10,7 +10,13 @@ template<typename ValueType
 , int STEPSIZE = 16
 >
 class DynamicArray {
+    
     using Value_t = ValueType;
+
+private:
+    Value_t* m_values = nullptr;
+    int m_capacity = 0;
+    int m_size = 0;
 
 public:
     DynamicArray() {}
@@ -158,11 +164,6 @@ private:
         SafeDeleteArray(m_values);
         m_values = tValues;
     }
-
-private:
-    Value_t* m_values = nullptr;
-    int m_capacity = 0;
-    int m_size = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

@@ -17,6 +17,11 @@ class ListenSocket;
 class IocpListenStrategy final : public IocpStrategy {
     MZ_DISALLOW_COPY_AND_ASSIGN(IocpListenStrategy)
 
+private:
+    ListenSocket& m_listenSocket;
+    AcceptOperation m_acceptOperation;
+    char m_acceptBuffer[256] = { 0 };
+
 public:
     IocpListenStrategy(ListenSocket& listenSocket);
 
@@ -46,11 +51,6 @@ public:
 
 private:
     bool PostAccept();
-
-private:
-    ListenSocket& m_listenSocket;
-    AcceptOperation m_acceptOperation;
-    char m_acceptBuffer[256] = { 0 };
 };
 
 DECL_NAMESPACE_MZ_NET_END

@@ -12,6 +12,9 @@ class AppListenSocket : public ListenSocket {
     MZ_DISALLOW_COPY_AND_ASSIGN(AppListenSocket)
 
 public:
+    ComAccepter m_accepter;
+
+public:
     AppListenSocket();
 
     virtual ~AppListenSocket();
@@ -47,9 +50,6 @@ protected:
     virtual void DerivedOnUnwatched() {}
 
     virtual bool DerivedOnAccepted(const SockId_t& sockId) { return true; }
-
-public:
-    ComAccepter m_accepter;
 };
 
 inline int AppListenSocket::GetType() const {

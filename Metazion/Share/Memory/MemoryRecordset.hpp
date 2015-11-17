@@ -33,6 +33,13 @@ private:
         };
     };
 
+private:
+    Header m_personalHeader;
+    Header* m_activeHeader = nullptr;
+    char* m_buffer = nullptr;
+    int m_length = 0;
+    bool m_ownMemory = false;
+
 public:
     MemoryRecordset();
 
@@ -67,13 +74,6 @@ private:
     Handle RecordIndexToHandle(int index);
 
     bool IsValidRecordIndex(int index);
-
-private:
-    Header m_personalHeader;
-    Header* m_activeHeader = nullptr;
-    char* m_buffer = nullptr;
-    int m_length = 0;
-    bool m_ownMemory = false;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

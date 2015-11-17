@@ -22,6 +22,9 @@ class List {
     class Iterator {
         friend class List;
 
+    private:
+        Node_t* m_node = nullptr;
+
     public:
         Iterator() {}
 
@@ -66,13 +69,13 @@ class List {
         bool operator !=(const Iterator& other) const {
             return !operator ==(other);
         }
-
-    private:
-        Node_t* m_node = nullptr;
     };
 
     class ConstIterator {
         friend class List;
+
+    private:
+        const Node_t* m_node = nullptr;
 
     public:
         ConstIterator() {}
@@ -118,14 +121,16 @@ class List {
         bool operator !=(const ConstIterator& other) const {
             return !operator ==(other);
         }
-
-    private:
-        const Node_t* m_node = nullptr;
     };
 
 public:
     using Iterator_t = Iterator;
     using ConstIterator_t = ConstIterator;
+
+private:
+    Compare_t m_compare;
+    Allocator_t m_allocator;
+    List_t m_list;
 
 public:
     List() {}
@@ -278,11 +283,6 @@ private:
         node->~Node_t();
         m_allocator.Free(node);
     }
-
-private:
-    Compare_t m_compare;
-    Allocator_t m_allocator;
-    List_t m_list;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

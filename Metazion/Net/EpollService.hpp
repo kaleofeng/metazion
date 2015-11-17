@@ -14,6 +14,12 @@ class Socket;
 class EpollService {
     MZ_DISALLOW_COPY_AND_ASSIGN(EpollService)
 
+private:
+    int m_socketCapacity = 0;
+    int m_ioThreadNumber = 0;
+    int* m_epollfdList = 0;
+    epoll_event* m_epollEventList = nullptr;
+
 public:
     EpollService();
 
@@ -35,12 +41,6 @@ public:
     int GetEpollfd(int threadIndex) const;
 
     epoll_event& GetEpollEvent(int index);
-
-private:
-    int m_socketCapacity = 0;
-    int m_ioThreadNumber = 0;
-    int* m_epollfdList = 0;
-    epoll_event* m_epollEventList = nullptr;
 };
 
 inline int EpollService::GetEpollfd(int threadIndex) const {

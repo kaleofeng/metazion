@@ -14,6 +14,9 @@ class ListenSocket;
 class EpollListenStrategy final : public EpollStrategy {
     MZ_DISALLOW_COPY_AND_ASSIGN(EpollListenStrategy)
 
+private:
+    ListenSocket& m_listenSocket;
+
 public:
     EpollListenStrategy(ListenSocket& m_listenSocket);
 
@@ -33,9 +36,6 @@ public:
     void PostOutput() override final;
 
     void EnableOutput() override final;
-
-private:
-    ListenSocket& m_listenSocket;
 };
 
 DECL_NAMESPACE_MZ_NET_END

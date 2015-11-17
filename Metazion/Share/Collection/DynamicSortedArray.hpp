@@ -13,9 +13,14 @@ template<typename ValueType
 , int STEPSIZE = 16
 >
 class DynamicSortedArray {
+    
     using Value_t = ValueType;
     using Compare_t = CompareType;
     using Array_t = DynamicArray<Value_t, INITSIZE, STEPSIZE>;
+
+private:
+    Compare_t m_compare;
+    Array_t m_array;
 
 public:
     DynamicSortedArray() {}
@@ -116,10 +121,6 @@ private:
         index = low;
         return found;
     }
-
-private:
-    Compare_t m_compare;
-    Array_t m_array;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

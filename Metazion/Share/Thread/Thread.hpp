@@ -10,6 +10,9 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 class Thread {
     MZ_DISALLOW_COPY_AND_ASSIGN(Thread)
 
+private:
+    std::thread m_thread;
+
 public:
     Thread();
 
@@ -28,10 +31,7 @@ protected:
     virtual void Execute() = 0;
 
 private:
-    void ThreadFunc();
-
-private:
-    std::thread m_thread;    
+    void ThreadFunc(); 
 };
 
 inline std::thread::id Thread::GetThreadId() const {

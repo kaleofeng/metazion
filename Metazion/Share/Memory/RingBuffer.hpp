@@ -9,6 +9,12 @@ template<int MAXLENGTH>
 class RingBuffer {
     MZ_DISALLOW_COPY_AND_ASSIGN(RingBuffer)
 
+private:
+    char m_buffer[MAXLENGTH] = { 0 };
+    int m_length = 0;
+    int m_pushIndex = 0;
+    int m_pullIndex = 0;
+
 public:
     RingBuffer() {}
 
@@ -113,12 +119,6 @@ public:
     int GetPushLength() const { return MAXLENGTH - m_length; }
 
     int GetPullLength() const { return m_length; }
-
-private:
-    char m_buffer[MAXLENGTH] = { 0 };
-    int m_length = 0;
-    int m_pushIndex = 0;
-    int m_pullIndex = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

@@ -25,6 +25,12 @@ public:
     using BufferList_t = UDSelfList<BufferNode_t>;
     using BufferPool_t = ObjectPool<BufferNode_t, StepAllocator<256>, std::mutex>;
 
+private:
+    BufferList_t m_bufferList;
+    BufferPool_t* m_bufferPool = nullptr;
+    int m_stepNumber = 0;
+    int m_length = 0;
+
 public:
     StepBuffer() {}
 
@@ -204,12 +210,6 @@ private:
         m_bufferPool->Return(buffer);
         --m_stepNumber;
     }
-
-private:
-    BufferList_t m_bufferList;
-    BufferPool_t* m_bufferPool = nullptr;
-    int m_stepNumber = 0;
-    int m_length = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

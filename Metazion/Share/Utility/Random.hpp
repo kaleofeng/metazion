@@ -13,6 +13,10 @@ class Random  {
     using RandomDevice_t = std::random_device;
     using RandomEngine_t = std::mt19937;
 
+private:
+    RandomDevice_t m_randomDevice;
+    RandomEngine_t m_randomEngine;
+
 public:
     Random();
 
@@ -24,10 +28,6 @@ public:
 
     // value range: [begin, end)
     double GetRangeDouble(double begin, double end);
-
-private:
-    RandomDevice_t m_randomDevice;
-    RandomEngine_t m_randomEngine;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

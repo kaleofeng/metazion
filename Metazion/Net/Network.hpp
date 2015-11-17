@@ -8,6 +8,7 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class Network {
+
 public:
     static int Startup();
 

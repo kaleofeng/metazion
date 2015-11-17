@@ -17,6 +17,11 @@ class ComAccepter {
 
     using CreateSocketCallback_t = std::function<AppServerSocket*()>;
 
+private:
+    ListenSocket& m_socket;
+
+    CreateSocketCallback_t m_createServerSocketCallback;
+
 public:
     ComAccepter(ListenSocket& socket);
 
@@ -28,11 +33,6 @@ public:
     bool Accept(const SockId_t& sockId);
 
     void SetCreateSocketCallback(CreateSocketCallback_t callback);
-
-private:
-    ListenSocket& m_socket;
-
-    CreateSocketCallback_t m_createServerSocketCallback;
 };
 
 inline void ComAccepter::SetCreateSocketCallback(CreateSocketCallback_t callback) {

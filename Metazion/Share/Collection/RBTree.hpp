@@ -138,9 +138,15 @@ template<typename NodeType
 , typename CompareType = LessCompare<typename NodeType::Value_t>
 >
 class RBTree {
+    
     using Node_t = NodeType;
     using Compare_t = CompareType;
     using Value_t = typename Node_t::Value_t;
+
+private:
+    Compare_t m_compare;
+    Node_t* m_root = nullptr;
+    int m_size = 0;
 
 public:
     RBTree() {}
@@ -615,11 +621,6 @@ private:
 
         node->m_parent = left;
     }
-
-private:
-    Compare_t m_compare;
-    Node_t* m_root = nullptr;
-    int m_size = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

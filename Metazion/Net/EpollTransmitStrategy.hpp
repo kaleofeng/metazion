@@ -16,6 +16,10 @@ class TransmitSocket;
 class EpollTransmitStrategy final : public EpollStrategy {
     MZ_DISALLOW_COPY_AND_ASSIGN(EpollTransmitStrategy)
 
+private:
+    TransmitSocket& m_transmitSocket;
+    std::atomic<bool> m_canOutput = { false };
+
 public:
     EpollTransmitStrategy(TransmitSocket& transmitSocket);
 
@@ -35,10 +39,6 @@ public:
     void PostOutput() override final;
 
     void EnableOutput() override final;
-
-private:
-    TransmitSocket& m_transmitSocket;
-    std::atomic<bool> m_canOutput = { false };
 };
 
 DECL_NAMESPACE_MZ_NET_END

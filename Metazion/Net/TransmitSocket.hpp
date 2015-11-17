@@ -13,6 +13,21 @@ class TransmitSocket : public Socket {
 
     friend class TransmitStrategy;
 
+protected:
+    TransmitStrategy m_transmitStrategy;
+    SocketBuffer m_socketBuffer;
+
+#if defined(MZ_ENABLE_STATISTIC)
+    int64_t m_connectedTime = 0;
+    int64_t m_disconnectedTime = 0;
+    int64_t m_firstSendTime = 0;
+    int64_t m_lastSendTime = 0;
+    int64_t m_sendedBytes = 0;
+    int64_t m_firstRecvTime = 0;
+    int64_t m_lastRecvTime = 0;
+    int64_t m_recvedBytes = 0;
+#endif
+
 public:
     TransmitSocket();
 
@@ -49,21 +64,6 @@ protected:
     virtual void OnSended(const void* data, int length);
 
     virtual void OnRecved(const void* data, int length);
-
-protected:
-    TransmitStrategy m_transmitStrategy;
-    SocketBuffer m_socketBuffer;
-
-#if defined(MZ_ENABLE_STATISTIC)
-    int64_t m_connectedTime = 0;
-    int64_t m_disconnectedTime = 0;
-    int64_t m_firstSendTime = 0;
-    int64_t m_lastSendTime = 0;
-    int64_t m_sendedBytes = 0;
-    int64_t m_firstRecvTime = 0;
-    int64_t m_lastRecvTime = 0;
-    int64_t m_recvedBytes = 0;
-#endif
 };
 
 inline IoStrategy& TransmitSocket::GetIoStrategy() {

@@ -9,6 +9,10 @@
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class Host {
+
+private:
+    SockAddrIn_t m_sockAddrIn;
+
 public:
     Host() { 
         memset(&m_sockAddrIn, 0, sizeof(m_sockAddrIn)); 
@@ -81,9 +85,6 @@ public:
     void SetPort(int port) {
         m_sockAddrIn.sin_port = htons(port);
     }
-
-private:
-    SockAddrIn_t m_sockAddrIn;
 };
 
 DECL_NAMESPACE_MZ_NET_END

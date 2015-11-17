@@ -24,6 +24,17 @@ class ComConnecter {
 
     using ConnectFailedCallback_t = std::function<void()>;
 
+private:
+    TransmitSocket& m_socket;
+
+    Host m_remoteHost;
+    int m_stage = STAGE_NONE;
+    int64_t m_connectTime = 0;
+    int m_reconnectInterval = 0;
+    SockId_t m_tempSockId = INVALID_SOCKID;
+
+    ConnectFailedCallback_t m_connectFaildCallback;
+
 public:
     ComConnecter(TransmitSocket& socket);
 
@@ -68,17 +79,6 @@ private:
     void AttachTempSockId(const SockId_t& sockId);
 
     void DetachTempSockId();
-
-private:
-    TransmitSocket& m_socket;
-    
-    Host m_remoteHost;
-    int m_stage = STAGE_NONE;
-    int64_t m_connectTime = 0;
-    int m_reconnectInterval = 0;
-    SockId_t m_tempSockId = INVALID_SOCKID;
-
-    ConnectFailedCallback_t m_connectFaildCallback;
 };
 
 inline void ComConnecter::SetRemoteHost(const Host& host) {

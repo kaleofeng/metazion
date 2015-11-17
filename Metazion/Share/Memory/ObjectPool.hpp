@@ -21,6 +21,10 @@ class ObjectPool {
     using Lock_t = LockType;
     using Allocator_t = typename AllocatorFamily::template Rebind<sizeof(Object_t)>;
 
+private:
+    Allocator_t m_allocator;
+    Lock_t m_lock;
+
 public:
     ObjectPool() {}
 
@@ -50,10 +54,6 @@ private:
         object->~Object_t();
         m_allocator.Free(object);
     }
-
-private:
-    Allocator_t m_allocator;
-    Lock_t m_lock;
 };
 
 template<typename ObjectType

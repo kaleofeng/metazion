@@ -30,6 +30,11 @@ public:
     template<int OTHERLENGTH>
     using Rebind = ShrinkStepAllocator<STEPSIZE, OTHERLENGTH>;
 
+private:
+    PieceList_t m_fullPieceList;
+    PieceList_t m_availPieceList;
+    UnitList_t m_freeUnitList;
+
 public:
     ShrinkStepAllocator() {}
 
@@ -194,11 +199,6 @@ private:
             restUnitNode = restUnitList.Front();
         }
     }
-
-private:
-    PieceList_t m_fullPieceList;
-    PieceList_t m_availPieceList;
-    UnitList_t m_freeUnitList;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

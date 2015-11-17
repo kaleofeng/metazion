@@ -27,6 +27,11 @@ class IocpIoThread : public NS_SHARE::Thread {
         RESULT_ERROR,
     };
 
+private:
+    NetworkService* m_networkService = nullptr;
+    int m_index = 0;
+    std::atomic<bool> m_stopDesired = { false };
+
 public:
     IocpIoThread();
 
@@ -45,11 +50,6 @@ private:
         , OVERLAPPED* overlapped
         , DWORD numberOfBytes
         , DWORD error);
-
-private:
-    NetworkService* m_networkService = nullptr;
-    int m_index = 0;
-    std::atomic<bool> m_stopDesired = { false };
 };
 
 DECL_NAMESPACE_MZ_NET_END

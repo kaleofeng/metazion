@@ -18,6 +18,10 @@ struct IocpOperation {
         TYPE_RECV,
     };
 
+    Type m_type;
+    OVERLAPPED m_overlapped;
+    std::atomic<bool> m_busy = { false };
+
     IocpOperation(Type type)
         : m_type(type) { memset(&m_overlapped, 0, sizeof(m_overlapped)); }
 
@@ -33,13 +37,12 @@ struct IocpOperation {
     void SetBusy(bool busy) {
         m_busy = busy;
     }
-
-    Type m_type;
-    OVERLAPPED m_overlapped;
-    std::atomic<bool> m_busy = { false };
 };
 
 struct AcceptOperation final : public IocpOperation {
+    char* m_buffer = nullptr;
+    SockId_t m_sockId = INVALID_SOCKID;
+    
     AcceptOperation()
         : IocpOperation(TYPE_ACCEPT) {}
 
@@ -48,9 +51,6 @@ struct AcceptOperation final : public IocpOperation {
         m_buffer = nullptr;
         m_sockId = INVALID_SOCKID;
     }
-
-    char* m_buffer = nullptr;
-    SockId_t m_sockId = INVALID_SOCKID;
 };
 
 struct SendOperation final : public IocpOperation {
@@ -66,6 +66,8 @@ struct SendOperation final : public IocpOperation {
 };
 
 struct RecvOperation final : public IocpOperation {
+    WSABUF m_wsaBuf;
+
     RecvOperation()
         : IocpOperation(TYPE_RECV) {}
 
@@ -73,8 +75,6 @@ struct RecvOperation final : public IocpOperation {
         IocpOperation::Reset();
         memset(&m_wsaBuf, 0, sizeof(m_wsaBuf));
     }
-
-    WSABUF m_wsaBuf;
 };
 
 DECL_NAMESPACE_MZ_NET_END

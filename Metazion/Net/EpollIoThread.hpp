@@ -19,6 +19,16 @@ class NetworkService;
 class EpollIoThread : public NS_SHARE::Thread {
     MZ_DISALLOW_COPY_AND_ASSIGN(EpollIoThread)
 
+private:
+    std::atomic<bool> m_stopDesired = { false };
+
+    NetworkService* m_networkService = nullptr;
+    int m_index = 0;
+    int m_socketCount = 0;
+    SocketCtrl* m_socketCtrlList = nullptr;
+    int m_epollfd = 0;
+    epoll_event* m_eventList = nullptr;
+
 public:
     EpollIoThread();
 
@@ -34,16 +44,6 @@ protected:
 
 private:
     void ProcessEvents();
-
-private:
-    std::atomic<bool> m_stopDesired = { false };
-
-    NetworkService* m_networkService = nullptr;
-    int m_index = 0;
-    int m_socketCount = 0;
-    SocketCtrl* m_socketCtrlList = nullptr;
-    int m_epollfd = 0;
-    epoll_event* m_eventList = nullptr;
 };
 
 DECL_NAMESPACE_MZ_NET_END

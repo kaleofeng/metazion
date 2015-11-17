@@ -8,6 +8,11 @@ DECL_NAMESPACE_MZ_SHARE_BEGIN
 class MemoryInputStream {
     MZ_DISALLOW_COPY_AND_ASSIGN(MemoryInputStream);
 
+private:
+    const char* m_buffer = nullptr;
+    int m_length = 0;
+    int m_position = 0;
+
 public:
     MemoryInputStream() {}
 
@@ -116,11 +121,6 @@ private:
     bool Check(int length) const {
         return m_position + length <= m_length;
     }
-
-private:
-    const char* m_buffer = nullptr;
-    int m_length = 0;
-    int m_position = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

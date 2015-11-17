@@ -12,6 +12,18 @@ class ListenSocket : public Socket {
 
     friend class ListenStrategy;
 
+protected:
+    ListenStrategy m_listenStrategy;
+    Host m_localHost;
+
+#if defined(MZ_ENABLE_STATISTIC)
+    int64_t m_watchedTime = 0;
+    int64_t m_unwatchedTime = 0;
+    int64_t m_firstAcceptTime = 0;
+    int64_t m_lastAcceptTime = 0;
+    int64_t m_acceptedNumber = 0;
+#endif
+
 public:
     ListenSocket();
 
@@ -46,18 +58,6 @@ protected:
     virtual void OnUnwatched();
 
     virtual bool OnAccepted(const SockId_t& sockId);
-
-protected:
-    ListenStrategy m_listenStrategy;
-    Host m_localHost;
-
-#if defined(MZ_ENABLE_STATISTIC)
-    int64_t m_watchedTime = 0;
-    int64_t m_unwatchedTime = 0;
-    int64_t m_firstAcceptTime = 0;
-    int64_t m_lastAcceptTime = 0;
-    int64_t m_acceptedNumber = 0;
-#endif
 };
 
 inline IoStrategy& ListenSocket::GetIoStrategy() {

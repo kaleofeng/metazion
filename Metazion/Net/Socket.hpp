@@ -19,6 +19,15 @@ class Socket {
 
     using DestoryCallback_t = std::function<void(Socket* socket)>;
 
+protected:
+    std::atomic<int> m_reference = { 0 };
+    std::atomic<bool> m_working = { false };
+    std::atomic<bool> m_wannaClose = { false };
+    SockId_t m_sockId = INVALID_SOCKID;
+    int m_index = -1;
+    NetworkService* m_networkService = nullptr;
+    DestoryCallback_t m_destroyCallback = [](Socket* socket) { delete socket; };
+
 public:
     Socket();
 
@@ -85,15 +94,6 @@ public:
     void SetNetworkService(NetworkService* networkService);
 
     void SetDestroyCallback(DestoryCallback_t callback);
-
-protected:
-    std::atomic<int> m_reference = { 0 };
-    std::atomic<bool> m_working = { false };
-    std::atomic<bool> m_wannaClose = { false };
-    SockId_t m_sockId = INVALID_SOCKID;
-    int m_index = -1;
-    NetworkService* m_networkService = nullptr;
-    DestoryCallback_t m_destroyCallback = [](Socket* socket) { delete socket; };
 };
 
 inline bool Socket::IsValid() const {

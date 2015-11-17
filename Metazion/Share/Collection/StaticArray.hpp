@@ -11,6 +11,11 @@ class StaticArray {
 
     using Value_t = ValueType;
 
+private:
+    Value_t* m_values = nullptr;
+    int m_capacity = 0;
+    int m_size = 0;
+
 public:
     StaticArray() {}
 
@@ -110,11 +115,6 @@ private:
         m_values[index] = value;
         return index;
     }
-
-private:
-    Value_t* m_values = nullptr;
-    int m_capacity = 0;
-    int m_size = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

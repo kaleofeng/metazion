@@ -24,6 +24,12 @@ class MemoryPiece {
         char m_buffer[ALIGNLENGTH] = { 0 };
     } Unit_t;
 
+private:
+    Unit_t m_units[MAXSIZE];
+    Node_t* m_freeList = nullptr;
+    int m_count = 0;
+    int m_freeCount = 0;
+
 public:
     MemoryPiece() {}
 
@@ -77,12 +83,6 @@ public:
     int GetUnitLength() const {
         return ALIGNLENGTH;
     }
-
-private:
-    Unit_t m_units[MAXSIZE];
-    Node_t* m_freeList = nullptr;
-    int m_count = 0;
-    int m_freeCount = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

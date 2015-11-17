@@ -9,6 +9,11 @@ template<int MAXLENGTH>
 class PieceBuffer {
     MZ_DISALLOW_COPY_AND_ASSIGN(PieceBuffer)
 
+private:
+    char m_buffer[MAXLENGTH] = { 0 };
+    int m_pushIndex = 0;
+    int m_pullIndex = 0;
+
 public:
     PieceBuffer() {}
 
@@ -141,11 +146,6 @@ public:
     const char* GetPushBuffer() const {
         return &m_buffer[m_pushIndex];
     }
-
-private:
-    char m_buffer[MAXLENGTH] = { 0 };
-    int m_pushIndex = 0;
-    int m_pullIndex = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

@@ -15,6 +15,11 @@ class NetworkService;
 class MaintenanceThread : public NS_SHARE::Thread {
     MZ_DISALLOW_COPY_AND_ASSIGN(MaintenanceThread)
 
+private:
+    NetworkService* m_networkService = nullptr;
+    int m_interval = 0;
+    std::atomic<bool> m_stopDesired = { false };
+
 public:
     MaintenanceThread();
 
@@ -34,11 +39,6 @@ private:
     void ProcessActiveSocket(Socket* socket, int index);
 
     void ProcessClosedSocket(Socket* socket, int index);
-
-private:
-    NetworkService* m_networkService = nullptr;
-    int m_interval = 0;
-    std::atomic<bool> m_stopDesired = { false };
 };
 
 DECL_NAMESPACE_MZ_NET_END

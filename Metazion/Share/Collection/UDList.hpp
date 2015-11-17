@@ -13,6 +13,7 @@ template<typename ValueType
 , typename AllocatorFamily = HeapAllocator<>
 >
 class UDList {
+    
     using Value_t = ValueType;
     using Compare_t = CompareType;
     using Node_t = UDSelfListNode<Value_t>;
@@ -21,6 +22,9 @@ class UDList {
 
     class Iterator {
         friend class UDList;
+
+    private:
+        Node_t* m_node = nullptr;
 
     public:
         Iterator() {}
@@ -66,13 +70,13 @@ class UDList {
         bool operator !=(const Iterator& other) const {
             return !operator ==(other);
         }
-
-    private:
-        Node_t* m_node = nullptr;
     };
 
     class ConstIterator {
         friend class UDList;
+
+    private:
+        const Node_t* m_node = nullptr;
 
     public:
         ConstIterator() {}
@@ -118,14 +122,16 @@ class UDList {
         bool operator !=(const ConstIterator& other) const {
             return !operator ==(other);
         }
-
-    private:
-        const Node_t* m_node = nullptr;
     };
 
 public:
     using Iterator_t = Iterator;
     using ConstIterator_t = ConstIterator;
+
+private:
+    Compare_t m_compare;
+    Allocator_t m_allocator;
+    List_t m_list;
 
 public:
     UDList() {}
@@ -251,11 +257,6 @@ private:
         node->~Node_t();
         m_allocator.Free(node);
     }
-
-private:
-    Compare_t m_compare;
-    Allocator_t m_allocator;
-    List_t m_list;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

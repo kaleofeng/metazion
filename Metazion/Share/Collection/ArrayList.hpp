@@ -23,6 +23,10 @@ class ArrayList {
     class Iterator {
         friend class ArrayList;
 
+    private:
+        ArrayList* m_owner = nullptr;
+        Node_t* m_node = nullptr;
+
     public:
         Iterator() {}
 
@@ -70,14 +74,14 @@ class ArrayList {
         bool operator !=(const Iterator& other) const {
             return !operator ==(other);
         }
-
-    private:
-        ArrayList* m_owner = nullptr;
-        Node_t* m_node = nullptr;
     };
 
     class ConstIterator {
         friend class ArrayList;
+
+    private:
+        const ArrayList* m_owner = nullptr;
+        const Node_t* m_node = nullptr;
 
     public:
         ConstIterator() {}
@@ -126,15 +130,16 @@ class ArrayList {
         bool operator !=(const ConstIterator& other) const {
             return !operator ==(other);
         }
-
-    private:
-        const ArrayList* m_owner = nullptr;
-        const Node_t* m_node = nullptr;
     };
 
 public:
     using Iterator_t = Iterator;
     using ConstIterator_t = ConstIterator;
+
+private:
+    Compare_t m_compare;
+    Allocator_t m_allocator;
+    List_t m_list;
 
 public:
     ArrayList() {}
@@ -303,11 +308,6 @@ private:
         node->~Node_t();
         m_allocator.Free(node);
     }
-
-private:
-    Compare_t m_compare;
-    Allocator_t m_allocator;
-    List_t m_list;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

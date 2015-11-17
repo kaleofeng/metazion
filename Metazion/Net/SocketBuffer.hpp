@@ -23,6 +23,16 @@ public:
     using RecvBuffer_t = NS_SHARE::PieceBuffer<1024 * 4>;
 
 public:
+    std::mutex m_sendLock;
+    std::mutex m_recvLock;
+    SendCache_t m_sendCache;
+    SendCache_t::BufferPool_t* m_sendCachePool;
+    RecvCache_t m_recvCache;
+    RecvCache_t::BufferPool_t* m_recvCachePool;
+    SendBuffer_t m_sendBuffer;
+    RecvBuffer_t m_recvBuffer;
+
+public:
     SocketBuffer();
     
     ~SocketBuffer();
@@ -43,16 +53,6 @@ public:
     bool HasDataToSend() const;
 
     bool HasDataRecvedYet() const;
-
-public:
-    std::mutex m_sendLock;
-    std::mutex m_recvLock;
-    SendCache_t m_sendCache;
-    SendCache_t::BufferPool_t* m_sendCachePool;
-    RecvCache_t m_recvCache;
-    RecvCache_t::BufferPool_t* m_recvCachePool;
-    SendBuffer_t m_sendBuffer;
-    RecvBuffer_t m_recvBuffer;
 };
 
 DECL_NAMESPACE_MZ_NET_END

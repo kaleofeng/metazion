@@ -14,6 +14,10 @@ class Socket;
 class SelectService {
     MZ_DISALLOW_COPY_AND_ASSIGN(SelectService)
 
+private:
+    int m_socketCapacity = 0;
+    int m_ioThreadNumber = 0;
+
 public:
     SelectService();
 
@@ -31,10 +35,6 @@ public:
     int GetStartIndex(int threadIndex) const;
 
     int GetSocketCount(int threadIndex) const;
-
-private:
-    int m_socketCapacity = 0;
-    int m_ioThreadNumber = 0;
 };
 
 DECL_NAMESPACE_MZ_NET_END

@@ -16,6 +16,10 @@ class TransmitSocket;
 class SelectTransmitStrategy final : public SelectStrategy {
     MZ_DISALLOW_COPY_AND_ASSIGN(SelectTransmitStrategy)
 
+private:
+    TransmitSocket& m_transmitSocket;
+    std::atomic<bool> m_canOutput = { false };
+
 public:
     SelectTransmitStrategy(TransmitSocket& transmitSocket);
 
@@ -37,10 +41,6 @@ public:
     void EnableOutput() override final;
 
     bool ShouldCareAboutOutput() const override final;
-
-private:
-    TransmitSocket& m_transmitSocket;
-    std::atomic<bool> m_canOutput = { false };
 };
 
 inline bool SelectTransmitStrategy::ShouldCareAboutOutput() const {

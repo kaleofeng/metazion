@@ -9,6 +9,10 @@ template<int MAXLENGTH = 1024>
 class MemoryOutputStream {
     MZ_DISALLOW_COPY_AND_ASSIGN(MemoryOutputStream);
 
+private:
+    char m_buffer[MAXLENGTH] = { 0 };
+    int m_position = 0;
+
 public:
     MemoryOutputStream() {}
 
@@ -102,10 +106,6 @@ private:
     bool Check(int length) const {
         return m_position + length <= MAXLENGTH;
     }
-
-private:
-    char m_buffer[MAXLENGTH] = { 0 };
-    int m_position = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

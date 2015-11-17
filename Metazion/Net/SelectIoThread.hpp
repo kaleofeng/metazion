@@ -19,6 +19,17 @@ class NetworkService;
 class SelectIoThread : public NS_SHARE::Thread {
     MZ_DISALLOW_COPY_AND_ASSIGN(SelectIoThread)
 
+private:
+    std::atomic<bool> m_stopDesired = { false };
+
+    NetworkService* m_networkService = nullptr;
+    int m_index = 0;
+    int m_socketCount = 0;
+    SocketCtrl* m_socketCtrlList = nullptr;
+    fd_set m_rfds;
+    fd_set m_wfds;
+    fd_set m_efds;
+
 public:
     SelectIoThread();
 
@@ -36,17 +47,6 @@ private:
     void ProcessEvents();
 
     int ResetFds();
-
-private:
-    std::atomic<bool> m_stopDesired = { false };
-    
-    NetworkService* m_networkService = nullptr;
-    int m_index = 0;
-    int m_socketCount = 0;
-    SocketCtrl* m_socketCtrlList = nullptr;
-    fd_set m_rfds;
-    fd_set m_wfds;
-    fd_set m_efds;
 };
 
 DECL_NAMESPACE_MZ_NET_END

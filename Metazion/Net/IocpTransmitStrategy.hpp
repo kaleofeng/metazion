@@ -14,6 +14,11 @@ class TransmitSocket;
 class IocpTransmitStrategy final : public IocpStrategy {
     MZ_DISALLOW_COPY_AND_ASSIGN(IocpTransmitStrategy)
 
+private:
+    TransmitSocket& m_transmitSocket;
+    SendOperation m_sendOperation;
+    RecvOperation m_recvOperation;
+
 public:
     IocpTransmitStrategy(TransmitSocket& transmitSocket);
 
@@ -63,11 +68,6 @@ private:
 
     bool HandleSendClose(const IocpOperation* iocpOperation
         , DWORD byteNumber);
-
-private:
-    TransmitSocket& m_transmitSocket;
-    SendOperation m_sendOperation;
-    RecvOperation m_recvOperation;
 };
 
 DECL_NAMESPACE_MZ_NET_END

@@ -30,6 +30,11 @@ public:
     template<int OTHERLENGTH>
     using Rebind = StepAllocator<STEPSIZE, OTHERLENGTH>;
 
+private:
+    PieceList_t m_fullPieceList;
+    PieceList_t m_availPieceList;
+    UnitList_t m_freeUnitList;
+
 public:
     StepAllocator() {}
 
@@ -76,11 +81,6 @@ private:
     void DestoryPieceNode(PieceNode_t* object) {
         SafeDelete(object);
     }
-
-private:
-    PieceList_t m_fullPieceList;
-    PieceList_t m_availPieceList;
-    UnitList_t m_freeUnitList;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

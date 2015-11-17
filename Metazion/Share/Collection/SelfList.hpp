@@ -22,7 +22,13 @@ struct SelfListNode<void> {
 
 template<typename NodeType>
 class SelfList {
+    
     using Node_t = NodeType;
+
+private:
+    Node_t* m_headNode = nullptr;
+    Node_t* m_tailNode = nullptr;
+    int m_size = 0;
 
 public:
     SelfList() {}
@@ -269,11 +275,6 @@ public:
 
         return false;
     }
-
-private:
-    Node_t* m_headNode = nullptr;
-    Node_t* m_tailNode = nullptr;
-    int m_size = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

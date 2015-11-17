@@ -14,6 +14,9 @@ class ListenSocket;
 class SelectListenStrategy final : public SelectStrategy {
     MZ_DISALLOW_COPY_AND_ASSIGN(SelectListenStrategy)
 
+private:
+    ListenSocket& m_listenSocket;
+
 public:
     SelectListenStrategy(ListenSocket& m_listenSocket);
 
@@ -35,9 +38,6 @@ public:
     void EnableOutput() override final;
 
     bool ShouldCareAboutOutput() const override final;
-
-private:
-    ListenSocket& m_listenSocket;
 };
 
 inline bool SelectListenStrategy::ShouldCareAboutOutput() const {

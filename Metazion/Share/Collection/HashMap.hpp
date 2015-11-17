@@ -29,6 +29,11 @@ class HashMap {
     class Iterator {
         friend class HashMap;
 
+    private:
+        HashMap* m_owner = nullptr;
+        int m_bucket = 0;
+        BucketIterator_t m_iter;
+
     public:
         Iterator() {}
 
@@ -111,15 +116,15 @@ class HashMap {
         bool operator !=(const Iterator& other) const {
             return !operator ==(other);
         }
-
-    private:
-        HashMap* m_owner = nullptr;
-        int m_bucket = 0;
-        BucketIterator_t m_iter;
     };
 
     class ConstIterator {
         friend class HashMap;
+
+    private:
+        const HashMap* m_owner = nullptr;
+        int m_bucket = 0;
+        BucketConstIterator_t m_iter;
 
     public:
         ConstIterator() {}
@@ -203,12 +208,12 @@ class HashMap {
         bool operator !=(const ConstIterator& other) const {
             return !operator ==(other);
         }
-
-    private:
-        const HashMap* m_owner = nullptr;
-        int m_bucket = 0;
-        BucketConstIterator_t m_iter;
     };
+
+private:
+    Hasher_t m_hasher;
+    Bucket_t m_buckets[BUCKETSIZE];
+    int m_size = 0;
 
 public:
     using Iterator_t = Iterator;
@@ -341,11 +346,6 @@ public:
         auto iter = bucket.Find(key);
         return Iterator_t(this, index, iter);
     }
-
-private:
-    Hasher_t m_hasher;
-    Bucket_t m_buckets[BUCKETSIZE];
-    int m_size = 0;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END

@@ -12,6 +12,9 @@ class AppServerSocket : public TransmitSocket {
     MZ_DISALLOW_COPY_AND_ASSIGN(AppServerSocket)
 
 public:
+    ComPacketer m_packeter;
+
+public:
     AppServerSocket();
 
     virtual ~AppServerSocket();
@@ -53,9 +56,6 @@ protected:
     virtual void DerivedOnSended(const void* data, int length) {};
 
     virtual void DerivedOnRecved(const void* data, int length) {};
-    
-public:
-    ComPacketer m_packeter;
 };
 
 inline int AppServerSocket::GetType() const {

@@ -17,6 +17,14 @@ class ComPacketer {
     using ValidPacketCallback_t = std::function<void(int command, const void* data, int length)>;
     using InvalidPacketCallback_t = std::function<void()>;
 
+private:
+    TransmitSocket& m_socket;
+
+    PacketCodec m_packetCodec;
+
+    ValidPacketCallback_t m_validPacketCallback;
+    InvalidPacketCallback_t m_invalidPacketCallback;
+
 public:
     ComPacketer(TransmitSocket& m_socket);
 
@@ -34,14 +42,6 @@ public:
     void SetValidPacketCallback(ValidPacketCallback_t callback);
 
     void SetInvalidPacketCallback(InvalidPacketCallback_t callback);
-
-private:
-    TransmitSocket& m_socket;
-
-    PacketCodec m_packetCodec;
-
-    ValidPacketCallback_t m_validPacketCallback;
-    InvalidPacketCallback_t m_invalidPacketCallback;
 };
 
 inline void ComPacketer::SetValidPacketCallback(ValidPacketCallback_t callback) {

@@ -17,6 +17,10 @@ class StaticSortedArray {
     using Compare_t = CompareType;
     using Array_t = StaticArray<Value_t>;
 
+private:
+    Compare_t m_compare;
+    Array_t m_array;
+
 public:
     StaticSortedArray() {}
 
@@ -100,10 +104,6 @@ private:
         index = low;
         return found;
     }
-
-private:
-    Compare_t m_compare;
-    Array_t m_array;
 };
 
 DECL_NAMESPACE_MZ_SHARE_END
