@@ -40,6 +40,19 @@ public:
         return length;
     }
 
+    int Take(int length) {
+        auto pushLength = this->GetPushLength();
+        if (pushLength <= 0) {
+            return 0;
+        }
+
+        if (pushLength < length) {
+            length = pushLength;
+        }
+        m_pushIndex += length;
+        return length;
+    }
+
     int Pull(void* data, int length) {
         const auto pullLength = GetPullLength();
         if (pullLength <= 0) {
@@ -95,16 +108,16 @@ public:
         }
     }
 
-    int GetCapacity() const {
-        return MAXLENGTH;
-    }
-
     char* GetBuffer() {
         return m_buffer;
     }
 
     const char* GetBuffer() const {
         return m_buffer;
+    }
+
+    int GetMaxLength() const {
+        return MAXLENGTH;
     }
 
     int GetPullLength() const {
