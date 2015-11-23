@@ -1,5 +1,5 @@
-rm -rf Build
-mkdir Build
-cd Build
-cmake -G "Unix Makefiles" ..
-cd ..
+rm -rf Build/Linux
+mkdir Build/Linux
+cd Build/Linux
+cmake -G "Unix Makefiles" ../..
+cd ../..
