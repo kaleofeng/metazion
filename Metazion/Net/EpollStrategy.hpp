@@ -5,6 +5,8 @@
 
 #if defined(NETWORK_USE_EPOLL_MODEL)
 
+#include "Metazion/Net/EpollOperation.hpp"
+
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class EpollStrategy {

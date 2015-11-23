@@ -18,6 +18,8 @@ class SelectTransmitStrategy final : public SelectStrategy {
 
 private:
     TransmitSocket& m_transmitSocket;
+    SendOperation m_sendOperation;
+    RecvOperation m_recvOperation;
     std::atomic<bool> m_canOutput = { false };
 
 public:

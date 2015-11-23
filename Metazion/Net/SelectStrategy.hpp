@@ -5,6 +5,8 @@
 
 #if defined(NETWORK_USE_SELECT_MODEL)
 
+#include "Metazion/Net/SelectOperation.hpp"
+
 DECL_NAMESPACE_MZ_NET_BEGIN
 
 class SelectStrategy {

@@ -1,9 +1,9 @@
-#ifndef _MZ_NET_IOCPOPERATION_HPP_
-#define _MZ_NET_IOCPOPERATION_HPP_
+#ifndef _MZ_NET_SELECTOPERATION_HPP_
+#define _MZ_NET_SELECTOPERATION_HPP_
 
 #include "Metazion/Net/NetInclude.hpp"
 
-#if defined(NETWORK_USE_IOCP_MODEL)
+#if defined(NETWORK_USE_SELECT_MODEL)
 
 #include <atomic>
 
@@ -11,7 +11,7 @@
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 
-struct IocpOperation {
+struct SelectOperation {
     enum Type {
         TYPE_ACCEPT = 1,
         TYPE_SEND,
@@ -19,14 +19,12 @@ struct IocpOperation {
     };
 
     Type m_type;
-    OVERLAPPED m_overlapped;
     std::atomic<bool> m_busy = { false };
 
-    IocpOperation(Type type)
-        : m_type(type) { memset(&m_overlapped, 0, sizeof(m_overlapped)); }
+    SelectOperation(Type type)
+        : m_type(type) {}
 
     void Reset() {
-        memset(&m_overlapped, 0, sizeof(m_overlapped));
         m_busy = false;
     }
 
@@ -39,40 +37,40 @@ struct IocpOperation {
     }
 };
 
-struct AcceptOperation final : public IocpOperation {
+struct AcceptOperation final : public SelectOperation {
     char* m_buffer = nullptr;
     SockId_t m_sockId = INVALID_SOCKID;
     
     AcceptOperation()
-        : IocpOperation(TYPE_ACCEPT) {}
+        : SelectOperation(TYPE_ACCEPT) {}
 
     void Reset() {
-        IocpOperation::Reset();
+        SelectOperation::Reset();
         m_buffer = nullptr;
         m_sockId = INVALID_SOCKID;
     }
 };
 
-struct SendOperation final : public IocpOperation {
+struct SendOperation final : public SelectOperation {
     IOV_TYPE m_iov[NUMBER_SEND_IOV];
 
     SendOperation()
-        : IocpOperation(TYPE_SEND) {}
+        : SelectOperation(TYPE_SEND) {}
     
     void Reset() {
-        IocpOperation::Reset();
+        SelectOperation::Reset();
         memset(&m_iov, 0, sizeof(m_iov));
     }
 };
 
-struct RecvOperation final : public IocpOperation {
+struct RecvOperation final : public SelectOperation {
     IOV_TYPE m_iov[NUMBER_RECV_IOV];
 
     RecvOperation()
-        : IocpOperation(TYPE_RECV) {}
+        : SelectOperation(TYPE_RECV) {}
 
     void Reset() {
-        IocpOperation::Reset();
+        SelectOperation::Reset();
         memset(&m_iov, 0, sizeof(m_iov));
     }
 };
@@ -81,4 +79,4 @@ DECL_NAMESPACE_MZ_NET_END
 
 #endif
 
-#endif // _MZ_NET_IOCPOPERATION_HPP_
+#endif // _MZ_NET_SELECTOPERATION_HPP_

@@ -51,6 +51,9 @@ DECL_NAMESPACE_MZ_BEGIN
 #define MZ_ALIGN_LENGTH(length, align) (((length) + (align) - 1) & ~((align) - 1))
 #define MZ_IS_LENGTH_ALIGN(length, align) (((length) & ((align) -1)) == 0)
 
+#define MZ_UNUSED_VARIABLE(v) (void)(v)
+#define MZ_UNUSED_PARAM(v) (void)(v)
+
 DECL_NAMESPACE_MZ_END
 
 #endif // _MZ_DEFINE_HPP_

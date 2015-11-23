@@ -40,6 +40,17 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 #   define SHUT_RD SD_SEND;
 #   define SHUT_WR SD_RECEIVE;
 #   define SHUT_RDWR SD_BOTH;
+
+#   define IOV_TYPE WSABUF
+#   define IOV_PTR_FIELD buf
+#   define IOV_LEN_FIELD len
+#   define IOV_LEN_TYPE ULONG
+
+#   define SINGLE_BUFFER_LENGTH 1024
+#   define SINGLE_BUFFER_SIZE 256
+
+#   define NUMBER_SEND_IOV 16
+#   define NUMBER_RECV_IOV 4
 #endif
 
 #if defined(MZ_PLATFORM_LINUX)
@@ -47,6 +58,17 @@ DECL_NAMESPACE_MZ_NET_BEGIN
     typedef socklen_t SockLen_t;
 #   define INVALID_SOCKID (-1)
 #   define SOCKET_ERROR (-1)
+
+#   define IOV_TYPE struct iovec
+#   define IOV_PTR_FIELD iov_base
+#   define IOV_LEN_FIELD iov_len
+#   define IOV_LEN_TYPE size_t
+
+#   define SINGLE_BUFFER_LENGTH 1024
+#   define SINGLE_BUFFER_SIZE 256
+
+#   define NUMBER_SEND_IOV 16
+#   define NUMBER_RECV_IOV 4
 #endif
 
 #if defined(MZ_PLATFORM_MACOS)
@@ -54,7 +76,21 @@ DECL_NAMESPACE_MZ_NET_BEGIN
     typedef socklen_t SockLen_t;
 #   define INVALID_SOCKID (-1)
 #   define SOCKET_ERROR (-1)
+
+#   define IOV_TYPE struct iovec
+#   define IOV_PTR_FIELD iov_base
+#   define IOV_LEN_FIELD iov_len
+#   define IOV_LEN_TYPE size_t
+
+#   define SINGLE_BUFFER_LENGTH 4096
+#   define SINGLE_BUFFER_SIZE 64
+
+#   define NUMBER_SEND_IOV 1
+#   define NUMBER_RECV_IOV 1
 #endif
+
+#define LENGTH_SEND_MAX 4096
+#define LENGTH_RECV_MAX 4096
 
 enum TansportType {
     TRANSPORT_TCP = 1,
