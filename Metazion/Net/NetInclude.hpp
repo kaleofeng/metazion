@@ -10,9 +10,9 @@
 #define NS_MZ_NET                       mz::net
 #define NS_NET                          net
 
-#if defined(MZ_PLATFORM_LINUX1)
+#if defined(MZ_PLATFORM_LINUX)
 #   define NETWORK_USE_EPOLL_MODEL
-#elif defined(MZ_PLATFORM_WINDOWS1)
+#elif defined(MZ_PLATFORM_WINDOWS)
 #   define NETWORK_USE_IOCP_MODEL
 #else
 #   define NETWORK_USE_SELECT_MODEL
