@@ -1,4 +1,4 @@
 /Build
 /Bin
 /Lib
-*.cpp
+.DS_Store
