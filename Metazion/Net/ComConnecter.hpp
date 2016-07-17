@@ -27,7 +27,6 @@ class ComConnecter {
 private:
     TransmitSocket& m_socket;
 
-    Host m_remoteHost;
     int m_stage = STAGE_NONE;
     int64_t m_connectTime = 0;
     int m_reconnectInterval = 0;
@@ -47,7 +46,7 @@ public:
 
     bool Connect();
 
-    void SetRemoteHost(const Host& host);
+    int GetReconnectInterval() const;
 
     void SetReconnectInterval(int milliseconds);
 
@@ -81,8 +80,8 @@ private:
     void DetachTempSockId();
 };
 
-inline void ComConnecter::SetRemoteHost(const Host& host) {
-    m_remoteHost = host;
+inline int ComConnecter::GetReconnectInterval() const {
+    return m_reconnectInterval;
 }
 
 inline void ComConnecter::SetReconnectInterval(int milliseconds) {

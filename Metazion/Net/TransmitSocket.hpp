@@ -16,6 +16,7 @@ class TransmitSocket : public Socket {
 protected:
     TransmitStrategy m_transmitStrategy;
     SocketBuffer m_socketBuffer;
+    Host m_remoteHost;
 
 #if defined(MZ_ENABLE_STATISTIC)
     int64_t m_connectedTime = 0;
@@ -56,6 +57,10 @@ public:
 
     SocketBuffer& GetSocketBuffer();
 
+    Host& GetRemoteHost();
+
+    void SetRemoteHost(const Host& host);
+
 protected:
     virtual void OnConnected();
 
@@ -72,6 +77,14 @@ inline IoStrategy& TransmitSocket::GetIoStrategy() {
 
 inline SocketBuffer& TransmitSocket::GetSocketBuffer() {
     return m_socketBuffer;
+}
+
+inline Host& TransmitSocket::GetRemoteHost() {
+    return m_remoteHost;
+}
+
+inline void TransmitSocket::SetRemoteHost(const Host& host) {
+    m_remoteHost = host;
 }
 
 DECL_NAMESPACE_MZ_NET_END

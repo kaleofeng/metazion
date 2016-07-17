@@ -15,13 +15,14 @@ void ComAccepter::Reset() {
     SetCreateSocketCallback(nullptr);
 }
 
-bool ComAccepter::Accept(const SockId_t& sockId) {
+bool ComAccepter::Accept(const SockId_t& sockId, const Host& host) {
     NetworkService* networkService = m_socket.GetNetworkService();
     MZ_ASSERT_TRUE(!IsNull(networkService));
 
     auto socket = m_createServerSocketCallback();
     MZ_ASSERT_TRUE(!IsNull(socket));
 
+    socket->SetRemoteHost(host);
     socket->Attach(sockId);
 
     const bool ret = networkService->Manage(socket);

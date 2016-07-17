@@ -8,6 +8,7 @@
 #include <atomic>
 
 #include "Metazion/Net/SocketDefine.hpp"
+#include "Metazion/Net/Host.hpp"
 
 DECL_NAMESPACE_MZ_NET_BEGIN
 

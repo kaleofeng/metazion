@@ -35,7 +35,7 @@ protected:
 
     void OnUnwatched() override final;
 
-    bool OnAccepted(const SockId_t& sockId) override final;
+    bool OnAccepted(const SockId_t& sockId, const Host& host) override final;
 
     virtual void DerivedReset() {};
 
@@ -49,7 +49,7 @@ protected:
 
     virtual void DerivedOnUnwatched() {}
 
-    virtual bool DerivedOnAccepted(const SockId_t& sockId) { return true; }
+    virtual bool DerivedOnAccepted(const SockId_t& sockId, const Host& host) { return true; }
 };
 
 inline int AppListenSocket::GetType() const {

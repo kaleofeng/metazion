@@ -17,6 +17,7 @@ void TransmitSocket::Reset() {
 
     m_transmitStrategy.Reset();
     m_socketBuffer.Reset();
+    m_remoteHost.Reset();
 
 #if defined(MZ_ENABLE_STATISTIC)
     m_connectedTime = 0;

@@ -52,7 +52,16 @@ bool IocpListenStrategy::HandleSuccess(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     MZ_ASSERT_TRUE(&m_acceptOperation == iocpOperation);
 
+    const auto& acceptBuffer = m_acceptOperation.m_buffer;
     const auto& acceptSockId = m_acceptOperation.m_sockId;
+
+    const auto localBuffer = m_acceptOperation.m_buffer;
+    const auto localAddr = reinterpret_cast<const SockAddrIn_t*>(localBuffer);
+    const auto remoteBuffer = m_acceptOperation.m_buffer + sizeof(SockAddrIn_t) + 16;
+    const auto remoteAddr = reinterpret_cast<const SockAddrIn_t*>(remoteBuffer);
+
+    Host peerHost;
+    peerHost.FromSockAddrIn(remoteAddr);
 
     const auto& listenSockId = m_listenSocket.GetSockId();
     const auto ret = setsockopt(acceptSockId
@@ -64,7 +73,7 @@ bool IocpListenStrategy::HandleSuccess(const IocpOperation* iocpOperation
         DestroySockId(acceptSockId);
     }
 
-    if (!m_listenSocket.OnAccepted(acceptSockId)) {
+    if (!m_listenSocket.OnAccepted(acceptSockId, peerHost)) {
         DestroySockId(acceptSockId);
     }
 

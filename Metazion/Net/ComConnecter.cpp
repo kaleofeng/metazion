@@ -12,7 +12,6 @@ ComConnecter::ComConnecter(TransmitSocket& socket)
 ComConnecter::~ComConnecter() {}
 
 void ComConnecter::Reset() {
-    m_remoteHost.Reset();
     m_stage = STAGE_NONE;
     m_connectTime = 0;
     m_reconnectInterval = 0;
@@ -113,8 +112,8 @@ int ComConnecter::TryToConnect() {
 
     AttachTempSockId(sockId);
 
-    auto sockAddr = m_remoteHost.SockAddr();
-    auto sockAddrLen = m_remoteHost.SockAddrLen();
+    auto sockAddr = m_socket.GetRemoteHost().SockAddr();
+    auto sockAddrLen = m_socket.GetRemoteHost().SockAddrLen();
     const auto ret = connect(m_tempSockId, sockAddr, sockAddrLen);
     if (ret < 0) {
         const auto error = SAGetLastError();

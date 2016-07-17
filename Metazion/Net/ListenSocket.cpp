@@ -110,7 +110,7 @@ void ListenSocket::OnUnwatched() {
 #endif
 }
 
-bool ListenSocket::OnAccepted(const SockId_t& sockId) {
+bool ListenSocket::OnAccepted(const SockId_t& sockId, const Host& host) {
 #if defined(MZ_ENABLE_STATISTIC)
     const auto now = NS_MZ_SHARE::GetNowMicrosecond();
     if (m_firstAcceptTime == 0) {

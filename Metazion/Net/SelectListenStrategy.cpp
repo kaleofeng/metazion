@@ -54,7 +54,7 @@ void SelectListenStrategy::PostInput() {
 
         SetNonBlock(sockId);
 
-        if (!m_listenSocket.OnAccepted(sockId)) {
+        if (!m_listenSocket.OnAccepted(sockId, peerHost)) {
             DestroySockId(sockId);
         }
     }

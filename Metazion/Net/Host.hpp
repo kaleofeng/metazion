@@ -12,6 +12,7 @@ class Host {
 
 private:
     SockAddrIn_t m_sockAddrIn;
+    char m_buffer[64] = { '\0' };
 
 public:
     Host() { 
@@ -35,6 +36,10 @@ public:
 public:
     void Reset() {
         memset(&m_sockAddrIn, 0, sizeof(m_sockAddrIn));
+    }
+
+    void FromSockAddrIn(const SockAddrIn_t* sockAddrIn) {
+        memcpy(&m_sockAddrIn, sockAddrIn, sizeof(m_sockAddrIn));
     }
 
     void FromAddress(const Address& address, int family = AF_INET) {
@@ -70,8 +75,8 @@ public:
         m_sockAddrIn.sin_family = family;
     }
 
-    const char* GetIp(char* buffer, int length) {
-        return inet_ntop(m_sockAddrIn.sin_family, &m_sockAddrIn.sin_addr, buffer, length);
+    const char* GetIp() {
+        return inet_ntop(m_sockAddrIn.sin_family, &m_sockAddrIn.sin_addr, m_buffer, sizeof(m_buffer));
     }
 
     void SetIp(const char* ip) {

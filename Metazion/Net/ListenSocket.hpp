@@ -57,7 +57,7 @@ protected:
 
     virtual void OnUnwatched();
 
-    virtual bool OnAccepted(const SockId_t& sockId);
+    virtual bool OnAccepted(const SockId_t& sockId, const Host& host);
 };
 
 inline IoStrategy& ListenSocket::GetIoStrategy() {

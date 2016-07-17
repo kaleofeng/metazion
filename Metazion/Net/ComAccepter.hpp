@@ -11,6 +11,7 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 
 class ListenSocket;
 class AppServerSocket;
+class Host;
 
 class ComAccepter {
     MZ_DISALLOW_COPY_AND_ASSIGN(ComAccepter)
@@ -30,7 +31,7 @@ public:
 public:
     void Reset();
 
-    bool Accept(const SockId_t& sockId);
+    bool Accept(const SockId_t& sockId, const Host& host);
 
     void SetCreateSocketCallback(CreateSocketCallback_t callback);
 };

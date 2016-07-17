@@ -45,18 +45,18 @@ void AppListenSocket::OnUnwatched() {
     DerivedOnUnwatched();
 }
 
-bool AppListenSocket::OnAccepted(const SockId_t& sockId) {
-    auto ret = ListenSocket::OnAccepted(sockId);
+bool AppListenSocket::OnAccepted(const SockId_t& sockId, const Host& host) {
+    auto ret = ListenSocket::OnAccepted(sockId, host);
     if (!ret) {
         return false;
     }
 
-    ret = m_accepter.Accept(sockId);
+    ret = m_accepter.Accept(sockId, host);
     if (!ret) {
         return false;
     }
 
-    return DerivedOnAccepted(sockId);
+    return DerivedOnAccepted(sockId, host);
 }
 
 DECL_NAMESPACE_MZ_NET_END
