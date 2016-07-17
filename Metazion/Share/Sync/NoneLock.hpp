@@ -3,6 +3,8 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
+#include <mutex>
+
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
 class NoneLock {
