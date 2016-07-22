@@ -82,9 +82,15 @@ void ComConnecter::ConnectStageConnecting() {
 }
 
 void ComConnecter::ConnectStageConnected() {
-    if (!m_socket.IsActive()) {
-        Reconnect(true);
+    if (m_socket.IsActive()) {
+        return;
     }
+
+    if (m_socket.IsWannaClose()) {
+        return;
+    }
+
+    Reconnect(true);
 }
 
 void ComConnecter::ConnectStageClosed() {
