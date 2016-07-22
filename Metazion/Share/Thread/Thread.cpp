@@ -7,7 +7,7 @@ Thread::Thread() {}
 Thread::~Thread() {}
 
 void Thread::Run() {
-    m_thread = std::thread(std::bind(&Thread::ThreadFunc, this));
+    m_thread = std::thread(&Thread::ThreadFunc, this);
 }
 
 void Thread::Join() {
