@@ -5,9 +5,9 @@
 
 #include <mutex>
 
-#include <Metazion/Share/Collection/UDSelfList.hpp>
-#include <Metazion/Share/Memory/PieceBuffer.hpp>
-#include <Metazion/Share/Memory/ObjectPool.hpp>
+#include "Metazion/Share/Collection/UDSelfList.hpp"
+#include "Metazion/Share/Memory/PieceBuffer.hpp"
+#include "Metazion/Share/Memory/ObjectPool.hpp"
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
