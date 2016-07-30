@@ -87,8 +87,8 @@ int TransmitSocket::Send(const void* data, int length) {
     m_socketBuffer.m_sendLock.unlock();
 
     if (pushLength < length) {
-        NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-        Close();
+        NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Trace: socket close. [%s:%d]\n", __FILE__, __LINE__);
+        Disconnect();
         return 0;
     }
 

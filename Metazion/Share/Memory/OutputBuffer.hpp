@@ -5,9 +5,9 @@
 
 #include <mutex>
 
-#include "Metazion/Share/Collection/UDSelfList.hpp"
-#include "Metazion/Share/Memory/PieceBuffer.hpp"
-#include "Metazion/Share/Memory/ObjectPool.hpp"
+#include <Metazion/Share/Collection/UDSelfList.hpp>
+#include <Metazion/Share/Memory/PieceBuffer.hpp>
+#include <Metazion/Share/Memory/ObjectPool.hpp>
 
 DECL_NAMESPACE_MZ_SHARE_BEGIN
 
@@ -57,8 +57,8 @@ public:
         m_curLength = 0;
     }
 
-    void Attach(BufferNode_t* buffer) {
-        _Attach(buffer);
+    bool Attach(BufferNode_t* buffer) {
+        return _Attach(buffer);
     }
 
     void Traverse(TraverseCallback_t callback) {
@@ -135,12 +135,16 @@ public:
         return m_capLength;
     }
 
-    int GetPushLength() const {
-        return m_capLength - m_curLength;
+    int GetCurLength() const {
+        return m_curLength;
     }
 
-    int GetPullLength() const {
-        return m_curLength;
+    bool CanAttach() const {
+        return m_stepSize < MAXSIZE;
+    }
+
+    bool IsMaximal() const {
+        return m_stepSize == MAXSIZE;
     }
 
     bool IsEmpty() const {
@@ -152,14 +156,17 @@ public:
     }
 
 private:
-    void _Attach(BufferNode_t* buffer) {
-        if (m_stepSize < MAXSIZE) {
-            const auto pullLength = buffer->m_value.GetPullLength();
-            m_bufferList.PushBack(buffer);
-            ++m_stepSize;
-            m_capLength += buffer->m_value.GetMaxLength();
-            m_curLength += pullLength;
+    bool _Attach(BufferNode_t* buffer) {
+        if (m_stepSize >= MAXSIZE) {
+            return false;
         }
+
+        const auto pullLength = buffer->m_value.GetPullLength();
+        m_bufferList.PushBack(buffer);
+        ++m_stepSize;
+        m_capLength += buffer->m_value.GetMaxLength();
+        m_curLength += pullLength;
+        return true;
     }
 
     int _Pull(BufferNode_t* buffer, void* data, int length) {

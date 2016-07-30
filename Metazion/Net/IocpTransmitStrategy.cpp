@@ -170,8 +170,8 @@ bool IocpTransmitStrategy::HandleRecvSuccess(const IocpOperation* iocpOperation
 
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
 
-    const auto planLength = socketBuffer.m_recvPlan.GetPullLength();
-    const auto cacheLength = socketBuffer.m_recvCache.GetPullLength();
+    const auto planLength = socketBuffer.m_recvPlan.GetCurLength();
+    const auto cacheLength = socketBuffer.m_recvCache.GetCurLength();
     //NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Recv: plan[%d] cache[%d]. [%s:%d]\n", planLength, cacheLength, __FILE__, __LINE__);
 
     if (byteNumber == 0) {
@@ -187,8 +187,8 @@ bool IocpTransmitStrategy::HandleRecvSuccess(const IocpOperation* iocpOperation
 
     const auto restLength = socketBuffer.PreserveRecvPlan(byteNumber);
     if (restLength > 0) {
-        NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-        m_transmitSocket.Close();
+        NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Trace: socket close. [%s:%d]\n", __FILE__, __LINE__);
+        m_transmitSocket.Disconnect();
         return false;
     }
 
@@ -201,8 +201,8 @@ bool IocpTransmitStrategy::HandleSendSuccess(const IocpOperation* iocpOperation
 
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
     
-    const auto planLength = socketBuffer.m_sendPlan.GetPullLength();
-    const auto cacheLength = socketBuffer.m_sendCache.GetPullLength();
+    const auto planLength = socketBuffer.m_sendPlan.GetCurLength();
+    const auto cacheLength = socketBuffer.m_sendCache.GetCurLength();
     //NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Send: plan[%d] cache[%d]. [%s:%d]\n", planLength, cacheLength, __FILE__, __LINE__);
 
     if (byteNumber == 0) {
@@ -250,8 +250,8 @@ bool IocpTransmitStrategy::HandleRecvClose(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     MZ_ASSERT_TRUE(&m_recvOperation == iocpOperation);
 
-    NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-    m_transmitSocket.Close();
+    NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Trace: socket close. [%s:%d]\n", __FILE__, __LINE__);
+    m_transmitSocket.Disconnect();
 
     m_recvOperation.SetBusy(false);
     return true;
@@ -261,8 +261,8 @@ bool IocpTransmitStrategy::HandleSendClose(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     MZ_ASSERT_TRUE(&m_sendOperation == iocpOperation);
 
-    NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-    m_transmitSocket.Close();
+    NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Trace: socket close. [%s:%d]\n", __FILE__, __LINE__);
+    m_transmitSocket.Disconnect();
 
     m_sendOperation.SetBusy(false);
     return true;

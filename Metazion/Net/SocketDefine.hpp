@@ -46,11 +46,11 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 #   define IOV_LEN_FIELD len
 #   define IOV_LEN_TYPE ULONG
 
-#   define SINGLE_BUFFER_LENGTH 1024
-#   define SINGLE_BUFFER_SIZE 256
+#   define SINGLE_BUFFER_LENGTH 256
+#   define SINGLE_BUFFER_SIZE 1024
 
 #   define NUMBER_SEND_IOV 16
-#   define NUMBER_RECV_IOV 4
+#   define NUMBER_RECV_IOV 16
 #endif
 
 #if defined(MZ_PLATFORM_LINUX)
@@ -64,11 +64,11 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 #   define IOV_LEN_FIELD iov_len
 #   define IOV_LEN_TYPE size_t
 
-#   define SINGLE_BUFFER_LENGTH 1024
-#   define SINGLE_BUFFER_SIZE 256
+#   define SINGLE_BUFFER_LENGTH 256
+#   define SINGLE_BUFFER_SIZE 1024
 
 #   define NUMBER_SEND_IOV 16
-#   define NUMBER_RECV_IOV 4
+#   define NUMBER_RECV_IOV 16
 #endif
 
 #if defined(MZ_PLATFORM_MACOS)
@@ -82,8 +82,8 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 #   define IOV_LEN_FIELD iov_len
 #   define IOV_LEN_TYPE size_t
 
-#   define SINGLE_BUFFER_LENGTH 4096
-#   define SINGLE_BUFFER_SIZE 64
+#   define SINGLE_BUFFER_LENGTH 256
+#   define SINGLE_BUFFER_SIZE 1024
 
 #   define NUMBER_SEND_IOV 1
 #   define NUMBER_RECV_IOV 1

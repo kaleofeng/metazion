@@ -98,8 +98,8 @@ bool IocpListenStrategy::HandleClose(const IocpOperation* iocpOperation
     , DWORD byteNumber){
     MZ_ASSERT_TRUE(&m_acceptOperation == iocpOperation);
 
-    NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-    m_listenSocket.Close();
+    NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Trace: socket close. [%s:%d]\n", __FILE__, __LINE__);
+    m_listenSocket.Disconnect();
 
     DestroySockId(m_acceptOperation.m_sockId);
     m_acceptOperation.m_sockId = INVALID_SOCKID;

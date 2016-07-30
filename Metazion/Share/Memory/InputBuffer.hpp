@@ -130,12 +130,12 @@ public:
         return m_capLength;
     }
 
-    int GetPushLength() const {
-        return m_capLength - m_curLength;
+    int GetCurLength() const {
+        return m_curLength;
     }
 
-    int GetPullLength() const {
-        return m_curLength;
+    bool IsMaximal() const {
+        return m_stepSize == MAXSIZE;
     }
 
     bool IsEmpty() const {

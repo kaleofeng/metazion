@@ -63,7 +63,7 @@ void MaintenanceThread::ProcessSockets() {
 }
 
 void MaintenanceThread::ProcessActiveSocket(Socket* socket, int index) {
-    if (socket->IsWannaClose()) {
+    if (socket->IsGonnaClose()) {
         socket->Stop();
     }
 

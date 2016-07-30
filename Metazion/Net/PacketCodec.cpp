@@ -23,7 +23,7 @@ int PacketCodec::Encode(int command, const void* data, int length, EncodeBuffer&
     PacketHeader header;
     header.m_command = command;
     header.m_length = length;
-    
+
     encodeBuffer.m_resultBuffer.Push(&header, sizeof(header));
     encodeBuffer.m_resultBuffer.Push(data, header.m_length);
     return sizeof(header) + header.m_length;
@@ -44,7 +44,7 @@ int PacketCodec::Decode(int& command, DecodeBuffer& decodeBuffer) {
         return -1;
     }
 
-    const auto cacheLength = socketBuffer.m_recvCache.GetPullLength();
+    const auto cacheLength = socketBuffer.m_recvCache.GetCurLength();
     if (cacheLength < headerLength + packetLength) {
         return 0;
     }

@@ -17,15 +17,20 @@ class NetworkService;
 class Socket {
     MZ_DISALLOW_COPY_AND_ASSIGN(Socket)
 
+    friend class NetworkService;
+    friend class IoThread;
+    friend class MaintenanceThread;
+
     using DestoryCallback_t = std::function<void(Socket* socket)>;
 
 protected:
     std::atomic<int> m_reference = { 0 };
     std::atomic<bool> m_working = { false };
+    std::atomic<bool> m_gonnaClose = { false };
     std::atomic<bool> m_wannaClose = { false };
-    SockId_t m_sockId = INVALID_SOCKID;
-    int m_index = -1;
-    NetworkService* m_networkService = nullptr;
+    SockId_t m_sockId{ INVALID_SOCKID };
+    int m_index{ -1 };
+    NetworkService* m_networkService{ nullptr };
     DestoryCallback_t m_destroyCallback = [](Socket* socket) { delete socket; };
 
 public:
@@ -33,7 +38,6 @@ public:
 
     virtual ~Socket();
 
-public:
     virtual void Reset();
 
     virtual void Prepare();
@@ -42,34 +46,13 @@ public:
 
     virtual void Dispatch() = 0;
 
-    virtual int GetType() const = 0;
-
-    virtual IoStrategy& GetIoStrategy() = 0;
-
-    virtual bool IsAlive() const = 0;
-
-    virtual void OnAttached() = 0;
-
-    virtual void OnDetached() = 0;
-
-    virtual void OnStart() = 0;
-
-    virtual void OnStop() = 0;
-
-    virtual void OnError(int error) = 0;
-
-public:
     void Retain();
 
     void Release();
 
-    void Close();
+    void Disconnect();
 
     void Destory();
-
-    void Start();
-    
-    void Stop();
 
     bool IsValid() const;
 
@@ -87,13 +70,38 @@ public:
 
     int GetIndex() const;
 
-    void SetIndex(int index);
-
     NetworkService* GetNetworkService();
 
-    void SetNetworkService(NetworkService* networkService);
-
     void SetDestroyCallback(DestoryCallback_t callback);
+
+protected:
+    virtual int GetType() const = 0;
+
+    virtual IoStrategy& GetIoStrategy() = 0;
+
+    virtual bool IsAlive() const = 0;
+
+    virtual void OnAttached() = 0;
+
+    virtual void OnDetached() = 0;
+
+    virtual void OnStart() = 0;
+
+    virtual void OnStop() = 0;
+
+    virtual void OnError(int error) = 0;
+
+    void Close();
+
+    void Start();
+
+    void Stop();
+
+    bool IsGonnaClose() const;
+
+    void SetIndex(int index);
+
+    void SetNetworkService(NetworkService* networkService);
 };
 
 inline bool Socket::IsValid() const {
@@ -106,6 +114,10 @@ inline bool Socket::IsActive() const {
 
 inline bool Socket::IsWorking() const {
     return m_working;
+}
+
+inline bool Socket::IsGonnaClose() const {
+    return m_gonnaClose;
 }
 
 inline bool Socket::IsWannaClose() const {

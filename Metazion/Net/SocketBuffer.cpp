@@ -74,20 +74,26 @@ int SocketBuffer::SetupRecvIov(IOV_TYPE iovs[NUMBER_RECV_IOV]) {
 
 int SocketBuffer::PrepareSendPlan() {
     auto bufferNumber = m_sendPlan.GetStepSize();
-    auto bufferLength = m_sendPlan.GetPullLength();
+    auto bufferLength = m_sendPlan.GetCapLength();
 
     m_sendLock.lock();
 
     while (bufferNumber < NUMBER_SEND_IOV && bufferLength < LENGTH_SEND_MAX) {
+        if (m_sendPlan.IsMaximal()) {
+            break;
+        }
+
         auto buffer = m_sendCache.Detach();
         if (IsNull(buffer)) {
             break;
         }
 
-        m_sendPlan.Attach(buffer);
+        if (!m_sendPlan.Attach(buffer)) {
+            break;
+        }
 
         bufferNumber = m_sendPlan.GetStepSize();
-        bufferLength = m_sendPlan.GetPullLength();
+        bufferLength = m_sendPlan.GetCapLength();
     }
 
     m_sendLock.unlock();
@@ -96,14 +102,14 @@ int SocketBuffer::PrepareSendPlan() {
 
 int SocketBuffer::PrepareRecvPlan() {
     auto bufferNumber = m_recvPlan.GetStepSize();
-    auto bufferLength = m_recvPlan.GetPushLength();
+    auto bufferLength = m_recvPlan.GetCapLength();
 
     if (bufferNumber < NUMBER_RECV_IOV && bufferLength < LENGTH_RECV_MAX) {
         const auto expandLength = m_recvPlan.Expand(LENGTH_RECV_MAX);
         MZ_UNUSED_VARIABLE(expandLength);
 
         bufferNumber = m_recvPlan.GetStepSize();
-        bufferLength = m_recvPlan.GetPushLength();
+        bufferLength = m_recvPlan.GetCapLength();
     }
 
     return bufferLength;
@@ -113,7 +119,7 @@ int SocketBuffer::PreserveSendPlan(int length) {
     m_sendPlan.Skip(length);
 
     auto bufferNumber = m_sendPlan.GetStepSize();
-    auto bufferLength = m_sendPlan.GetPullLength();
+    auto bufferLength = m_sendPlan.GetCurLength();
 
     MZ_UNUSED_VARIABLE(bufferNumber);
     return bufferLength;
@@ -123,20 +129,26 @@ int SocketBuffer::PreserveRecvPlan(int length) {
     m_recvPlan.Take(length);
 
     auto bufferNumber = m_recvPlan.GetStepSize();
-    auto bufferLength = m_recvPlan.GetPullLength();
+    auto bufferLength = m_recvPlan.GetCurLength();
 
     m_recvLock.lock();
 
     while (bufferNumber > 0 && bufferLength > 0) {
+        if (m_recvCache.IsMaximal()) {
+            break;
+        }
+
         auto buffer = m_recvPlan.Detach();
         if (IsNull(buffer)) {
             break;
         }
 
-        m_recvCache.Attach(buffer);
+        if (!m_recvCache.Attach(buffer)) {
+            break;
+        }
 
         bufferNumber = m_recvPlan.GetStepSize();
-        bufferLength = m_recvPlan.GetPullLength();
+        bufferLength = m_recvPlan.GetCurLength();
     }
 
     m_recvLock.unlock();
@@ -144,11 +156,11 @@ int SocketBuffer::PreserveRecvPlan(int length) {
 }
 
 bool SocketBuffer::HasDataToSend() const {
-    if (m_sendPlan.GetPullLength() > 0) {
+    if (m_sendPlan.GetCurLength() > 0) {
         return true;
     }
 
-    if (m_sendCache.GetPullLength() > 0) {
+    if (m_sendCache.GetCurLength() > 0) {
         return true;
     }
 
@@ -156,7 +168,7 @@ bool SocketBuffer::HasDataToSend() const {
 }
 
 bool SocketBuffer::HasDataRecvedYet() const {
-    if (m_recvCache.GetPullLength() > 0) {
+    if (m_recvCache.GetCurLength() > 0) {
         return true;
     }
 

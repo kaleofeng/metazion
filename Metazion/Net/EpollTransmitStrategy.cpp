@@ -67,8 +67,8 @@ void EpollTransmitStrategy::PostInput() {
 
         const auto restLength = socketBuffer.PreserveRecvPlan(recvLength);
         if (restLength > 0) {
-            NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
-            m_transmitSocket.Close();
+            NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Trace: socket close. [%s:%d]\n", __FILE__, __LINE__);
+            m_transmitSocket.Disconnect();
         }
     }
 }

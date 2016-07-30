@@ -9,6 +9,7 @@ Socket::~Socket() {}
 void Socket::Reset() {
     m_reference = 0;
     m_working = false;
+    m_gonnaClose = false;
     m_wannaClose = false;
     m_sockId = INVALID_SOCKID;
     m_index = -1;
@@ -18,6 +19,7 @@ void Socket::Reset() {
 
 void Socket::Prepare() {
      m_working = false;
+     m_gonnaClose = false;
      m_wannaClose = false;
 }
 
@@ -35,6 +37,11 @@ void Socket::Release() {
 
 void Socket::Close() {
     m_working = false;
+    m_gonnaClose = true;
+}
+
+void Socket::Disconnect() {
+    DetachSockId();
     m_wannaClose = true;
 }
 
@@ -52,7 +59,7 @@ void Socket::Stop() {
     OnStop();
 
     DetachSockId();
-    m_wannaClose = false;
+    m_gonnaClose = false;
 }
 
 DECL_NAMESPACE_MZ_NET_END
