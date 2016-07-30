@@ -84,6 +84,32 @@ public:
         MZ_ASSERT_TRUE(!IsNull(buffer));
         MZ_ASSERT_TRUE(length > 0);
 
+        int16_t strLength = 0;
+        if (!ReadInt16(strLength)) {
+            return false;
+        }
+
+        if (length < strLength + 1) {
+            return false;
+        }
+
+        if (strLength == 0) {
+            buffer[0] = '\0';
+            return true;
+        }
+
+        if (!Read(buffer, strLength)) {
+            return false;
+        }
+
+        buffer[strLength] = '\0';
+        return true;
+    }
+
+    bool ReadString32(char* buffer, int length) {
+        MZ_ASSERT_TRUE(!IsNull(buffer));
+        MZ_ASSERT_TRUE(length > 0);
+
         int strLength = 0;
         if (!ReadInt32(strLength)) {
             return false;
@@ -105,7 +131,7 @@ public:
         buffer[strLength] = '\0';
         return true;
     }
-    
+
     bool Read(void* buffer, int length) {
         if (!Check(length)) {
             return false;

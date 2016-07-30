@@ -77,6 +77,25 @@ public:
         MZ_ASSERT_TRUE(!IsNull(buffer));
         MZ_ASSERT_TRUE(length >= 0);
 
+        if (!WriteInt16(length)) {
+            return true;
+        }
+
+        if (length == 0) {
+            return true;
+        }
+
+        if (!Write(buffer, length)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    bool WriteString32(const char* buffer, int length) {
+        MZ_ASSERT_TRUE(!IsNull(buffer));
+        MZ_ASSERT_TRUE(length >= 0);
+
         if (!WriteInt32(length)) {
             return true;
         }
@@ -91,7 +110,7 @@ public:
 
         return true;
     }
-    
+
     bool Write(const void* buffer, int length) {
         if (!Check(length)) {
             return false;
