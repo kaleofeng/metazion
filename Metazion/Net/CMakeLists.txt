@@ -24,7 +24,7 @@ IF(PRODUCT_INSTALL)
 ENDIF(PRODUCT_INSTALL)
 
 IF(WIN32)
-# Create visual studio folders.
+# create visual studio folders
 SOURCE_GROUP(Header FILES ${METAZION_NET_HEADERS})
 SOURCE_GROUP(Source FILES ${METAZION_NET_SOURCES})
 ENDIF(WIN32)
