@@ -10,14 +10,9 @@ PacketCodec::PacketCodec(TransmitSocket& transmitSocket)
 PacketCodec::~PacketCodec() {}
 
 int PacketCodec::Encode(int command, const void* data, int length, EncodeBuffer& encodeBuffer) {
-    if (length < 0) {
+    if (length < 0 || length > MAXAPPDATALENGTH) {
         MZ_ASSERT_TRUE(false);
         return -1;
-    }
-
-    if (length > MAXAPPDATALENGTH) {
-        MZ_ASSERT_TRUE(false);
-        return -2;
     }
 
     PacketHeader header;
@@ -40,7 +35,7 @@ int PacketCodec::Decode(int& command, DecodeBuffer& decodeBuffer) {
     }
 
     const auto packetLength = static_cast<int>(header.m_length);
-    if (packetLength > MAXAPPPACKETLENGTH) {
+    if (packetLength < 0 || packetLength > MAXAPPPACKETLENGTH) {
         return -1;
     }
 
