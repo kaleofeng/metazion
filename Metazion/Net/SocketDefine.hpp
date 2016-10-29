@@ -37,9 +37,9 @@ DECL_NAMESPACE_MZ_NET_BEGIN
     typedef SOCKET SockId_t;
     typedef int SockLen_t;
 #   define INVALID_SOCKID INVALID_SOCKET
-#   define SHUT_RD SD_SEND;
-#   define SHUT_WR SD_RECEIVE;
-#   define SHUT_RDWR SD_BOTH;
+#   define SHUT_RD SD_SEND
+#   define SHUT_WR SD_RECEIVE
+#   define SHUT_RDWR SD_BOTH
 
 #   define IOV_TYPE WSABUF
 #   define IOV_PTR_FIELD buf
@@ -109,6 +109,8 @@ typedef struct sockaddr_in SockAddrIn_t;
 SockId_t CreateSockId(int transportType);
 
 void DestroySockId(SockId_t sockId);
+
+void ShutdownSockId(SockId_t sockId, int how);
 
 bool SetNonBlock(SockId_t sockId);
 

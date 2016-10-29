@@ -37,6 +37,10 @@ void DestroySockId(SockId_t sockId) {
 #endif
 }
 
+void ShutdownSockId(SockId_t sockId, int how) {
+    shutdown(sockId, how);
+}
+
 bool SetNonBlock(SockId_t sockId) {
 #if defined(MZ_PLATFORM_WINDOWS)
     u_long ul = 1;

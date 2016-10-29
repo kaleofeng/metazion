@@ -35,18 +35,32 @@ void Socket::Release() {
     --m_reference;
 }
 
-void Socket::Close() {
-    m_working = false;
-    m_gonnaClose = true;
-}
-
 void Socket::Disconnect() {
-    DetachSockId();
     m_wannaClose = true;
+
+    if (m_sockId != INVALID_SOCKID) {
+        ShutdownSockId(m_sockId, SHUT_WR);
+    }
 }
 
 void Socket::Destory() {
     m_destroyCallback(this);
+}
+
+void Socket::AttachSockId(const SockId_t& sockId) {
+    m_sockId = sockId;
+}
+
+void Socket::DetachSockId() {
+    if (m_sockId != INVALID_SOCKID) {
+        DestroySockId(m_sockId);
+        m_sockId = INVALID_SOCKID;
+    }
+}
+
+void Socket::Close() {
+    m_working = false;
+    m_gonnaClose = true;
 }
 
 void Socket::Start() {

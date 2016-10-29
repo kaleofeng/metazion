@@ -31,7 +31,7 @@ protected:
     SockId_t m_sockId{ INVALID_SOCKID };
     int m_index{ -1 };
     NetworkService* m_networkService{ nullptr };
-    DestoryCallback_t m_destroyCallback = [](Socket* socket) { delete socket; };
+    DestoryCallback_t m_destroyCallback = [](auto socket) { delete socket; };
 
 public:
     Socket();
@@ -59,6 +59,8 @@ public:
     bool IsActive() const;
 
     bool IsWorking() const;
+
+    bool IsGonnaClose() const;
 
     bool IsWannaClose() const;
 
@@ -97,8 +99,6 @@ protected:
 
     void Stop();
 
-    bool IsGonnaClose() const;
-
     void SetIndex(int index);
 
     void SetNetworkService(NetworkService* networkService);
@@ -126,17 +126,6 @@ inline bool Socket::IsWannaClose() const {
 
 inline const SockId_t& Socket::GetSockId() const {
     return m_sockId;
-}
-
-inline void Socket::AttachSockId(const SockId_t& sockId) {
-    m_sockId = sockId;
-}
-
-inline void Socket::DetachSockId() {
-    if (m_sockId != INVALID_SOCKID) {
-        DestroySockId(m_sockId);
-        m_sockId = INVALID_SOCKID;
-    }
 }
 
 inline int Socket::GetIndex() const {
