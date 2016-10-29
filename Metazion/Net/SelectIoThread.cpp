@@ -40,7 +40,7 @@ void SelectIoThread::ProcessEvents() {
         return;
     }
 
-    struct timeval timeout = { 0, 20 * 1000 };
+    struct timeval timeout{ 0, 20 * 1000 };
     const auto ret = select(maxFd + 1, &m_rfds, &m_wfds, &m_efds, &timeout);
     if (ret == 0) {
         return;

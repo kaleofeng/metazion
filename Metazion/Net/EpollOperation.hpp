@@ -19,7 +19,7 @@ struct EpollOperation {
     };
 
     Type m_type;
-    std::atomic<bool> m_busy = { false };
+    std::atomic<bool> m_busy{ false };
 
     EpollOperation(Type type)
         : m_type(type) {}
@@ -38,7 +38,7 @@ struct EpollOperation {
 };
 
 struct AcceptOperation final : public EpollOperation {
-    char* m_buffer = nullptr;
+    char* m_buffer{ nullptr };
     SockId_t m_sockId = INVALID_SOCKID;
     
     AcceptOperation()

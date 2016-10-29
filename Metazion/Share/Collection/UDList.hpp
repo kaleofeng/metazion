@@ -24,7 +24,7 @@ class UDList {
         friend class UDList;
 
     private:
-        Node_t* m_node = nullptr;
+        Node_t* m_node{ nullptr };
 
     public:
         Iterator() {}
@@ -76,7 +76,7 @@ class UDList {
         friend class UDList;
 
     private:
-        const Node_t* m_node = nullptr;
+        const Node_t* m_node{ nullptr };
 
     public:
         ConstIterator() {}

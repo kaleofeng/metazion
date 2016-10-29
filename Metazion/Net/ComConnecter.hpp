@@ -27,10 +27,10 @@ class ComConnecter {
 private:
     TransmitSocket& m_socket;
 
-    int m_stage = STAGE_NONE;
-    int64_t m_connectTime = 0;
-    int m_reconnectInterval = 0;
-    SockId_t m_tempSockId = INVALID_SOCKID;
+    int m_stage{ STAGE_NONE };
+    int64_t m_connectTime{ 0 };
+    int m_reconnectInterval{ 0 };
+    SockId_t m_tempSockId{ INVALID_SOCKID };
 
     ConnectFailedCallback_t m_connectFaildCallback;
 

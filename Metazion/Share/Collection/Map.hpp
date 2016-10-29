@@ -27,7 +27,7 @@ class Map {
         friend class Map;
 
     private:
-        Node_t* m_node = nullptr;
+        Node_t* m_node{ nullptr };
 
     public:
         Iterator() {}
@@ -79,7 +79,7 @@ class Map {
         friend class Map;
 
     private:
-        const Node_t* m_node = nullptr;
+        const Node_t* m_node{ nullptr };
 
     public:
         ConstIterator() {}

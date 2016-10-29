@@ -28,9 +28,9 @@ class IocpIoThread : public NS_SHARE::Thread {
     };
 
 private:
-    NetworkService* m_networkService = nullptr;
-    int m_index = 0;
-    std::atomic<bool> m_stopDesired = { false };
+    NetworkService* m_networkService{ nullptr };
+    int m_index{ 0 };
+    std::atomic<bool> m_stopDesired{ false };
 
 public:
     IocpIoThread();

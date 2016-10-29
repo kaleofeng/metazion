@@ -30,8 +30,8 @@ class HashMap {
         friend class HashMap;
 
     private:
-        HashMap* m_owner = nullptr;
-        int m_bucket = 0;
+        HashMap* m_owner{ nullptr };
+        int m_bucket{ 0 };
         BucketIterator_t m_iter;
 
     public:
@@ -122,8 +122,8 @@ class HashMap {
         friend class HashMap;
 
     private:
-        const HashMap* m_owner = nullptr;
-        int m_bucket = 0;
+        const HashMap* m_owner{ nullptr };
+        int m_bucket{ 0 };
         BucketConstIterator_t m_iter;
 
     public:
@@ -213,7 +213,7 @@ class HashMap {
 private:
     Hasher_t m_hasher;
     Bucket_t m_buckets[BUCKETSIZE];
-    int m_size = 0;
+    int m_size{ 0 };
 
 public:
     using Iterator_t = Iterator;

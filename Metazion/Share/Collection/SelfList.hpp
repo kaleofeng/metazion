@@ -10,14 +10,14 @@ struct SelfListNode {
     using Value_t = ValueType;
 
     Value_t m_value;
-    SelfListNode* m_prevNode = nullptr;
-    SelfListNode* m_nextNode = nullptr;
+    SelfListNode* m_prevNode{ nullptr };
+    SelfListNode* m_nextNode{ nullptr };
 };
 
 template<>
 struct SelfListNode<void> {
-    SelfListNode* m_prevNode = nullptr;
-    SelfListNode* m_nextNode = nullptr;
+    SelfListNode* m_prevNode{ nullptr };
+    SelfListNode* m_nextNode{ nullptr };
 };
 
 template<typename NodeType>
@@ -26,9 +26,9 @@ class SelfList {
     using Node_t = NodeType;
 
 private:
-    Node_t* m_headNode = nullptr;
-    Node_t* m_tailNode = nullptr;
-    int m_size = 0;
+    Node_t* m_headNode{ nullptr };
+    Node_t* m_tailNode{ nullptr };
+    int m_size{ 0 };
 
 public:
     SelfList() {}

@@ -12,7 +12,7 @@ class MemoryPiece {
     MZ_DISALLOW_COPY_AND_ASSIGN(MemoryPiece)
 
     typedef struct Node {
-        Node* m_nextNode = nullptr;
+        Node* m_nextNode{ nullptr };
     } Node_t;
     
     enum { 
@@ -21,14 +21,14 @@ class MemoryPiece {
     };
     
     typedef struct Unit {
-        char m_buffer[ALIGNLENGTH] = { 0 };
+        char m_buffer[ALIGNLENGTH]{ 0 };
     } Unit_t;
 
 private:
     Unit_t m_units[MAXSIZE];
-    Node_t* m_freeList = nullptr;
-    int m_count = 0;
-    int m_freeCount = 0;
+    Node_t* m_freeList{ nullptr };
+    int m_count{ 0 };
+    int m_freeCount{ 0 };
 
 public:
     MemoryPiece() {}

@@ -21,7 +21,7 @@ struct IocpOperation {
 
     Type m_type;
     OVERLAPPED m_overlapped;
-    std::atomic<bool> m_busy = { false };
+    std::atomic<bool> m_busy{ false };
 
     IocpOperation(Type type)
         : m_type(type) { memset(&m_overlapped, 0, sizeof(m_overlapped)); }
@@ -41,7 +41,7 @@ struct IocpOperation {
 };
 
 struct AcceptOperation final : public IocpOperation {
-    char* m_buffer = nullptr;
+    char* m_buffer{ nullptr };
     SockId_t m_sockId = INVALID_SOCKID;
     
     AcceptOperation()

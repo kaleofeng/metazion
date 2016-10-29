@@ -19,7 +19,7 @@ struct SelectOperation {
     };
 
     Type m_type;
-    std::atomic<bool> m_busy = { false };
+    std::atomic<bool> m_busy{ false };
 
     SelectOperation(Type type)
         : m_type(type) {}
@@ -38,7 +38,7 @@ struct SelectOperation {
 };
 
 struct AcceptOperation final : public SelectOperation {
-    char* m_buffer = nullptr;
+    char* m_buffer{ nullptr };
     SockId_t m_sockId = INVALID_SOCKID;
     
     AcceptOperation()

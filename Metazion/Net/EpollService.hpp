@@ -15,10 +15,10 @@ class EpollService {
     MZ_DISALLOW_COPY_AND_ASSIGN(EpollService)
 
 private:
-    int m_socketCapacity = 0;
-    int m_ioThreadNumber = 0;
-    int* m_epollfdList = 0;
-    epoll_event* m_epollEventList = nullptr;
+    int m_socketCapacity{ 0 };
+    int m_ioThreadNumber{ 0 };
+    int* m_epollfdList{ 0 };
+    epoll_event* m_epollEventList{ nullptr };
 
 public:
     EpollService();

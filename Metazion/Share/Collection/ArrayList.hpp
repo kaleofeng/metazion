@@ -24,8 +24,8 @@ class ArrayList {
         friend class ArrayList;
 
     private:
-        ArrayList* m_owner = nullptr;
-        Node_t* m_node = nullptr;
+        ArrayList* m_owner{ nullptr };
+        Node_t* m_node{ nullptr };
 
     public:
         Iterator() {}
@@ -80,8 +80,8 @@ class ArrayList {
         friend class ArrayList;
 
     private:
-        const ArrayList* m_owner = nullptr;
-        const Node_t* m_node = nullptr;
+        const ArrayList* m_owner{ nullptr };
+        const Node_t* m_node{ nullptr };
 
     public:
         ConstIterator() {}

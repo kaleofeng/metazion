@@ -23,7 +23,7 @@ class List {
         friend class List;
 
     private:
-        Node_t* m_node = nullptr;
+        Node_t* m_node{ nullptr };
 
     public:
         Iterator() {}
@@ -75,7 +75,7 @@ class List {
         friend class List;
 
     private:
-        const Node_t* m_node = nullptr;
+        const Node_t* m_node{ nullptr };
 
     public:
         ConstIterator() {}

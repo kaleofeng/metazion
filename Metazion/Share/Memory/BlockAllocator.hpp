@@ -22,7 +22,7 @@ public:
     using Rebind = BlockAllocator<MAXSIZE, OTHERLENGTH>;
 
 private:
-    Piece_t* m_piece = nullptr;
+    Piece_t* m_piece{ nullptr };
 
 public:
     BlockAllocator() {

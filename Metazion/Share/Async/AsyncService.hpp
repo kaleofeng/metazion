@@ -19,8 +19,8 @@ class AsyncService {
     using AsyncQueue_t = std::queue<Async_t>;
 
 private:
-    AsyncThread** m_asyncThreads = nullptr;
-    int m_threadSize = 0;
+    AsyncThread** m_asyncThreads{ nullptr };
+    int m_threadSize{ 0 };
 
     std::mutex m_asyncMutex;
     std::condition_variable m_asyncCond;

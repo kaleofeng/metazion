@@ -143,7 +143,7 @@ int ComConnecter::CheckConnected() {
     FD_ZERO(&efds);
     FD_SET(m_tempSockId, &efds);
 
-    struct timeval timeout = { 0, 0 };
+    struct timeval timeout{ 0, 0 };
     const auto nfds = static_cast<int>(m_tempSockId + 1);
     const auto ret = select(nfds, nullptr, &wfds, &efds, &timeout);
     if (ret == 0) {

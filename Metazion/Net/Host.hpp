@@ -12,7 +12,7 @@ class Host {
 
 private:
     SockAddrIn_t m_sockAddrIn;
-    char m_buffer[64] = { '\0' };
+    char m_buffer[64]{ '\0' };
 
 public:
     Host() { 

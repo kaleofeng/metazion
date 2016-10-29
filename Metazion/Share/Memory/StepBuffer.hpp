@@ -27,9 +27,9 @@ public:
 
 private:
     BufferList_t m_bufferList;
-    BufferPool_t* m_bufferPool = nullptr;
-    int m_stepNumber = 0;
-    int m_length = 0;
+    BufferPool_t* m_bufferPool{ nullptr };
+    int m_stepNumber{ 0 };
+    int m_length{ 0 };
 
 public:
     StepBuffer() {}

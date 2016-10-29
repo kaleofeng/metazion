@@ -20,7 +20,7 @@ class IocpListenStrategy final : public IocpStrategy {
 private:
     ListenSocket& m_listenSocket;
     AcceptOperation m_acceptOperation;
-    char m_acceptBuffer[256] = { 0 };
+    char m_acceptBuffer[256]{ 0 };
 
 public:
     IocpListenStrategy(ListenSocket& listenSocket);

@@ -15,8 +15,8 @@ class SelectService {
     MZ_DISALLOW_COPY_AND_ASSIGN(SelectService)
 
 private:
-    int m_socketCapacity = 0;
-    int m_ioThreadNumber = 0;
+    int m_socketCapacity{ 0 };
+    int m_ioThreadNumber{ 0 };
 
 public:
     SelectService();

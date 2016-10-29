@@ -17,11 +17,11 @@ protected:
     Host m_localHost;
 
 #if defined(MZ_ENABLE_STATISTIC)
-    int64_t m_watchedTime = 0;
-    int64_t m_unwatchedTime = 0;
-    int64_t m_firstAcceptTime = 0;
-    int64_t m_lastAcceptTime = 0;
-    int64_t m_acceptedNumber = 0;
+    int64_t m_watchedTime{ 0 };
+    int64_t m_unwatchedTime{ 0 };
+    int64_t m_firstAcceptTime{ 0 };
+    int64_t m_lastAcceptTime{ 0 };
+    int64_t m_acceptedNumber{ 0 };
 #endif
 
 public:

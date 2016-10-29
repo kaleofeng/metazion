@@ -12,9 +12,9 @@ class StaticArray {
     using Value_t = ValueType;
 
 private:
-    Value_t* m_values = nullptr;
-    int m_capacity = 0;
-    int m_size = 0;
+    Value_t* m_values{ nullptr };
+    int m_capacity{ 0 };
+    int m_size{ 0 };
 
 public:
     StaticArray() {}

@@ -29,10 +29,10 @@ public:
 
 private:
     BufferList_t m_bufferList;
-    BufferPool_t* m_bufferPool = nullptr;
-    int m_stepSize = 0;
-    int m_capLength = 0;
-    int m_curLength = 0;
+    BufferPool_t* m_bufferPool{ nullptr };
+    int m_stepSize{ 0 };
+    int m_capLength{ 0 };
+    int m_curLength{ 0 };
 
 public:
     InputBuffer() {}

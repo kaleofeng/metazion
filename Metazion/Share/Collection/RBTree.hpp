@@ -14,12 +14,12 @@ struct RBTreeNode {
         BLACK,
     };
 
-    RBTreeNode* m_parent = nullptr;
-    RBTreeNode* m_right = nullptr;
-    RBTreeNode* m_left = nullptr;
-    Color m_color = RED;
+    RBTreeNode* m_parent{ nullptr };
+    RBTreeNode* m_right{ nullptr };
+    RBTreeNode* m_left{ nullptr };
+    Color m_color{ RED };
     
-    Value_t m_value = {};
+    Value_t m_value{};
 
     bool IsRed() const {
         return m_color == RED;
@@ -145,8 +145,8 @@ class RBTree {
 
 private:
     Compare_t m_compare;
-    Node_t* m_root = nullptr;
-    int m_size = 0;
+    Node_t* m_root{ nullptr };
+    int m_size{ 0 };
 
 public:
     RBTree() {}

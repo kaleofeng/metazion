@@ -9,9 +9,9 @@ class MemoryInputStream {
     MZ_DISALLOW_COPY_AND_ASSIGN(MemoryInputStream);
 
 private:
-    const char* m_buffer = nullptr;
-    int m_length = 0;
-    int m_position = 0;
+    const char* m_buffer{ nullptr };
+    int m_length{ 0 };
+    int m_position{ 0 };
 
 public:
     MemoryInputStream() {}

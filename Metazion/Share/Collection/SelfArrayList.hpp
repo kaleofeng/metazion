@@ -10,16 +10,16 @@ struct SelfArrayListNode {
     using Value_t = ValueType;
 
     Value_t m_value;
-    int m_selfIndex = -1;
-    int m_prevIndex = -1;
-    int m_nextIndex = -1;
+    int m_selfIndex{ -1 };
+    int m_prevIndex{ -1 };
+    int m_nextIndex{ -1 };
 };
 
 template<>
 struct SelfArrayListNode<void> {
-    int m_selfIndex = -1;
-    int m_prevIndex = -1;
-    int m_nextIndex = -1;
+    int m_selfIndex{ -1 };
+    int m_prevIndex{ -1 };
+    int m_nextIndex{ -1 };
 };
 
 template<typename NodeType
@@ -30,17 +30,17 @@ class SelfArrayList {
     using Node_t = NodeType;
 
     struct Entry {
-        Node_t* m_node = nullptr;
-        int m_freeNext = -1;
+        Node_t* m_node{ nullptr };
+        int m_freeNext{ -1 };
     };
 
 private:
     Entry m_entries[INITSIZE];
-    int m_allocIndex = 0;
-    int m_freeHead = 0;
-    int m_usedHead = -1;
-    int m_usedTail = -1;
-    int m_size = 0;
+    int m_allocIndex{ 0 };
+    int m_freeHead{ 0 };
+    int m_usedHead{ -1 };
+    int m_usedTail{ -1 };
+    int m_size{ 0 };
 
 public:
     SelfArrayList() {}

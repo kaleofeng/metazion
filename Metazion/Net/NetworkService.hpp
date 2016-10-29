@@ -32,16 +32,16 @@ public:
 private:
     Lock_t m_lock;
     SocketService m_socketService;
-    int m_socketCapacity = 0;
-    int m_socketNumber = 0;
-    SocketCtrl* m_socketCtrlList = nullptr;
-    int m_ioThreadNumber = 0;
-    IoThread** m_ioThreadList = nullptr;
-    MaintenanceThread* m_maintenanceThread = nullptr;
+    int m_socketCapacity{ 0 };
+    int m_socketNumber{ 0 };
+    SocketCtrl* m_socketCtrlList{ nullptr };
+    int m_ioThreadNumber{ 0 };
+    IoThread** m_ioThreadList{ nullptr };
+    MaintenanceThread* m_maintenanceThread{ nullptr };
     SocketBuffer::SendCache_t::BufferPool_t m_sendCachePool;
     SocketBuffer::RecvCache_t::BufferPool_t m_recvCachePool;
 
-    Socket** m_sockets = nullptr;
+    Socket** m_sockets{ nullptr };
     SocketArray_t m_socketArray;
 
 public:

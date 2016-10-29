@@ -12,8 +12,8 @@ DECL_NAMESPACE_MZ_NET_BEGIN
 #pragma pack(push, 1)
 
 struct PacketHeader {
-    int16_t m_command = 0;
-    int16_t m_length = 0;
+    int16_t m_command{ 0 };
+    int16_t m_length{ 0 };
 };
 
 #pragma pack(pop)

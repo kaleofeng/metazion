@@ -15,9 +15,9 @@ class IocpService {
     MZ_DISALLOW_COPY_AND_ASSIGN(IocpService)
 
 private:
-    int m_socketCapacity = 0;
-    int m_ioThreadNumber = 0;
-    HANDLE m_hIocp = nullptr;
+    int m_socketCapacity{ 0 };
+    int m_ioThreadNumber{ 0 };
+    HANDLE m_hIocp{ nullptr };
 
 public:
     IocpService();

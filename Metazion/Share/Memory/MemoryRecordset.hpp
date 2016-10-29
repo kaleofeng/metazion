@@ -12,10 +12,10 @@ public:
     using Handle = void*;
 
     struct Header {
-        volatile int m_usedCount = 0;
-        int m_firstFree = 0;
-        int m_recordSize = 0;
-        int m_capacity = 0;
+        volatile int m_usedCount{ 0 };
+        int m_firstFree{ 0 };
+        int m_recordSize{ 0 };
+        int m_capacity{ 0 };
     };
 
 private:
@@ -35,10 +35,10 @@ private:
 
 private:
     Header m_personalHeader;
-    Header* m_activeHeader = nullptr;
-    char* m_buffer = nullptr;
-    int m_length = 0;
-    bool m_ownMemory = false;
+    Header* m_activeHeader{ nullptr };
+    char* m_buffer{ nullptr };
+    int m_length{ 0 };
+    bool m_ownMemory{ false };
 
 public:
     MemoryRecordset();

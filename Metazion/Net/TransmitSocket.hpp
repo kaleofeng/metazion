@@ -19,14 +19,14 @@ protected:
     Host m_remoteHost;
 
 #if defined(MZ_ENABLE_STATISTIC)
-    int64_t m_connectedTime = 0;
-    int64_t m_disconnectedTime = 0;
-    int64_t m_firstSendTime = 0;
-    int64_t m_lastSendTime = 0;
-    int64_t m_sendedBytes = 0;
-    int64_t m_firstRecvTime = 0;
-    int64_t m_lastRecvTime = 0;
-    int64_t m_recvedBytes = 0;
+    int64_t m_connectedTime{ 0 };
+    int64_t m_disconnectedTime{ 0 };
+    int64_t m_firstSendTime{ 0 };
+    int64_t m_lastSendTime{ 0 };
+    int64_t m_sendedBytes{ 0 };
+    int64_t m_firstRecvTime{ 0 };
+    int64_t m_lastRecvTime{ 0 };
+    int64_t m_recvedBytes{ 0 };
 #endif
 
 public:

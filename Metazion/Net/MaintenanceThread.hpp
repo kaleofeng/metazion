@@ -16,9 +16,9 @@ class MaintenanceThread : public NS_SHARE::Thread {
     MZ_DISALLOW_COPY_AND_ASSIGN(MaintenanceThread)
 
 private:
-    NetworkService* m_networkService = nullptr;
-    int m_interval = 0;
-    std::atomic<bool> m_stopDesired = { false };
+    NetworkService* m_networkService{ nullptr };
+    int m_interval{ 0 };
+    std::atomic<bool> m_stopDesired{ false };
 
 public:
     MaintenanceThread();

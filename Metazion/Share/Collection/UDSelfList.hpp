@@ -10,12 +10,12 @@ struct UDSelfListNode {
     using Value_t = ValueType;
 
     Value_t m_value;
-    UDSelfListNode* m_nextNode = nullptr;
+    UDSelfListNode* m_nextNode{ nullptr };
 };
 
 template<>
 struct UDSelfListNode<void> {
-    UDSelfListNode* m_nextNode = nullptr;
+    UDSelfListNode* m_nextNode{ nullptr };
 };
 
 template<typename NodeType>
@@ -24,9 +24,9 @@ class UDSelfList {
     using Node_t = NodeType;
 
 private:
-    Node_t* m_headNode = nullptr;
-    Node_t* m_tailNode = nullptr;
-    int m_size = 0;
+    Node_t* m_headNode{ nullptr };
+    Node_t* m_tailNode{ nullptr };
+    int m_size{ 0 };
 
 public:
     UDSelfList() {}

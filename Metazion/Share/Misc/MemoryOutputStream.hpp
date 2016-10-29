@@ -10,8 +10,8 @@ class MemoryOutputStream {
     MZ_DISALLOW_COPY_AND_ASSIGN(MemoryOutputStream);
 
 private:
-    char m_buffer[MAXLENGTH] = { 0 };
-    int m_position = 0;
+    char m_buffer[MAXLENGTH]{ 0 };
+    int m_position{ 0 };
 
 public:
     MemoryOutputStream() {}

@@ -10,9 +10,9 @@ class PieceBuffer {
     MZ_DISALLOW_COPY_AND_ASSIGN(PieceBuffer)
 
 private:
-    char m_buffer[MAXLENGTH] = { 0 };
-    int m_pushIndex = 0;
-    int m_pullIndex = 0;
+    char m_buffer[MAXLENGTH]{ 0 };
+    int m_pushIndex{ 0 };
+    int m_pullIndex{ 0 };
 
 public:
     PieceBuffer() {}
