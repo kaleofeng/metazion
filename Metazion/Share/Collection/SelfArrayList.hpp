@@ -133,7 +133,7 @@ public:
             return nullptr;
         }
 
-        auto& entry = m_entries[m_usedHead];
+        auto& entry = m_entries[m_usedTail];
         return entry.m_node;
     }
 
@@ -142,7 +142,7 @@ public:
             return nullptr;
         }
 
-        auto& entry = m_entries[m_usedHead];
+        auto& entry = m_entries[m_usedTail];
         return entry.m_node;
     }
 
