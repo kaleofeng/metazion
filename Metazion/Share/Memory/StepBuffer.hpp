@@ -60,7 +60,7 @@ public:
             auto buffer = m_bufferList.Back();
             const int pushLength = _Push(buffer, tData, tLength);
             if (pushLength <= 0) {
-                if (!Inflate()) {
+                if (!_Inflate()) {
                     break;
                 }
             }
@@ -81,7 +81,7 @@ public:
             }
             tData += pullLength;
             tLength -= pullLength;
-            Compact();
+            _Compact();
         }
         return length - tLength;
     }
@@ -111,7 +111,7 @@ public:
                 break;
             }
             tLength -= skipLength;
-            Compact();
+            _Compact();
         }
         return length - tLength;
     }
@@ -175,7 +175,7 @@ private:
         return skipLength;
     }
 
-    bool Inflate() {
+    bool _Inflate() {
         if (m_stepNumber >= MAXSTEPNUMBER) {
             return false;
         }
@@ -191,7 +191,7 @@ private:
         return true;
     }
 
-    void Compact() {
+    void _Compact() {
         auto buffer = m_bufferList.Front();
         if (IsNull(buffer)) {
             return;

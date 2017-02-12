@@ -99,7 +99,7 @@ public:
         }
 
         if(m_pushIndex > m_pullIndex) {
-            memmove(&m_buffer[0], &m_buffer[m_pullIndex], m_pushIndex-m_pullIndex);
+            memmove(&m_buffer[0], &m_buffer[m_pullIndex], m_pushIndex - m_pullIndex);
             m_pushIndex = m_pushIndex - m_pullIndex;
             m_pullIndex = 0;
         } else  {

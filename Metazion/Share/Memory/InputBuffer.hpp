@@ -79,7 +79,7 @@ public:
             auto buffer = m_bufferList.Back();
             const int pushLength = _Push(buffer, tData, tLength);
             if (pushLength <= 0) {
-                if (!Inflate()) {
+                if (!_Inflate()) {
                     break;
                 }
             }
@@ -106,7 +106,7 @@ public:
     int Expand(int length) {
         auto tLength = length;
         while (tLength > 0) {
-            if (!Inflate()) {
+            if (!_Inflate()) {
                 break;
             }
             tLength -= STEPLENGTH;
@@ -179,7 +179,7 @@ private:
         return takeLength;
     }
 
-    bool Inflate() {
+    bool _Inflate() {
         if (m_stepSize >= MAXSIZE) {
             return false;
         }

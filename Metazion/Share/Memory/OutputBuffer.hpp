@@ -84,7 +84,7 @@ public:
             }
             tData += pullLength;
             tLength -= pullLength;
-            Compact();
+            _Compact();
         }
         return length - tLength;
     }
@@ -114,7 +114,7 @@ public:
                 break;
             }
             tLength -= skipLength;
-            Compact();
+            _Compact();
         }
         return length - tLength;
     }
@@ -197,7 +197,7 @@ private:
         return skipLength;
     }
 
-    void Compact() {
+    void _Compact() {
         auto buffer = m_bufferList.Front();
         if (IsNull(buffer)) {
             return;
