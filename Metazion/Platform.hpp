@@ -44,6 +44,7 @@
 #   include <errno.h>
 #   include <error.h>
 #   include <fcntl.h>
+#   include <poll.h>
 #   include <signal.h>
 #   include <sys/syscall.h>
 #   include <sys/time.h>
@@ -54,6 +55,7 @@
 #if defined(MZ_PLATFORM_MACOS)
 #   include <errno.h>
 #   include <fcntl.h>
+#   include <poll.h>
 #   include <signal.h>
 #   include <sys/syscall.h>
 #   include <sys/time.h>

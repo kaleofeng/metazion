@@ -126,6 +126,8 @@ int SetSockOpt(SockId_t sockId
     , const void* optval
     , SockLen_t optlen);
 
+int CheckSockConnected(SockId_t sockId);
+
 int SAGetLastError();
 
 bool IsInterrupted(int error);

@@ -135,30 +135,9 @@ int ComConnecter::TryToConnect() {
 }
 
 int ComConnecter::CheckConnected() {
-    fd_set wfds;
-    FD_ZERO(&wfds);
-    FD_SET(m_tempSockId, &wfds);
-
-    fd_set efds;
-    FD_ZERO(&efds);
-    FD_SET(m_tempSockId, &efds);
-
-    struct timeval timeout{ 0, 0 };
-    const auto nfds = static_cast<int>(m_tempSockId + 1);
-    const auto ret = select(nfds, nullptr, &wfds, &efds, &timeout);
-    if (ret == 0) {
-        return 0;
-    }
-    else if (ret < 0) {
-        return -1;
-    }
-
-    if (FD_ISSET(m_tempSockId, &efds)) {
-        return -1;
-    }
-
-    if (!FD_ISSET(m_tempSockId, &wfds)) {
-        return -1;
+    const auto ret = CheckSockConnected(m_tempSockId);
+    if (ret <= 0) {
+        return ret;
     }
 
     // It doesn't work in some situations on linux platform.
