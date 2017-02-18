@@ -23,7 +23,7 @@ public:
     using Buffer_t = PieceBuffer<STEPLENGTH>;
     using BufferNode_t = UDSelfListNode<Buffer_t>;
     using BufferList_t = UDSelfList<BufferNode_t>;
-    using BufferPool_t = ObjectPool<BufferNode_t, StepAllocator<256>, std::mutex>;
+    using BufferPool_t = ObjectPool<BufferNode_t, StepAllocator<1024>, std::mutex>;
 
     using TraverseCallback_t = std::function<bool(BufferNode_t* buffer)>;
 
