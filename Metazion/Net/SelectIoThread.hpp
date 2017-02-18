@@ -46,6 +46,8 @@ protected:
 private:
     void ProcessEvents();
 
+    void ProcessIO();
+
     int ResetFds();
 };
 

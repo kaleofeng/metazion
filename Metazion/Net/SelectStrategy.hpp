@@ -24,11 +24,15 @@ public:
 
     virtual void Start() = 0;
 
+    virtual void Launch() = 0;
+
     virtual bool IsBusy() const = 0;
 
     virtual void PostInput() = 0;
 
     virtual void PostOutput() = 0;
+
+    virtual void EnableInput() = 0;
 
     virtual void EnableOutput() = 0;
 

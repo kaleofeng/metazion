@@ -31,6 +31,8 @@ public:
 
     void Start() override final;
 
+    void Launch() override final;
+
     bool IsBusy() const override final;
 
     bool PostInput() override final;

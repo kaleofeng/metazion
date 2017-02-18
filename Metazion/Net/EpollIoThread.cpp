@@ -32,6 +32,7 @@ void EpollIoThread::Finalize() {
 void EpollIoThread::Execute() {
     while (!m_stopDesired) {
         ProcessEvents();
+        ProcessIO();
     }
 }
 
@@ -50,8 +51,8 @@ void EpollIoThread::ProcessEvents() {
     }
 
     for (auto index = 0; index < count; ++index)  {
-        auto& event = m_eventList[index];
-        auto socket = static_cast<Socket*>(event.data.ptr);
+        const auto& event = m_eventList[index];
+        const auto socket = static_cast<Socket*>(event.data.ptr);
 
         if (event.events & EPOLLRDHUP) {
             NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
@@ -60,13 +61,25 @@ void EpollIoThread::ProcessEvents() {
         }
 
         if (event.events & EPOLLIN) {
-            socket->GetIoStrategy().PostInput();
+            socket->GetIoStrategy().EnableInput();
         }
 
         if (event.events & EPOLLOUT) {
             socket->GetIoStrategy().EnableOutput();
-            socket->GetIoStrategy().PostOutput();
         }
+    }
+}
+
+void EpollIoThread::ProcessIO() {
+    for (int index = 0; index < m_socketCount; ++index) {
+        const auto& socketCtrl = m_socketCtrlList[index];
+        const auto socket = socketCtrl.m_socket;
+        if (IsNull(socket)) {
+            continue;
+        }
+
+        socket->GetIoStrategy().PostInput();
+        socket->GetIoStrategy().PostOutput();
     }
 }
 

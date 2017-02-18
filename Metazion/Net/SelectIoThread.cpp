@@ -30,6 +30,7 @@ void SelectIoThread::Finalize() {
 void SelectIoThread::Execute() {
     while (!m_stopDesired) {
         ProcessEvents();
+        ProcessIO();
     }
 }
 
@@ -50,7 +51,7 @@ void SelectIoThread::ProcessEvents() {
     }
 
     for (auto index = 0; index < m_socketCount; ++index)  {
-        auto& socketCtrl = m_socketCtrlList[index];
+        const auto& socketCtrl = m_socketCtrlList[index];
         if (IsNull(socketCtrl.m_socket)) {
             continue;
         }
@@ -59,8 +60,8 @@ void SelectIoThread::ProcessEvents() {
             continue;
         }
 
-        auto socket = socketCtrl.m_socket;
-        auto sockId = socket->GetSockId();
+        const auto socket = socketCtrl.m_socket;
+        const auto sockId = socket->GetSockId();
         if (FD_ISSET(sockId, &m_efds)) {
             NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Info: socket close. [%s:%d]\n", __FILE__, __LINE__);
             socket->Close();
@@ -68,13 +69,25 @@ void SelectIoThread::ProcessEvents() {
         }
 
         if (FD_ISSET(sockId, &m_rfds)) {
-            socket->GetIoStrategy().PostInput();
+            socket->GetIoStrategy().EnableInput();
         }
 
         if (FD_ISSET(sockId, &m_wfds)) {
             socket->GetIoStrategy().EnableOutput();
-            socket->GetIoStrategy().PostOutput();
         }
+    }
+}
+
+void SelectIoThread::ProcessIO() {
+    for (int index = 0; index < m_socketCount; ++index) {
+        const auto& socketCtrl = m_socketCtrlList[index];
+        const auto socket = socketCtrl.m_socket;
+        if (IsNull(socket)) {
+            continue;
+        }
+
+        socket->GetIoStrategy().PostInput();
+        socket->GetIoStrategy().PostOutput();
     }
 }
 
@@ -85,8 +98,8 @@ int SelectIoThread::ResetFds() {
 
     int maxFd = -1;
     for (auto index = 0; index < m_socketCount; ++index) {
-        auto& socketCtrl = m_socketCtrlList[index];
-        auto socket = socketCtrl.m_socket;
+        const auto& socketCtrl = m_socketCtrlList[index];
+        const auto socket = socketCtrl.m_socket;
         if (IsNull(socket)) {
             continue;
         }
@@ -95,14 +108,14 @@ int SelectIoThread::ResetFds() {
             continue;
         }
 
-        auto sockId = socket->GetSockId();
+        const auto sockId = socket->GetSockId();
         FD_SET(sockId, &m_rfds);
         FD_SET(sockId, &m_efds);
         if (socket->GetIoStrategy().ShouldCareAboutOutput()) {
             FD_SET(sockId, &m_wfds);
         }
 
-        auto sockFd = static_cast<int>(sockId);
+        const auto sockFd = static_cast<int>(sockId);
         maxFd = sockFd > maxFd ? sockFd : maxFd;
     }
 

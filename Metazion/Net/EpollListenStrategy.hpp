@@ -16,6 +16,8 @@ class EpollListenStrategy final : public EpollStrategy {
 
 private:
     ListenSocket& m_listenSocket;
+    std::atomic<bool> m_canInput{ false };
+    std::atomic<bool> m_canOutput{ false };
 
 public:
     EpollListenStrategy(ListenSocket& m_listenSocket);
@@ -29,11 +31,15 @@ public:
 
     void Start() override final;
 
+    void Launch() override final;
+
     bool IsBusy() const override final;
 
     void PostInput() override final;
 
     void PostOutput() override final;
+
+    void EnableInput() override final;
 
     void EnableOutput() override final;
 };

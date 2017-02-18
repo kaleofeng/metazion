@@ -25,11 +25,19 @@ void SelectListenStrategy::Start() {
     // Nothing to do.
 }
 
+void SelectListenStrategy::Launch() {
+    // Nothing to do.
+}
+
 bool SelectListenStrategy::IsBusy() const {
     return false;
 }
 
 void SelectListenStrategy::PostInput() {
+    if (!m_canInput) {
+        return;
+    }
+
     Host peerHost;
     auto sockAddr = peerHost.SockAddr();
     auto sockAddrLen = peerHost.SockAddrLen();
@@ -43,7 +51,8 @@ void SelectListenStrategy::PostInput() {
             }
 
             if (IsWouldBlock(error)) {
-               break;
+                m_canInput = false;
+                break;
             }
 
             NS_SHARE::Log(MZ_LOG_DEBUG, "Socket Error: socket close, error[%d]. [%s:%d]\n", error, __FILE__, __LINE__);
@@ -64,8 +73,12 @@ void SelectListenStrategy::PostOutput() {
     // Nothing to do.
 }
 
+void SelectListenStrategy::EnableInput() {
+    m_canInput = true;
+}
+
 void SelectListenStrategy::EnableOutput() {
-    // Nothing to do.
+    m_canOutput = true;
 }
 
 DECL_NAMESPACE_MZ_NET_END

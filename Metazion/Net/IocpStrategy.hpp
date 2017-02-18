@@ -24,6 +24,8 @@ public:
 
     virtual void Start() = 0;
 
+    virtual void Launch() = 0;
+
     virtual bool IsBusy() const = 0;
 
     virtual bool PostInput() = 0;

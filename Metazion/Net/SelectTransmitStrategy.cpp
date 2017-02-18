@@ -25,12 +25,20 @@ void SelectTransmitStrategy::Start() {
     // Nothing to do.
 }
 
+void SelectTransmitStrategy::Launch() {
+    // Nothing to do.
+}
+
 bool SelectTransmitStrategy::IsBusy() const {
     return false;
 }
 
 void SelectTransmitStrategy::PostInput() {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
+
+    if (!m_canInput) {
+        return;
+    }
 
     const auto& transmitSockId = m_transmitSocket.GetSockId();
     while (true) {
@@ -55,6 +63,7 @@ void SelectTransmitStrategy::PostInput() {
             }
 
             if (IsWouldBlock(error)) {
+                m_canInput = false;
                 break;
             }
 
@@ -124,6 +133,10 @@ void SelectTransmitStrategy::PostOutput() {
         const auto restLength = socketBuffer.PreserveSendPlan(sendLength);
         MZ_UNUSED_VARIABLE(restLength);
     }
+}
+
+void SelectTransmitStrategy::EnableInput() {
+    m_canInput = true;
 }
 
 void SelectTransmitStrategy::EnableOutput() {

@@ -92,7 +92,7 @@ int TransmitSocket::Send(const void* data, int length) {
         return 0;
     }
 
-    m_transmitStrategy.PostOutput();
+    m_transmitStrategy.Launch();
 
     return pushLength;
 }

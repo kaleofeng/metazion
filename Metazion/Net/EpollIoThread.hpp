@@ -44,6 +44,8 @@ protected:
 
 private:
     void ProcessEvents();
+
+    void ProcessIO();
 };
 
 DECL_NAMESPACE_MZ_NET_END

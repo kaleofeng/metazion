@@ -26,6 +26,10 @@ void IocpListenStrategy::Start() {
     PostInput();
 }
 
+void IocpListenStrategy::Launch() {
+    PostOutput();
+}
+
 bool IocpListenStrategy::IsBusy() const {
     return m_acceptOperation.IsBusy();
 }

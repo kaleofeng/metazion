@@ -27,12 +27,20 @@ void EpollTransmitStrategy::Start() {
     // Nothing to do.
 }
 
+void EpollTransmitStrategy::Launch() {
+    // Nothing to do.
+}
+
 bool EpollTransmitStrategy::IsBusy() const {
     return false;
 }
 
 void EpollTransmitStrategy::PostInput() {
     auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
+
+    if (!m_canInput) {
+        return;
+    }
 
     const auto& transmitSockId = m_transmitSocket.GetSockId();
     while (true) {
@@ -54,6 +62,7 @@ void EpollTransmitStrategy::PostInput() {
             }
 
             if (IsWouldBlock(error)) {
+                m_canInput = false;
                 break;
             }
 
@@ -120,6 +129,10 @@ void EpollTransmitStrategy::PostOutput() {
         const auto restLength = socketBuffer.PreserveSendPlan(sendLength);
         MZ_UNUSED_VARIABLE(restLength);
     }
+}
+
+void EpollTransmitStrategy::EnableInput() {
+    m_canInput = true;
 }
 
 void EpollTransmitStrategy::EnableOutput() {

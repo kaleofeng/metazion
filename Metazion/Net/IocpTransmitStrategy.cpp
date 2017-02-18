@@ -26,6 +26,10 @@ void IocpTransmitStrategy::Start() {
     PostInput();
 }
 
+void IocpTransmitStrategy::Launch() {
+    PostOutput();
+}
+
 bool IocpTransmitStrategy::IsBusy() const {
     auto ret = m_sendOperation.IsBusy();
     if (ret) {

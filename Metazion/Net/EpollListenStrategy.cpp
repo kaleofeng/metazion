@@ -25,11 +25,19 @@ void EpollListenStrategy::Start() {
     // Nothing to do.
 }
 
+void EpollListenStrategy::Launch() {
+    // Nothing to do.
+}
+
 bool EpollListenStrategy::IsBusy() const {
     return false;
 }
 
 void EpollListenStrategy::PostInput() {
+    if (!m_canInput) {
+        return;
+    }
+
     Host peerHost;
     auto sockAddr = peerHost.SockAddr();
     auto sockAddrLen = peerHost.SockAddrLen();
@@ -43,7 +51,8 @@ void EpollListenStrategy::PostInput() {
             }
 
             if (IsWouldBlock(error)) {
-               break;
+                m_canInput = false;
+                break;
             }
 
             switch(error) {
@@ -75,8 +84,12 @@ void EpollListenStrategy::PostOutput() {
     // Nothing to do.
 }
 
+void EpollListenStrategy::EnableInput() {
+    m_canInput = true;
+}
+
 void EpollListenStrategy::EnableOutput() {
-    // Nothing to do.
+    m_canOutput = true;
 }
 
 DECL_NAMESPACE_MZ_NET_END
