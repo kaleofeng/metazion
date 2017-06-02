@@ -134,22 +134,26 @@ void NetworkService::ReleaseSockets(SocketArray_t& socketArray) {
 }
 
 void NetworkService::AddSocketCtrl(int index, Socket* socket) {
-    m_socketCtrlList[index].m_socket = socket;
-    m_socketCtrlList[index].m_active = false;
-    ++m_socketNumber;
+    if (index >= 0 && index < m_socketCapacity) {
+        m_socketCtrlList[index].m_socket = socket;
+        m_socketCtrlList[index].m_active = false;
+        ++m_socketNumber;
+    }
 }
 
 void NetworkService::RemoveSocketCtrl(int index) {
-    m_socketCtrlList[index].m_socket = nullptr;
-    m_socketCtrlList[index].m_active = false;
-    --m_socketNumber;
+    if (index >= 0 && index < m_socketCapacity) {
+        m_socketCtrlList[index].m_socket = nullptr;
+        m_socketCtrlList[index].m_active = false;
+        --m_socketNumber;
+    }
 }
 
 int NetworkService::GetVacantIndex() const {
     static NS_SHARE::Random s_random;
     auto count = 0;
-    while (count < 3) {
-        auto index = s_random.GetRangeInt(0, m_socketCapacity);
+    while (count++ < 3) {
+        auto index = s_random.GetRangeInt(0, m_socketCapacity - 1);
         if (IsNull(m_socketCtrlList[index].m_socket)) {
             return index;
         }
