@@ -63,13 +63,13 @@ private:
 
     void ConnectStageClosed();
 
-    void Reconnect(bool immediately);
+    void Reconnect(int milliseconds);
 
     int TryToConnect();
 
     int CheckConnected();
 
-    void ResetConnectTime();
+    void ResetConnectTime(int milliseconds);
 
     bool IsStage(int stage) const;
 

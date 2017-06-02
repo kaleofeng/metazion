@@ -61,7 +61,7 @@ void ComConnecter::ConnectStageWaiting() {
     }
     else {
         m_connectFaildCallback();
-        Reconnect(false);
+        Reconnect(m_reconnectInterval);
     }
 }
 
@@ -77,7 +77,7 @@ void ComConnecter::ConnectStageConnecting() {
     else {
         DetachTempSockId();
         m_connectFaildCallback();
-        Reconnect(false);
+        Reconnect(m_reconnectInterval);
     }
 }
 
@@ -90,23 +90,20 @@ void ComConnecter::ConnectStageConnected() {
         return;
     }
 
-    Reconnect(true);
+    Reconnect(1000);
 }
 
 void ComConnecter::ConnectStageClosed() {
     MZ_ASSERT_TRUE(!m_socket.IsActive());
 }
 
-void ComConnecter::Reconnect(bool immediately) {
+void ComConnecter::Reconnect(int milliseconds) {
     if (m_reconnectInterval < 0) {
         SetStage(STAGE_CLOSED);
         return;
     }
 
-    if (!immediately) {
-        ResetConnectTime();
-    }
-
+    ResetConnectTime(milliseconds);
     SetStage(STAGE_WAITING);
 }
 
@@ -153,8 +150,8 @@ int ComConnecter::CheckConnected() {
     return 1;
 }
 
-void ComConnecter::ResetConnectTime() {
-    m_connectTime = NS_SHARE::GetNowMillisecond() + m_reconnectInterval;
+void ComConnecter::ResetConnectTime(int milliseconds) {
+    m_connectTime = NS_SHARE::GetNowMillisecond() + milliseconds;
 }
 
 DECL_NAMESPACE_MZ_NET_END
