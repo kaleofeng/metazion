@@ -18,7 +18,6 @@ protected:
     SocketBuffer m_socketBuffer;
     Host m_remoteHost;
 
-#if defined(MZ_ENABLE_STATISTIC)
     int64_t m_connectedTime{ 0 };
     int64_t m_disconnectedTime{ 0 };
     int64_t m_firstSendTime{ 0 };
@@ -27,21 +26,21 @@ protected:
     int64_t m_firstRecvTime{ 0 };
     int64_t m_lastRecvTime{ 0 };
     int64_t m_recvedBytes{ 0 };
-#endif
 
 public:
     TransmitSocket();
 
     virtual ~TransmitSocket();
 
-public:
     void Reset() override;
 
     void Prepare() override;
 
-    IoStrategy& GetIoStrategy() override final;
-
     bool IsAlive() const override final;
+
+    bool KeepEnough() const override final;
+
+    IoStrategy& TheIoStrategy() override final;
 
     void OnAttached() override final;
 
@@ -55,7 +54,7 @@ public:
 
     int Send(const void* data, int length);
 
-    SocketBuffer& GetSocketBuffer();
+    SocketBuffer& TheSocketBuffer();
 
     Host& GetRemoteHost();
 
@@ -71,11 +70,11 @@ protected:
     virtual void OnRecved(const void* data, int length);
 };
 
-inline IoStrategy& TransmitSocket::GetIoStrategy() {
+inline IoStrategy& TransmitSocket::TheIoStrategy() {
     return m_transmitStrategy;
 }
 
-inline SocketBuffer& TransmitSocket::GetSocketBuffer() {
+inline SocketBuffer& TransmitSocket::TheSocketBuffer() {
     return m_socketBuffer;
 }
 

@@ -61,11 +61,11 @@ void EpollIoThread::ProcessEvents() {
         }
 
         if (event.events & EPOLLIN) {
-            socket->GetIoStrategy().EnableInput();
+            socket->TheIoStrategy().EnableInput();
         }
 
         if (event.events & EPOLLOUT) {
-            socket->GetIoStrategy().EnableOutput();
+            socket->TheIoStrategy().EnableOutput();
         }
     }
 }
@@ -78,8 +78,8 @@ void EpollIoThread::ProcessIO() {
             continue;
         }
 
-        socket->GetIoStrategy().PostInput();
-        socket->GetIoStrategy().PostOutput();
+        socket->TheIoStrategy().PostInput();
+        socket->TheIoStrategy().PostOutput();
     }
 }
 

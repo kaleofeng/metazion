@@ -16,27 +16,26 @@ protected:
     ListenStrategy m_listenStrategy;
     Host m_localHost;
 
-#if defined(MZ_ENABLE_STATISTIC)
     int64_t m_watchedTime{ 0 };
     int64_t m_unwatchedTime{ 0 };
     int64_t m_firstAcceptTime{ 0 };
     int64_t m_lastAcceptTime{ 0 };
     int64_t m_acceptedNumber{ 0 };
-#endif
 
 public:
     ListenSocket();
 
     virtual ~ListenSocket();
 
-public:
     void Reset() override;
 
     void Prepare() override;
 
-    IoStrategy& GetIoStrategy() override final;
-
     bool IsAlive() const override final;
+
+    bool KeepEnough() const override final;
+
+    IoStrategy& TheIoStrategy() override final;
 
     void OnAttached() override final;
 
@@ -60,7 +59,7 @@ protected:
     virtual bool OnAccepted(const SockId_t& sockId, const Host& host);
 };
 
-inline IoStrategy& ListenSocket::GetIoStrategy() {
+inline IoStrategy& ListenSocket::TheIoStrategy() {
     return m_listenStrategy;
 }
 

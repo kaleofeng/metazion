@@ -25,7 +25,7 @@ int PacketCodec::Encode(int command, const void* data, int length, EncodeBuffer&
 }
 
 int PacketCodec::Decode(int& command, DecodeBuffer& decodeBuffer) {
-    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.TheSocketBuffer();
 
     PacketHeader header;
     const auto headerLength = static_cast<int>(sizeof(header));

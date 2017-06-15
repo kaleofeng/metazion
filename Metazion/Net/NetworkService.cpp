@@ -56,12 +56,10 @@ void NetworkService::Finalize() {
             continue;
         }
 
-        if (socketCtrl.m_active) {
-            socketCtrl.m_socket->Close();
-        }
-        else {
-            socketCtrl.m_socket->DetachSockId();
-        }
+        socketCtrl.m_active
+            ? socketCtrl.m_socket->Close()
+            : socketCtrl.m_socket->DetachSockId();
+
         socketCtrl.m_socket->Destory();
         socketCtrl.m_socket = nullptr;
     }

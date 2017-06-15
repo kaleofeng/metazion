@@ -49,7 +49,6 @@ public:
 
     ~NetworkService();
 
-public:
     bool Initialize(int socketCapacity, int ioThreadNumber);
 
     void Finalize();

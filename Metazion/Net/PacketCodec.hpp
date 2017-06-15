@@ -22,7 +22,6 @@ public:
     
     ~PacketCodec();
     
-public:
     int Encode(int command, const void* data, int length, EncodeBuffer& encodeBuffer);
     
     int Decode(int& command, DecodeBuffer& decodeBuffer);

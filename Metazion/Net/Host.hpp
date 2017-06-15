@@ -33,7 +33,6 @@ public:
         return *this;
     }
 
-public:
     void Reset() {
         memset(&m_sockAddrIn, 0, sizeof(m_sockAddrIn));
     }

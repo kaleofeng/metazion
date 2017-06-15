@@ -56,13 +56,13 @@ void IocpIoThread::Execute() {
 
         switch (result) {
         case RESULT_SUCCESS:
-            socket->GetIoStrategy().HandleSuccess(iocpOperation, numberOfBytes);
+            socket->TheIoStrategy().HandleSuccess(iocpOperation, numberOfBytes);
             break;
         case RESULT_FAILURE:
-            socket->GetIoStrategy().HandleFailure(iocpOperation, numberOfBytes, error);
+            socket->TheIoStrategy().HandleFailure(iocpOperation, numberOfBytes, error);
             break;
         case RESULT_CLOSE:
-            socket->GetIoStrategy().HandleClose(iocpOperation, numberOfBytes);
+            socket->TheIoStrategy().HandleClose(iocpOperation, numberOfBytes);
             break;
         case RESULT_TIMEOUT:
             break;

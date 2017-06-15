@@ -28,7 +28,6 @@ public:
 
     ~SelectTransmitStrategy();
 
-public:
     void Reset() override final;
 
     void Prepare() override final;

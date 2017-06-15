@@ -34,7 +34,6 @@ public:
 
     ~EpollIoThread();
 
-public:
     void Initialize(NetworkService* networkService, int index);
 
     void Finalize();

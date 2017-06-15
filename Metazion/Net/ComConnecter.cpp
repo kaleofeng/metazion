@@ -18,7 +18,7 @@ void ComConnecter::Reset() {
     m_tempSockId = INVALID_SOCKID;
 }
 
-void ComConnecter::Tick(int interval) {
+void ComConnecter::Tick(int64_t now, int interval) {
     ConnectStage();
 }
 

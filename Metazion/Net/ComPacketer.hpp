@@ -30,7 +30,6 @@ public:
 
     ~ComPacketer();
 
-public:
     void Reset();
 
     void Dispatch();

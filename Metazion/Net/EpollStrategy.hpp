@@ -17,7 +17,6 @@ public:
 
     virtual ~EpollStrategy() {}
 
-public:
     virtual void Reset() = 0;
 
     virtual void Prepare() = 0;

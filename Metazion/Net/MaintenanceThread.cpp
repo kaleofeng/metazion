@@ -14,9 +14,10 @@ MaintenanceThread::~MaintenanceThread() {}
 void MaintenanceThread::Init(NetworkService* networkService) {
     MZ_ASSERT_TRUE(!IsNull(networkService));
 
-    m_networkService = networkService;
-    m_interval = 0;
     m_stopDesired = false;
+    m_networkService = networkService;
+    m_now = 0;
+    m_interval = 0;
 }
 
 void MaintenanceThread::Finalize() {
@@ -28,18 +29,18 @@ void MaintenanceThread::Execute() {
     auto lastTime = NS_SHARE::GetNowMillisecond();
     auto lastTickTime = lastTime;
     while (!m_stopDesired) {
-        const auto curTime = NS_SHARE::GetNowMillisecond();
-        if (curTime - lastTime < 10) {
+        m_now = NS_SHARE::GetNowMillisecond();
+        if (m_now - lastTime < 10) {
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
             continue;
         }
 
-        m_interval = static_cast<int>(curTime - lastTickTime);
-        lastTickTime = curTime;
+        m_interval = static_cast<int>(m_now - lastTickTime);
+        lastTickTime = m_now;
 
         ProcessSockets();
 
-        lastTime = curTime;
+        lastTime = m_now;
     }
 }
 
@@ -51,18 +52,19 @@ void MaintenanceThread::ProcessSockets() {
             continue;
         }
 
-        socketCtrl.m_socket->Tick(m_interval);
+        socketCtrl.m_socket->Tick(m_now, m_interval);
 
-        if (socketCtrl.m_active) {
-            ProcessActiveSocket(socketCtrl.m_socket, index);
-        }
-        else {
-            ProcessClosedSocket(socketCtrl.m_socket, index);
-        }
+        socketCtrl.m_active
+            ? ProcessActiveSocket(socketCtrl.m_socket, index)
+            : ProcessClosedSocket(socketCtrl.m_socket, index);
     }
 }
 
 void MaintenanceThread::ProcessActiveSocket(Socket* socket, int index) {
+    if (socket->KeepEnough()) {
+        socket->Disconnect();
+    }
+
     if (socket->IsGonnaClose()) {
         socket->Stop();
     }

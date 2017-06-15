@@ -17,7 +17,6 @@ public:
 
     virtual ~IocpStrategy() {}
 
-public:
     virtual void Reset() = 0;
 
     virtual void Prepare() = 0;

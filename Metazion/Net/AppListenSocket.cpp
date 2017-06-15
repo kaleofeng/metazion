@@ -21,10 +21,10 @@ void AppListenSocket::Prepare() {
     DerivedPrepare();
 }
 
-void AppListenSocket::Tick(int interval) {
-    ListenSocket::Tick(interval);
+void AppListenSocket::Tick(int64_t now, int interval) {
+    ListenSocket::Tick(now, interval);
 
-    DerivedTick(interval);
+    DerivedTick(now, interval);
 }
 
 void AppListenSocket::Dispatch() {

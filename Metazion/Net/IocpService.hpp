@@ -24,7 +24,6 @@ public:
 
     ~IocpService();
 
-public:
     bool Initialize(int socketCapacity, int ioThreadNumber);
 
     void Finalize();

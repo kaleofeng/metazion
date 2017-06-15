@@ -23,12 +23,12 @@ void AppClientSocket::Prepare() {
     DerivedPrepare();
 }
 
-void AppClientSocket::Tick(int interval) {
-    TransmitSocket::Tick(interval);
+void AppClientSocket::Tick(int64_t now, int interval) {
+    TransmitSocket::Tick(now, interval);
     
-    m_connecter.Tick(interval);
+    m_connecter.Tick(now, interval);
 
-    DerivedTick(interval);
+    DerivedTick(now, interval);
 }
 
 void AppClientSocket::Dispatch() {

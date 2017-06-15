@@ -21,10 +21,10 @@ void AppServerSocket::Prepare() {
     DerivedPrepare();
 }
 
-void AppServerSocket::Tick(int interval) {
-    TransmitSocket::Tick(interval);
+void AppServerSocket::Tick(int64_t now, int interval) {
+    TransmitSocket::Tick(now, interval);
 
-    DerivedTick(interval);
+    DerivedTick(now, interval);
 }
 
 void AppServerSocket::Dispatch() {

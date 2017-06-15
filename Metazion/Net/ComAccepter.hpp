@@ -28,7 +28,6 @@ public:
 
     ~ComAccepter();
 
-public:
     void Reset();
 
     bool Accept(const SockId_t& sockId, const Host& host);

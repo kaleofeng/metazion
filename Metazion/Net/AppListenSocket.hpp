@@ -19,12 +19,11 @@ public:
 
     virtual ~AppListenSocket();
 
-public:
     void Reset() override final;
 
     void Prepare() override final;
 
-    void Tick(int interval) override final;
+    void Tick(int64_t now, int interval) override final;
 
     void Dispatch() override final;
 
@@ -41,7 +40,7 @@ protected:
 
     virtual void DerivedPrepare() {};
 
-    virtual void DerivedTick(int interval) {};
+    virtual void DerivedTick(int64_t now, int interval) {};
 
     virtual void DerivedDispatch() {};
 

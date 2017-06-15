@@ -25,13 +25,17 @@ class Socket {
 
 protected:
     std::atomic<int> m_reference{ 0 };
-    std::atomic<bool> m_working{ false };
-    std::atomic<bool> m_gonnaClose{ false };
-    std::atomic<bool> m_wannaClose{ false };
     SockId_t m_sockId{ INVALID_SOCKID };
     int m_index{ -1 };
     NetworkService* m_networkService{ nullptr };
-    DestoryCallback_t m_destroyCallback = [](auto socket) { delete socket; };
+    int m_keepInterval{ 0 };
+    DestoryCallback_t m_destroyCallback{ nullptr };
+
+    int64_t m_now{ 0 };
+    std::atomic<bool> m_working{ false };
+    std::atomic<bool> m_gonnaClose{ false };
+    std::atomic<int> m_delayTime{ 0 };
+    std::atomic<bool> m_wannaClose{ false };
 
 public:
     Socket();
@@ -42,27 +46,15 @@ public:
 
     virtual void Prepare();
 
-    virtual void Tick(int interval) = 0;
+    virtual void Tick(int64_t now, int interval);
 
-    virtual void Dispatch() = 0;
+    virtual void Dispatch();
 
     void Retain();
 
     void Release();
 
-    void Disconnect();
-
     void Destory();
-
-    bool IsValid() const;
-
-    bool IsActive() const;
-
-    bool IsWorking() const;
-
-    bool IsGonnaClose() const;
-
-    bool IsWannaClose() const;
 
     const SockId_t& GetSockId() const;
 
@@ -74,14 +66,30 @@ public:
 
     NetworkService* GetNetworkService();
 
+    void SetKeepInterval(int interval);
+
     void SetDestroyCallback(DestoryCallback_t callback);
+
+    void Disconnect(int delayTime = 0);
+
+    bool IsWorking() const;
+
+    bool IsGonnaClose() const;
+
+    bool IsWannaClose() const;
+
+    bool IsValid() const;
+
+    bool IsActive() const;
 
 protected:
     virtual int GetType() const = 0;
 
-    virtual IoStrategy& GetIoStrategy() = 0;
-
     virtual bool IsAlive() const = 0;
+
+    virtual bool KeepEnough() const = 0;
+
+    virtual IoStrategy& TheIoStrategy() = 0;
 
     virtual void OnAttached() = 0;
 
@@ -93,36 +101,19 @@ protected:
 
     virtual void OnError(int error) = 0;
 
+    void Shutdown();
+
     void Close();
 
     void Start();
 
     void Stop();
 
+private:
     void SetIndex(int index);
 
     void SetNetworkService(NetworkService* networkService);
 };
-
-inline bool Socket::IsValid() const {
-    return m_reference > 0;
-}
-
-inline bool Socket::IsActive() const {
-    return m_sockId != INVALID_SOCKID;
-}
-
-inline bool Socket::IsWorking() const {
-    return m_working;
-}
-
-inline bool Socket::IsGonnaClose() const {
-    return m_gonnaClose;
-}
-
-inline bool Socket::IsWannaClose() const {
-    return m_wannaClose;
-}
 
 inline const SockId_t& Socket::GetSockId() const {
     return m_sockId;
@@ -144,8 +135,32 @@ inline void Socket::SetNetworkService(NetworkService* networkService) {
     m_networkService = networkService;
 }
 
+inline void Socket::SetKeepInterval(int interval) {
+    m_keepInterval = interval;
+}
+
 inline void Socket::SetDestroyCallback(DestoryCallback_t callback) {
     m_destroyCallback = callback;
+}
+
+inline bool Socket::IsWorking() const {
+    return m_working;
+}
+
+inline bool Socket::IsGonnaClose() const {
+    return m_gonnaClose;
+}
+
+inline bool Socket::IsWannaClose() const {
+    return m_wannaClose;
+}
+
+inline bool Socket::IsValid() const {
+    return m_reference > 0;
+}
+
+inline bool Socket::IsActive() const {
+    return m_sockId != INVALID_SOCKID;
 }
 
 DECL_NAMESPACE_MZ_NET_END

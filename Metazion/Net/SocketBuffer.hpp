@@ -42,7 +42,6 @@ public:
     
     ~SocketBuffer();
 
-public:
     void Reset();
 
     void Prepare();

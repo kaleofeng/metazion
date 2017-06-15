@@ -67,7 +67,7 @@ bool IocpTransmitStrategy::PostOutput() {
         return true;
     }
 
-    if (!m_transmitSocket.GetSocketBuffer().HasDataToSend()) {
+    if (!m_transmitSocket.TheSocketBuffer().HasDataToSend()) {
         return true;
     }
 
@@ -110,7 +110,7 @@ bool IocpTransmitStrategy::HandleClose(const IocpOperation* iocpOperation
 }
 
 bool IocpTransmitStrategy::PostRecv() {
-    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.TheSocketBuffer();
 
     const auto recvLength = socketBuffer.PrepareRecvPlan();
 
@@ -138,7 +138,7 @@ bool IocpTransmitStrategy::PostRecv() {
 }
 
 bool IocpTransmitStrategy::PostSend() {
-    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.TheSocketBuffer();
 
     const auto sendLength = socketBuffer.PrepareSendPlan();
     if (sendLength < 1) {
@@ -172,7 +172,7 @@ bool IocpTransmitStrategy::HandleRecvSuccess(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     MZ_ASSERT_TRUE(&m_recvOperation == iocpOperation);
 
-    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.TheSocketBuffer();
 
     const auto planLength = socketBuffer.m_recvPlan.GetCurLength();
     const auto cacheLength = socketBuffer.m_recvCache.GetCurLength();
@@ -203,7 +203,7 @@ bool IocpTransmitStrategy::HandleSendSuccess(const IocpOperation* iocpOperation
     , DWORD byteNumber) {
     MZ_ASSERT_TRUE(&m_sendOperation == iocpOperation);
 
-    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.TheSocketBuffer();
     
     const auto planLength = socketBuffer.m_sendPlan.GetCurLength();
     const auto cacheLength = socketBuffer.m_sendCache.GetCurLength();

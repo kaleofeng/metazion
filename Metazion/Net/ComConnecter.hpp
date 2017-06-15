@@ -39,10 +39,9 @@ public:
 
     ~ComConnecter();
 
-public:
     void Reset();
 
-    void Tick(int interval);
+    void Tick(int64_t now, int interval);
 
     bool Connect();
 

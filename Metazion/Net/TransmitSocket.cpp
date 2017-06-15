@@ -19,7 +19,6 @@ void TransmitSocket::Reset() {
     m_socketBuffer.Reset();
     m_remoteHost.Reset();
 
-#if defined(MZ_ENABLE_STATISTIC)
     m_connectedTime = 0;
     m_disconnectedTime = 0;
     m_firstSendTime = 0;
@@ -28,7 +27,6 @@ void TransmitSocket::Reset() {
     m_firstRecvTime = 0;
     m_lastRecvTime = 0;
     m_recvedBytes = 0;
-#endif
 }
 
 void TransmitSocket::Prepare() {
@@ -50,6 +48,17 @@ bool TransmitSocket::IsAlive() const {
     }
 
     return false;
+}
+
+bool TransmitSocket::KeepEnough() const {
+    if (m_keepInterval <= 0) {
+        return false;
+    }
+
+    const auto now = m_now;
+    const auto lastRecvTime = m_lastRecvTime > 0 ? m_lastRecvTime : now;
+    const auto interval = now - lastRecvTime;
+    return interval > m_keepInterval;
 }
 
 void TransmitSocket::OnAttached() {
@@ -93,46 +102,35 @@ int TransmitSocket::Send(const void* data, int length) {
     }
 
     m_transmitStrategy.Launch();
-
     return pushLength;
 }
 
 void TransmitSocket::OnConnected() {
-#if defined(MZ_ENABLE_STATISTIC)
-    m_connectedTime = NS_MZ_SHARE::GetNowMillisecond();
-#endif
+    m_connectedTime = m_now;
 }
 
 void TransmitSocket::OnDisconnected() {
-#if defined(MZ_ENABLE_STATISTIC)
-    m_disconnectedTime = NS_MZ_SHARE::GetNowMillisecond();
-#endif
+    m_disconnectedTime = m_now;
 }
 
 void TransmitSocket::OnSended(const void* data, int length) {
-#if defined(MZ_ENABLE_STATISTIC)
-    const auto now = NS_MZ_SHARE::GetNowMillisecond();
+    const auto now = m_now;
     if (m_firstSendTime == 0) {
         m_firstSendTime = now;
     }
 
     m_lastSendTime = now;
-
     m_sendedBytes += length;
-#endif
 }
 
 void TransmitSocket::OnRecved(const void* data, int length) {
-#if defined(MZ_ENABLE_STATISTIC)
-    const auto now = NS_MZ_SHARE::GetNowMillisecond();
+    const auto now = m_now;
     if (m_firstRecvTime == 0) {
         m_firstRecvTime = now;
     }
 
     m_lastRecvTime = now;
-
     m_recvedBytes += length;
-#endif
 }
 
 DECL_NAMESPACE_MZ_NET_END

@@ -34,7 +34,7 @@ bool SelectTransmitStrategy::IsBusy() const {
 }
 
 void SelectTransmitStrategy::PostInput() {
-    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.TheSocketBuffer();
 
     if (!m_canInput) {
         return;
@@ -84,7 +84,7 @@ void SelectTransmitStrategy::PostInput() {
 }
 
 void SelectTransmitStrategy::PostOutput() {
-    auto& socketBuffer = m_transmitSocket.GetSocketBuffer();
+    auto& socketBuffer = m_transmitSocket.TheSocketBuffer();
 
     if (!m_canOutput) {
         return;

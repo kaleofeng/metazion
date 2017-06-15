@@ -69,11 +69,11 @@ void SelectIoThread::ProcessEvents() {
         }
 
         if (FD_ISSET(sockId, &m_rfds)) {
-            socket->GetIoStrategy().EnableInput();
+            socket->TheIoStrategy().EnableInput();
         }
 
         if (FD_ISSET(sockId, &m_wfds)) {
-            socket->GetIoStrategy().EnableOutput();
+            socket->TheIoStrategy().EnableOutput();
         }
     }
 }
@@ -86,8 +86,8 @@ void SelectIoThread::ProcessIO() {
             continue;
         }
 
-        socket->GetIoStrategy().PostInput();
-        socket->GetIoStrategy().PostOutput();
+        socket->TheIoStrategy().PostInput();
+        socket->TheIoStrategy().PostOutput();
     }
 }
 
@@ -111,7 +111,7 @@ int SelectIoThread::ResetFds() {
         const auto sockId = socket->GetSockId();
         FD_SET(sockId, &m_rfds);
         FD_SET(sockId, &m_efds);
-        if (socket->GetIoStrategy().ShouldCareAboutOutput()) {
+        if (socket->TheIoStrategy().ShouldCareAboutOutput()) {
             FD_SET(sockId, &m_wfds);
         }
 

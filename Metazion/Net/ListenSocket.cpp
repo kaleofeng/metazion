@@ -18,13 +18,11 @@ void ListenSocket::Reset() {
     m_listenStrategy.Reset();
     m_localHost.Reset();
 
-#if defined(MZ_ENABLE_STATISTIC)
     m_watchedTime = 0;
     m_unwatchedTime = 0;
     m_firstAcceptTime = 0;
     m_lastAcceptTime = 0;
     m_acceptedNumber = 0;
-#endif
 }
 
 void ListenSocket::Prepare() {
@@ -44,6 +42,10 @@ bool ListenSocket::IsAlive() const {
         return true;
     }
 
+    return false;
+}
+
+bool ListenSocket::KeepEnough() const {
     return false;
 }
 
@@ -99,29 +101,21 @@ bool ListenSocket::Listen(int backlog) {
 }
 
 void ListenSocket::OnWatched() {
-#if defined(MZ_ENABLE_STATISTIC)
-    m_watchedTime = NS_MZ_SHARE::GetNowMicrosecond();
-#endif
+    m_watchedTime = m_now;
 }
 
 void ListenSocket::OnUnwatched() {
-#if defined(MZ_ENABLE_STATISTIC)
-    m_unwatchedTime = NS_MZ_SHARE::GetNowMicrosecond();
-#endif
+    m_unwatchedTime = m_now;
 }
 
 bool ListenSocket::OnAccepted(const SockId_t& sockId, const Host& host) {
-#if defined(MZ_ENABLE_STATISTIC)
-    const auto now = NS_MZ_SHARE::GetNowMicrosecond();
+    const auto now = m_now;
     if (m_firstAcceptTime == 0) {
         m_firstAcceptTime = now;
     }
 
     m_lastAcceptTime = now;
-
     ++m_acceptedNumber;
-#endif
-
     return true;
 }
 

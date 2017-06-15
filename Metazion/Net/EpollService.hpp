@@ -25,7 +25,6 @@ public:
 
     ~EpollService();
 
-public:
     bool Initialize(int socketCapacity, int ioThreadNumber);
 
     void Finalize();

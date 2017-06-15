@@ -24,7 +24,6 @@ public:
 
     ~EpollListenStrategy();
 
-public:
     void Reset() override final;
 
     void Prepare() override final;
