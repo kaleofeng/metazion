@@ -27,6 +27,8 @@ public:
 
     void Finalize();
 
+    void WannaStop();
+
 private:
     void ThreadFunc();
 };

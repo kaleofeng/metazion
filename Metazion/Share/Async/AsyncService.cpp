@@ -18,6 +18,12 @@ bool AsyncService::Initialize(int threadSize) {
 }
 
 void AsyncService::Finalize() {
+    m_stopDesired = true;
+    for (auto index = 0; index < m_threadSize; ++index) {
+        m_asyncThreads[index]->WannaStop();
+    }
+    m_asyncCond.notify_all();
+
     for (auto index = 0; index < m_threadSize; ++index) {
         m_asyncThreads[index]->Finalize();
         SafeDelete(m_asyncThreads[index]);
@@ -29,17 +35,20 @@ void AsyncService::Finalize() {
 void AsyncService::Push(Async_t async) {
     std::unique_lock<std::mutex> lock(m_asyncMutex);
     m_asyncQueue.push(async);
-    m_asyncCond.notify_all();
+    m_asyncCond.notify_one();
 }
 
 AsyncService::Async_t AsyncService::Pop() {
     std::unique_lock<std::mutex> lock(m_asyncMutex);
     m_asyncCond.wait(lock, [this] {
-        return !m_asyncQueue.empty();
+        return !m_asyncQueue.empty() || m_stopDesired;
     });
 
-    auto async = m_asyncQueue.front();
-    m_asyncQueue.pop();
+    Async_t async{ nullptr };
+    if (!m_asyncQueue.empty()) {
+        async = m_asyncQueue.front();
+        m_asyncQueue.pop();
+    }
     return async;
 }
 

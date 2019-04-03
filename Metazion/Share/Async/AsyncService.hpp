@@ -3,6 +3,7 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
+#include <atomic>
 #include <condition_variable>
 #include <functional>
 #include <mutex>
@@ -21,6 +22,7 @@ class AsyncService {
 private:
     AsyncThread** m_asyncThreads{ nullptr };
     int m_threadSize{ 0 };
+    std::atomic<bool> m_stopDesired{ false };
 
     std::mutex m_asyncMutex;
     std::condition_variable m_asyncCond;

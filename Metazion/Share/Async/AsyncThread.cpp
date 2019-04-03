@@ -22,9 +22,13 @@ void AsyncThread::Finalize() {
     }
 }
 
+void AsyncThread::WannaStop() {
+    m_stopDesired = true;
+}
+
 void AsyncThread::ThreadFunc() {
     while (!m_stopDesired) {
-        auto async = m_asyncService.Pop();
+        const auto async = m_asyncService.Pop();
         if (async != nullptr) {
             async();
         }
