@@ -3,6 +3,7 @@
 
 #include "Metazion/Share/ShareInclude.hpp"
 
+#include <functional>
 #include <mutex>
 
 #include "Metazion/Share/Collection/UDSelfList.hpp"
